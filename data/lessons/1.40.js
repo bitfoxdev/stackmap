@@ -133,7 +133,6 @@ registerLesson("1.40", {
     "Fiber ichida blocking funksiya (`file_get_contents`, `PDO`) butun loop'ni to'xtatadi.",
     "Generator va Fiber aralashmasi xato qilish oson: bitta model tanlang.",
     "Uzoq yashovchi Fiber xotirani ushlab turadi (stack); tugallanmagan Fiber'larni tozalang.",
-    "Fiber ichida blocking I/O butun event loop'ni ushlab turadi.",
     "`resume()` tugagan Fiber'ga `FiberError` beradi.",
     "Static/global holat fiber'lar orasida umumiy: mantiqiy race.",
     "Haqiqiy parallelizm kerak bo'lsa jarayonlar/queue."

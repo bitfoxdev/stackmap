@@ -125,8 +125,6 @@ registerLesson("1.23", {
     "`gc_collect_cycles()` ni har so'rovda chaqirish keraksiz va sekin; faqat uzoq jarayonda ongli ravishda.",
     "Muammo GC emas, strong reference (static kesh, listener)lar bo'lishi ko'p: avval profil qiling.",
     "`zend.enable_gc=0` bilan uzoq jarayon xotirani to'ldirishi mumkin.",
-    "Closure `$this` ni ushlasa va obyekt closure'ni saqlasa — tsikl: `static fn`.",
-    "`gc_collect_cycles()` ni tez-tez chaqirish CPU yoqadi; faqat uzoq jarayonda va oraliqda.",
-    "Memory leak sababi ko'pincha GC emas, doimiy strong reference (static, kesh)."
+    "Closure `$this` ni ushlasa va obyekt closure'ni saqlasa — tsikl: `static fn`."
   ]
 });

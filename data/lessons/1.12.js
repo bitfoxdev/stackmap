@@ -142,7 +142,6 @@ registerLesson("1.12", {
     "Abstract class'ni `God base class`ga aylantirmang; ko'p mas'uliyat bo'lsa composition.",
     "Interface'da konstruktor e'lon qilish mumkin, lekin shartnomaga aralashtirmaslik yaxshi.",
     "Trait ichidagi static property har ishlatuvchi klassda alohida: kutilgan 'umumiy' holat emas.",
-    "Trait metodi nomi to'qnashganda `insteadof` kerak; unutilsa fatal xato.",
     "Trait'ni testda alohida tekshirish qiyin: odatda uni ishlatuvchi klass orqali sinang."
   ]
 });

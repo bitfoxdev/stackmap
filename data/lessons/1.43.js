@@ -48,7 +48,7 @@ registerLesson("1.43", {
     "`index.php` (kirish nuqtasi) → `header.php` (include) → asosiy mantiq → `footer.php`. Katta loyihada bu o'rnini framework marshrutlash va kontrollerlar oladi.",
     "",
     "### Hosting tanlash",
-    "PHP versiyasini tanlash imkoni (8.2+), `php.ini` sozlamalari, SSH, Composer, SSL, baza (MySQL/PostgreSQL). Arzon umumiy hostingda ko'p narsa cheklangan bo'lishi mumkin."
+    "PHP versiyasini tanlash imkoni (8.3+, yaxshisi 8.4/8.5), `php.ini` sozlamalari, SSH, Composer, SSL, baza (MySQL/PostgreSQL). Arzon umumiy hostingda ko'p narsa cheklangan bo'lishi mumkin."
   ],
   "examples": [
     {

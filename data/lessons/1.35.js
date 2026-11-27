@@ -132,7 +132,6 @@ registerLesson("1.35", {
     "`SplObjectStorage` obyektni xotirada ushlab turadi (leak manbai); obyekt hayotini kuzatsangiz `WeakMap`.",
     "`ArrayAccess` ichida `offsetGet` orqali ichki massivni to'g'ridan-to'g'ri o'zgartirish ($b['x'][] = 1) 'Indirect modification' Notice beradi; reference qaytaring yoki `&offsetGet`.",
     "`SplQueue` o'rniga `array_shift` bilan navbat O(n): katta navbatda sekin.",
-    "`SplObjectStorage` va `WeakMap` farqini unutmang: birinchisi obyektni ushlab turadi.",
     "`Traversable`ni to'g'ridan implement qilib bo'lmaydi.",
     "`ArrayAccess` + `Countable` bor obyekt `array` tipiga mos kelmaydi (`iterable`/o'z interface'i)."
   ]

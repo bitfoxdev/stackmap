@@ -19,7 +19,7 @@ registerLesson("1.25", {
     "`opcache.preload` server start'da ko'rsatilgan fayllarni xotiraga bir marta yuklaydi va ular har so'rovda tayyor turadi. Foyda bor, lekin fayl o'zgarsa FPM qayta ishga tushirilishi kerak; ko'pchilik ilovada foyda kichik.",
     "",
     "### JIT",
-    "`opcache.jit` (8.0+; default `disable`), tracing rejimi. JIT CPU-bound kod (matematika, tasvir) uchun foydali; I/O ga bog'liq oddiy web ilovada (DB, tarmoq kutish) deyarli foyda bermaydi va nosozlik xavfini oshiradi. Laravel uchun odatda o'chiq qoldiriladi.",
+    "`opcache.jit` (8.0+; 8.0–8.3 da default `tracing`, lekin `jit_buffer_size=0` bo'lgani uchun o'chiq; 8.4 dan default `disable`), tracing rejimi. JIT CPU-bound kod (matematika, tasvir) uchun foydali; I/O ga bog'liq oddiy web ilovada (DB, tarmoq kutish) deyarli foyda bermaydi va nosozlik xavfini oshiradi. Laravel uchun odatda o'chiq qoldiriladi.",
     "",
     "### Diagnostika",
     "`php-fpm -t`, `systemctl status php8.x-fpm`, `/status` sahifasi (`pm.status_path`), loglar.",
@@ -123,7 +123,6 @@ registerLesson("1.25", {
     "CLI uchun OPcache default o'chiq (`opcache.enable_cli=0`): artisan tezligini web bilan taqqoslamang.",
     "`$document_root$fastcgi_script_name` symlink deployda eski release OPcache'ini ishlatishi mumkin: `$realpath_root`.",
     "`max_accelerated_files` fayl sonidan kichik bo'lsa OPcache ba'zi fayllarni keshlamaydi.",
-    "JIT yoqilgan, lekin `opcache.jit_buffer_size=0` bo'lsa ishlamaydi.",
-    "`pm.max_children` ni CPU sonidan emas, RAM dan hisoblang."
+    "JIT yoqilgan, lekin `opcache.jit_buffer_size=0` bo'lsa ishlamaydi."
   ]
 });

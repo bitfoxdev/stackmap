@@ -27,7 +27,7 @@ registerLesson("1.33", {
     "",
     "### Readonly chuqurroq",
     "- Property tipli bo'lishi shart (`mixed` ham); tipsiz yoki default qiymatli bo'lmaydi.",
-    "- Faqat **e'lon qilingan klass doirasidan** initsializatsiya qilinadi (8.4 da `protected(set)` implicit). Voris klass ota readonly'ni yozolmaydi (8.4 dan `private(set)` bilan farq).",
+    "- Faqat **e'lon qilingan klass doirasidan** initsializatsiya qilinadi bir marta. PHP 8.4 gacha readonly xossa implicit `private(set)` edi (faqat e'lon qilgan klass yozadi); 8.4 dan u implicit `protected(set)`: voris klass ham uni initsializatsiya qila oladi, kerak bo'lsa `private(set)` bilan aniq cheklang.",
     "- `unset()` faqat initsializatsiyadan oldin klass ichidan; clone `__clone` ichida (8.3).",
     "- Static property readonly bo'la olmaydi.",
     "- Reference olish: `$r = &$obj->readonlyProp` — xato.",
@@ -143,8 +143,6 @@ registerLesson("1.33", {
     "Readonly property default qiymat olmaydi va klass tashqarisidan initsializatsiya qilinmaydi (`Cannot initialize readonly property from global scope`).",
     "Readonly class ota klassi ham readonly bo'lishi kerak; oddiy klassdan readonly klass yaratib bo'lmaydi.",
     "Hook (8.4) va `readonly` birga ishlamaydi: cheklov kerak bo'lsa `private(set)`.",
-    "Readonly sayoz: ichidagi mutable obyektni baribir o'zgartirish mumkin.",
-    "`readonly` property default qiymat bera olmaydi: konstruktorda o'rnating.",
     "`with*` metodlarida validatsiyani qayta chaqiring, aks holda yaroqsiz obyekt yaratish mumkin.",
     "Eloquent model readonly bo'lmaydi; VO ni cast orqali ishlating."
   ]

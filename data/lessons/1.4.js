@@ -140,7 +140,6 @@ registerLesson("1.4", {
     "`switch` loose solishtiradi: `switch ('0e1') { case '0e2': ... }` mos keladi. Qiymat tipiga ishonmasangiz `match` ishlating.",
     "`filter_var` bilan `FILTER_VALIDATE_INT` qaytargan `0` ni `if (!$id)` bilan tekshirmang: `0` falsy; `=== false` ishlating.",
     "JSON `true`/`1`/`\"1\"` loose solishtirishda teng bo'lib, kutilmagan shartga o'tib ketadi.",
-    "`switch` loose: tip aralash bo'lsa `match` yoki aniq cast.",
-    "`sort` aralash tipda barqaror emas: flag'ni aniq bering."
+    "Aralash tipli massivni `sort` qilish kutilmagan natija beradi (loose solishtirish tranzitiv emas; PHP 8.0 dan sort barqaror, lekin bu muammoni hal qilmaydi): `SORT_STRING`/`SORT_NUMERIC` flag'ini aniq bering."
   ]
 });

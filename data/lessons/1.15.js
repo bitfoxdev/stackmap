@@ -156,7 +156,6 @@ registerLesson("1.15", {
     "`finally` ichida `return`/`throw` asl istisnoni yo'qotadi.",
     "Bo'sh `catch` xatoni jim yutadi: kamida log yozing yoki qayta tashlang. Qayta tashlaganda `previous` ni uzating.",
     "Foydalanuvchiga `$e->getMessage()` ni to'g'ridan-to'g'ri ko'rsatish SQL/yo'l kabi ichki ma'lumotni oshkor qiladi.",
-    "`catch (Exception)` `TypeError`/`ValueError` ni ushlamaydi: ular `Error` shoxida.",
     "Exception'ni oqim boshqaruvi uchun ishlatish sekin va o'qilishni yomonlashtiradi.",
     "Stack trace parollarni ochishi mumkin: production'da `zend.exception_ignore_args=On`.",
     "Retry'ni idempotent bo'lmagan amalda (to'lov) ishlatish dublikat yaratadi."

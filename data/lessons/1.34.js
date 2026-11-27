@@ -147,7 +147,6 @@ registerLesson("1.34", {
     "Eski PHP versiyada (8.3 va past) sintaksis parse error beradi: kutubxona yozayotgan bo'lsangiz `composer.json` da `php: ^8.4` ni qo'ying.",
     "Hookli propertyni `unset()` qilish cheklangan; hook ichida side-effect (log, DB) yozmang.",
     "Virtual property `set` siz yozilsa Error.",
-    "`private(set)` ni voris klass o'zgartira olmaydi: kerak bo'lsa `protected(set)`.",
-    "Hooklar eski PHP'da parse error: `composer.json` talabi."
+    "`private(set)` ni voris klass o'zgartira olmaydi: kerak bo'lsa `protected(set)`."
   ]
 });

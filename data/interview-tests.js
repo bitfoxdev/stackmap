@@ -5424,5 +5424,441 @@ window.INTERVIEW_TESTS = [
     "correct": "B",
     "explanation": "\"Kim sifatida — nima — nima uchun\" formati foydalanuvchi qiymatiga e'tibor qaratadi. Qabul mezonlari esa story qachon tayyor ekanini tekshiriladigan qiladi.",
     "level": "junior"
+  },
+  // --- PHP: chuqurlashtirish ---
+  {
+    "id": "t-php-41",
+    "category": "php",
+    "categoryLabel": "PHP tili",
+    "skillSlug": "php",
+    "subskillId": "1.5",
+    "question": "`declare(strict_types=1);` yoqilgan faylda `function f(float $x) {}` ga `f(5)` chaqirilsa nima bo'ladi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`TypeError`, chunki `int` `float` ga o'girilmaydi"
+      },
+      {
+        "key": "B",
+        "text": "`5` `5.0` ga o'tadi va funksiya ishlaydi"
+      },
+      {
+        "key": "C",
+        "text": "Warning chiqadi, lekin kod davom etadi"
+      },
+      {
+        "key": "D",
+        "text": "Argument `null` bo'lib qoladi"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Strict rejimda yagona ruxsat etilgan o'girish: `int` → `float`. Qolgan skalyar o'girishlar `TypeError` beradi.",
+    "level": "middle"
+  },
+  {
+    "id": "t-php-42",
+    "category": "php",
+    "categoryLabel": "PHP tili",
+    "skillSlug": "php",
+    "subskillId": "1.21",
+    "question": "```php\n$a = [1, 2, 3];\nforeach ($a as &$v) {}\nforeach ($a as $v) {}\nprint_r($a);\n```\nNatija qanday?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`[1, 2, 3]`"
+      },
+      {
+        "key": "B",
+        "text": "`[3, 2, 3]`"
+      },
+      {
+        "key": "C",
+        "text": "`[1, 2, 2]`"
+      },
+      {
+        "key": "D",
+        "text": "`Error` tashlanadi"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Birinchi tsikldan keyin `$v` oxirgi elementga reference bo'lib qoladi. Ikkinchi tsikl `$v` ga yozganda `$a[2]` o'zgaradi. Yechim: `unset($v)`.",
+    "level": "middle"
+  },
+  {
+    "id": "t-php-43",
+    "category": "php",
+    "categoryLabel": "PHP tili",
+    "skillSlug": "php",
+    "subskillId": "1.7",
+    "question": "Backed enum `Status: string` uchun `Status::from('noma')` mavjud bo'lmagan qiymat bilan chaqirilsa nima bo'ladi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`null` qaytaradi"
+      },
+      {
+        "key": "B",
+        "text": "`ValueError` tashlaydi"
+      },
+      {
+        "key": "C",
+        "text": "Birinchi case'ni qaytaradi"
+      },
+      {
+        "key": "D",
+        "text": "`false` qaytaradi"
+      }
+    ],
+    "correct": "B",
+    "explanation": "`from()` mos qiymat topilmasa `ValueError` tashlaydi, `tryFrom()` esa `null` qaytaradi.",
+    "level": "junior"
+  },
+  {
+    "id": "t-php-44",
+    "category": "php",
+    "categoryLabel": "PHP tili",
+    "skillSlug": "php",
+    "subskillId": "1.33",
+    "question": "PHP 8.3 da `readonly` property'ni qayta yozish qaysi joyda mumkin?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Istalgan metodda"
+      },
+      {
+        "key": "B",
+        "text": "Faqat `__clone()` ichida (chuqur klonlash uchun)"
+      },
+      {
+        "key": "C",
+        "text": "Faqat konstruktorda ikkinchi marta"
+      },
+      {
+        "key": "D",
+        "text": "Hech qayerda"
+      }
+    ],
+    "correct": "B",
+    "explanation": "PHP 8.3 dan `readonly` property'ni `__clone()` ichida qayta initsializatsiya qilish mumkin: ichki obyektni chuqur klonlash uchun.",
+    "level": "senior"
+  },
+  {
+    "id": "t-php-45",
+    "category": "php",
+    "categoryLabel": "PHP tili",
+    "skillSlug": "php",
+    "subskillId": "1.15",
+    "question": "PHP 8 da `intdiv(1, 0)` qanday xato beradi va `catch (Exception $e)` uni ushlaydimi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`DivisionByZeroError`; `catch (Exception)` ushlamaydi, chunki u `Error` shoxida"
+      },
+      {
+        "key": "B",
+        "text": "`DivisionByZeroError`; `catch (Exception)` ushlaydi"
+      },
+      {
+        "key": "C",
+        "text": "Warning chiqaradi va `0` qaytaradi"
+      },
+      {
+        "key": "D",
+        "text": "`ArgumentCountError`"
+      }
+    ],
+    "correct": "A",
+    "explanation": "`DivisionByZeroError` `ArithmeticError` orqali `Error` dan meros oladi. `Exception` va `Error` ikkalasi `Throwable` ni implement qiladi, shuning uchun `catch (Throwable)` yoki `catch (Error)` kerak.",
+    "level": "middle"
+  },
+  {
+    "id": "t-php-46",
+    "category": "php",
+    "categoryLabel": "PHP tili",
+    "skillSlug": "php",
+    "subskillId": "1.39",
+    "question": "Foydalanuvchi parolini saqlashning to'g'ri usuli qaysi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`md5($password)` ni bazaga yozish"
+      },
+      {
+        "key": "B",
+        "text": "`sha256($password . $salt)` ni yozish"
+      },
+      {
+        "key": "C",
+        "text": "`password_hash($password, PASSWORD_DEFAULT)` va tekshirishda `password_verify()`"
+      },
+      {
+        "key": "D",
+        "text": "Parolni `base64_encode` bilan yozish"
+      }
+    ],
+    "correct": "C",
+    "explanation": "`password_hash()` xavfsiz algoritm va tuzni o'zi boshqaradi, `password_verify()` tekshiradi. `md5`/`sha*` tez va GPU bilan buziladi; `base64` shifrlash emas.",
+    "level": "junior"
+  },
+  {
+    "id": "t-php-47",
+    "category": "php",
+    "categoryLabel": "PHP tili",
+    "skillSlug": "php",
+    "subskillId": "1.59",
+    "question": "`JSON_THROW_ON_ERROR` bayrog'isiz `json_decode('{\"a\":')` (noto'g'ri JSON) nima qaytaradi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`false`"
+      },
+      {
+        "key": "B",
+        "text": "`null`, xato `json_last_error()` orqali olinadi"
+      },
+      {
+        "key": "C",
+        "text": "Bo'sh massiv `[]`"
+      },
+      {
+        "key": "D",
+        "text": "`JsonException` tashlaydi"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Noto'g'ri JSON'da `json_decode` `null` qaytaradi, lekin `null` ham to'g'ri JSON qiymati bo'lgani uchun xatoni `JSON_THROW_ON_ERROR` yoki `json_last_error()` bilan ajratish kerak.",
+    "level": "middle"
+  },
+  {
+    "id": "t-php-48",
+    "category": "php",
+    "categoryLabel": "PHP tili",
+    "skillSlug": "php",
+    "subskillId": "1.27",
+    "question": "UTF-8 da `Oʻzbek` (`ʻ` — U+02BB, 2 bayt) satri uchun `strlen` va `mb_strlen` natijalari qanday?",
+    "options": [
+      {
+        "key": "A",
+        "text": "6 va 6"
+      },
+      {
+        "key": "B",
+        "text": "7 va 6"
+      },
+      {
+        "key": "C",
+        "text": "6 va 7"
+      },
+      {
+        "key": "D",
+        "text": "8 va 6"
+      }
+    ],
+    "correct": "B",
+    "explanation": "`strlen` baytlarni sanaydi: 1 + 2 + 4 = 7. `mb_strlen` belgilarni sanaydi: 6.",
+    "level": "middle"
+  },
+  {
+    "id": "t-php-49",
+    "category": "php",
+    "categoryLabel": "PHP tili",
+    "skillSlug": "php",
+    "subskillId": "1.30",
+    "question": "```php\n$d = new DateTimeImmutable('2025-01-31');\n$d->modify('+1 month');\necho $d->format('Y-m-d');\n```\nNatija qanday?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`2025-02-28`"
+      },
+      {
+        "key": "B",
+        "text": "`2025-03-03`"
+      },
+      {
+        "key": "C",
+        "text": "`2025-01-31`"
+      },
+      {
+        "key": "D",
+        "text": "Xato tashlanadi"
+      }
+    ],
+    "correct": "C",
+    "explanation": "`DateTimeImmutable` obyektni o'zgartirmaydi: `modify()` yangi obyekt qaytaradi, u esa e'tiborsiz qoldirilgan. (`DateTime` bo'lganda natija `2025-03-03` bo'lardi.)",
+    "level": "middle"
+  },
+  {
+    "id": "t-php-50",
+    "category": "php",
+    "categoryLabel": "PHP tili",
+    "skillSlug": "php",
+    "subskillId": "1.9",
+    "question": "```php\n$x = 1;\n$f = fn() => $x++;\n$f();\necho $x;\n```\nNatija qanday?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`2`"
+      },
+      {
+        "key": "B",
+        "text": "`0`"
+      },
+      {
+        "key": "C",
+        "text": "`Error`"
+      },
+      {
+        "key": "D",
+        "text": "`1`"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Arrow function tashqi o'zgaruvchini **qiymat bo'yicha** oladi, shuning uchun ichidagi `$x++` tashqi `$x` ga ta'sir qilmaydi. Reference kerak bo'lsa `function () use (&$x)`.",
+    "level": "middle"
+  },
+  {
+    "id": "t-php-51",
+    "category": "php",
+    "categoryLabel": "PHP tili",
+    "skillSlug": "php",
+    "subskillId": "1.41",
+    "question": "PHP 8.4 da `function f(string $s = null) {}` yozuvi haqida qaysi gap to'g'ri?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Sintaksis xatosi"
+      },
+      {
+        "key": "B",
+        "text": "Implicit nullable deprecated: `?string $s = null` deb yozish kerak"
+      },
+      {
+        "key": "C",
+        "text": "Yangi, tavsiya etilgan yozuv"
+      },
+      {
+        "key": "D",
+        "text": "`string $s` ni majburiy parametrga aylantiradi"
+      }
+    ],
+    "correct": "B",
+    "explanation": "PHP 8.4 da default `null` bo'lgan tipli parametr (implicit nullable) deprecated. To'g'ri yozuv: `?string $s = null` yoki `string|null $s = null`.",
+    "level": "middle"
+  },
+  {
+    "id": "t-php-52",
+    "category": "php",
+    "categoryLabel": "PHP tili",
+    "skillSlug": "php",
+    "subskillId": "1.41",
+    "question": "PHP 8.5 da `'a b' |> strtoupper(...) |> (fn($s) => str_replace(' ', '-', $s))` natijasi nima?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`'a-b'`"
+      },
+      {
+        "key": "B",
+        "text": "`'A B'`"
+      },
+      {
+        "key": "C",
+        "text": "`'A-B'`"
+      },
+      {
+        "key": "D",
+        "text": "Parse error: pipe operatori yo'q"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Pipe operatori chap qiymatni o'ng callable'ga argument qiladi: avval `'A B'`, so'ng bo'shliq `-` ga almashadi: `'A-B'`. Operator PHP 8.5 da qo'shilgan.",
+    "level": "senior"
+  },
+  {
+    "id": "t-php-53",
+    "category": "php",
+    "categoryLabel": "PHP tili",
+    "skillSlug": "php",
+    "subskillId": "1.10",
+    "question": "PSR-4 `\"App\\\\\": \"app/\"`, klass `App\\Models\\User` `app/models/User.php` da turibdi. Linux serverda nima bo'ladi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Ishlaydi: PSR-4 registrni e'tiborsiz qoldiradi"
+      },
+      {
+        "key": "B",
+        "text": "`Class not found`: `Models` ≠ `models`, Linux registrga sezgir"
+      },
+      {
+        "key": "C",
+        "text": "Composer fayl nomini tuzatadi"
+      },
+      {
+        "key": "D",
+        "text": "Warning chiqadi, lekin klass yuklanadi"
+      }
+    ],
+    "correct": "B",
+    "explanation": "PSR-4 namespace qismini papka nomiga aynan moslaydi. Windows/macOS ko'pincha registrga befarq, Linux sezgir.",
+    "level": "middle"
+  },
+  {
+    "id": "t-php-54",
+    "category": "php",
+    "categoryLabel": "PHP tili",
+    "skillSlug": "php",
+    "subskillId": "1.55",
+    "question": "Kirgandan keyin session fixation hujumidan himoyalanish uchun nima qilinadi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Cookie'ga `expires` qo'yiladi"
+      },
+      {
+        "key": "B",
+        "text": "`session_regenerate_id(true)` chaqiriladi"
+      },
+      {
+        "key": "C",
+        "text": "`session_destroy()` chaqirilib hech narsa yozilmaydi"
+      },
+      {
+        "key": "D",
+        "text": "Sessiya ID'si URL orqali uzatiladi"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Kirishdan keyin ID'ni yangilash tajovuzkor oldindan bilgan ID'ni yaroqsiz qiladi. Qo'shimcha: `use_strict_mode=1`, `use_only_cookies=1`, cookie bayroqlari.",
+    "level": "middle"
+  },
+  {
+    "id": "t-php-55",
+    "category": "php",
+    "categoryLabel": "PHP tili",
+    "skillSlug": "php",
+    "subskillId": "1.39",
+    "question": "Ishonchsiz manbadan kelgan ma'lumotni `unserialize()` bilan o'qish nima uchun xavfli?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Faqat sekin ishlaydi"
+      },
+      {
+        "key": "B",
+        "text": "Object injection: `__wakeup`/`__destruct` kabi magic metodlar orqali kod bajarilishiga olib kelishi mumkin"
+      },
+      {
+        "key": "C",
+        "text": "Faqat satr tiplarini qaytaradi"
+      },
+      {
+        "key": "D",
+        "text": "PHP 8 da funksiya olib tashlangan"
+      }
+    ],
+    "correct": "B",
+    "explanation": "`unserialize` klass nomi va property'larni manbadan oladi: tajovuzkor mavjud klasslardan 'gadget' zanjiri yig'ishi mumkin. Alternativa: `json_decode` yoki `unserialize($s, ['allowed_classes' => false])`.",
+    "level": "senior"
   }
 ];

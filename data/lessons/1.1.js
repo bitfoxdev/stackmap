@@ -75,7 +75,7 @@ registerLesson("1.1", {
     "- **Increment:** `$i++` va `++$i` farqi qiymat qaytarishda; satrda `$s = 'z'; $s++` → `'aa'` (Perl uslubi), `--` esa satr bilan ishlamaydi.",
     "",
     "### Izohlar",
-    "`//`, `#`, `/* */`. Diqqat: `#[` PHP 8 da **attribute** boshlanishi (1.16), izoh emas. `/** ... */` (docblock) Reflection `getDocComment()` bilan o'qiladi; ko'p kutubxonalar (Doctrine eski, PHPUnit `@test`) shunga tayangan. Izohdagi `?>` PHP'ni yopmaydi, lekin bir qatorli (`//`) izohda `?>` PHP rejimini tugatadi!",
+    "`//`, `#`, `/* */`. Diqqat: `#[` PHP 8 da **attribute** boshlanishi (1.16), izoh emas. `/** ... */` (docblock) Reflection `getDocComment()` bilan o'qiladi; ko'p kutubxonalar (Doctrine eski, PHPUnit `@test`) shunga tayangan. `/* */` ichidagi `?>` PHP'ni yopmaydi, lekin bir qatorli (`//`, `#`) izohdagi `?>` PHP rejimini tugatadi!",
     "",
     "### Chiqarish funksiyalari",
     "- `echo` — til konstruksiyasi, vergul bilan bir necha argument (`echo 'a', 'b';`), qiymat qaytarmaydi.",
@@ -168,7 +168,6 @@ registerLesson("1.1", {
     "Productionda `display_errors=On` ichki yo'llar va SQL ni foydalanuvchiga ko'rsatadi: bu axborot sizib chiqishi.",
     "O'zgaruvchi nomlarida harf registri farq qiladi (`$User` va `$user` boshqa), funksiya nomlarida esa farq qilmaydi: bu nomuvofiqlik xatolarga sabab bo'ladi.",
     "Interpretator har safar matnni tahlil qiladi: OPcache'siz production sezilarli sekin bo'ladi.",
-    "`?>` dan keyingi bo'sh qator HTTP header'larni oldin yuborib `headers already sent` beradi.",
     "`and/or` ustuvorligi `&&/||` dan past: `$x = f() or die()` kutilmagan natija beradi.",
     "Bir qatorli `//` izohda `?>` bo'lsa PHP rejimi tugaydi va qolgan matn HTML sifatida chiqadi."
   ]

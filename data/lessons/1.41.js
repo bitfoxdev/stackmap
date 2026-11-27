@@ -22,7 +22,7 @@ registerLesson("1.41", {
     "- **Deprecated**: backtick operatori, `__sleep/__wakeup` (o'rniga `__serialize`), `(boolean)/(integer)/(double)/(binary)` cast nomlari.",
     "",
     "### Versiyalarni qo'llab-quvvatlash",
-    "8.4 — xavfsizlik 2028-12-31 gacha, 8.3 — 2027-12-31, 8.2 — 2026-12-31; 8.1 EOL. Production uchun odatda eng yangi yoki bitta orqada (8.4 hozirgi eng ishonchli tanlov).",
+    "8.5 (2025-11-20) — faol 2027-12-31, xavfsizlik 2029-12-31 gacha; 8.4 — faol 2026-12-31, xavfsizlik 2028-12-31; 8.3 — xavfsizlik 2027-12-31; 8.2 — 2026-12-31 (tez orada EOL); 8.1 EOL. PHP 8.6 ning birinchi barqaror relizi 2026-11-19 ga rejalashtirilgan edi: aniq holatni php.net/supported-versions dan tekshiring. Production uchun odatda 8.4 yoki 8.5 (kutubxonalar mosligiga qarab).",
     "",
     "### Upgrade",
     "1. `composer why-not php 8.4`.",
@@ -144,8 +144,6 @@ registerLesson("1.41", {
     "`|>` oddiy funksiya zanjirini soddalashtiradi, lekin chuqur mantiqni o'qib bo'lmas qiladi; ortiqcha ishlatmang.",
     "Beta/RC versiyani productionda ishlatmang; faqat 'Active support'dagi versiyalar xavfsizlik tuzatishini oladi.",
     "Pipe `|>` bir argumentli callable talab qiladi; ko'p argumentli uchun closure/partial.",
-    "`#[\\NoDiscard]` qiymatni tashlasangiz ogohlantiradi: `(void) f();` bilan ataylab tashlang.",
-    "Production'da RC/beta versiyani ishlatmang.",
-    "Yangi sintaksis (hooks, pipe) eski PHP'da parse error: CI matritsasi."
+    "`#[\\NoDiscard]` qiymatni tashlasangiz ogohlantiradi: `(void) f();` bilan ataylab tashlang."
   ]
 });

@@ -151,7 +151,7 @@ registerLesson("1.3", {
     "`array` tipi ichidagi elementlarni tekshirmaydi: `array $ids` ga satrlar ham kiradi. Docblock yoki `Collection`/typed obyekt ishlating.",
     "`?int` va `int|null` bir xil, lekin `int $x = null` (implicit nullable) PHP 8.4 da deprecated: aniq `?int $x = null` yozing.",
     "`never` funksiyadan keyin kod ishlamaydi; lekin agar funksiya aslida qaytsa `TypeError` beradi: `exit`/`throw` ishlatilishiga ishonch hosil qiling.",
-    "Tipli property'ga default qiymat bermay konstruktorda ham to'ldirmasangiz, serialize/clone/`print_r` paytida Error chiqishi mumkin.",
+    "Tipli property'ga default qiymat bermay konstruktorda ham to'ldirmasangiz, u initsializatsiyalanmagan qoladi: `serialize`/`json_encode` uni tushirib qoldiradi, keyin o'qilsa Error chiqadi.",
     "`callable` tipi property bo'la olmaydi: `Closure` yoki interface (`__invoke`) ishlating.",
     "Statik tahlil bo'lmasa `array` tipi hamma narsani o'tkazadi: PHPDoc generics yoki obyekt."
   ]

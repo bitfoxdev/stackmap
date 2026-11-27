@@ -147,8 +147,6 @@ registerLesson("1.20", {
     "`__get` ichida property mavjud emasligini jim `null` bilan yashirmang: xatolar topilmay qoladi.",
     "`__destruct` da exception tashlash yoki asosiy mantiq yozish ishonchsiz (chaqirilish vaqti aniq emas).",
     "`__get` qaytargan massivni o'zgartirish ishlamaydi (nusxa): `$o->arr[] = 1` Notice.",
-    "`__isset` yozilmasa `isset($o->x)` magic property uchun `false`.",
-    "`clone` chuqur emas: ichki obyektlar umumiy qoladi.",
-    "`__destruct` ichida exception yoki og'ir mantiq: chaqirilish vaqti kafolatlanmaydi."
+    "`__isset` yozilmasa `isset($o->x)` magic property uchun `false`."
   ]
 });

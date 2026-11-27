@@ -131,7 +131,6 @@ registerLesson("1.22", {
     "`memory_get_usage()` jarayon RSS emas; real sarf uchun `true` argumenti va tizim monitoringi.",
     "`memory_get_usage()` bir martalik o'lchov noto'g'ri: loop oldidan va keyin solishtiring.",
     "`DB::enableQueryLog()` worker'da cheksiz o'sadi.",
-    "`->get()` bilan millionlab model yuklash OOM beradi: `chunkById`/`lazy`.",
-    "WeakMap qiymati kalit obyektga strong reference bo'lsa yozuv o'chmaydi."
+    "`->get()` bilan millionlab model yuklash OOM beradi: `chunkById`/`lazy`."
   ]
 });

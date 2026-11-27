@@ -102,8 +102,6 @@ registerLesson("1.19", {
     "Katta mantiqni anonymous klassga joylash testlash va o'qishni yomonlashtiradi.",
     "Shaxsiy tipni qayta ishlatmoqchi bo'lsangiz, uni nomli klassga chiqaring.",
     "Anonymous class nomi fayl yo'liga bog'liq va NUL belgi bor: log/solishtirishda ehtiyot bo'ling.",
-    "Katta mantiq anonymous klassda testlash qiyin: nomli klassga chiqaring.",
-    "Statik tahlil anonymous class'ni to'liq tushunmasligi mumkin: interface bilan tiplang.",
-    "Queue job yoki cache'ga berib bo'lmaydi."
+    "Statik tahlil anonymous class'ni to'liq tushunmasligi mumkin: interface bilan tiplang."
   ]
 });

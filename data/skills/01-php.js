@@ -12,7 +12,11 @@ registerSkill({
       "id": "1.42",
       "title": "PHP nima (Home)",
       "description": [
-        "PHP — server tomonida ishlaydigan, ochiq manbali skript tili: brauzer so'raydi, server kodni bajaradi va tayyor HTML/JSON qaytaradi. 1994 yilda Rasmus Lerdorf yaratgan, nomi **PHP: Hypertext Preprocessor**."
+        "PHP — **server tomonida** ishlaydigan, ochiq manbali skript tili. Brauzer sahifa so'raydi, veb-server (Nginx/Apache) `.php` faylni PHP'ga uzatadi, PHP kodni bajaradi va brauzerga tayyor **HTML** yoki JSON qaytaradi: brauzer PHP kodini hech qachon ko'rmaydi.",
+        "",
+        "Til 1994 yilda Rasmus Lerdorf tomonidan yaratilgan, nomi **PHP: Hypertext Preprocessor** (rekursiv qisqartma). Zamonaviy PHP 8.x qat'iy tiplar, enum, attribute va JIT'ga ega; Laravel, Symfony, WordPress va minglab ilovalar shu tilda yozilgan.",
+        "",
+        "Asosiy g'oya: **har so'rov — yangi bajarilish** (shared-nothing). So'rov tugagach xotira tozalanadi: bu PHP'ni masshtablashni osonlashtiradi, lekin holat (sessiya, kesh) tashqarida saqlanishini talab qiladi."
       ],
       "priority": "core",
       "level": "Foundation",
@@ -28,7 +32,9 @@ registerSkill({
       "id": "1.43",
       "title": "PHP Intro: nimalar qila oladi",
       "description": [
-        "PHP dinamik sahifa yaratadi, fayllar, forma, cookie, sessiya va ma'lumotlar bazasi bilan ishlaydi, kirishni nazorat qiladi, HTML/JSON chiqaradi va CLI'da ham ishlaydi."
+        "PHP veb-ilovaning backend vazifalarining ko'pini bajaradi: **dinamik sahifa** yaratadi (har foydalanuvchiga turlicha kontent), forma ma'lumotlarini `$_GET`/`$_POST` orqali qabul qiladi, fayllar bilan ishlaydi, cookie va sessiya orqali foydalanuvchini eslab qoladi, ma'lumotlar bazasiga (PDO/mysqli) murojaat qiladi, kirishni nazorat qiladi, parollarni xeshlaydi va HTML, JSON, XML, CSV, rasm, PDF formatlarida javob beradi.",
+        "",
+        "PHP uch rejimda ishlaydi: **web SAPI** (Nginx/Apache + PHP-FPM), **CLI** (`php skript.php`: cron, import, `artisan`) va uzoq yashovchi serverlar (FrankenPHP, Swoole). Bugun PHP ko'pincha framework bilan ishlatiladi, lekin uning ostidagi so'rov, sessiya, fayl va forma mexanikasini bilish intervyuda ham, debugda ham zarur."
       ],
       "priority": "core",
       "level": "Foundation",
@@ -46,7 +52,11 @@ registerSkill({
       "id": "1.44",
       "title": "PHP Install: o'rnatish va muhit",
       "description": [
-        "PHP'ni XAMPP/Laragon/Herd, Linux paketi yoki Docker orqali o'rnatish; `php -v`, `php --ini`, `php -S` dev-server va Composer."
+        "PHP'ni o'rnatishning to'rt yo'li bor: tayyor paket (**Laragon**, XAMPP, MAMP, Laravel Herd), Linux paket menejeri (`apt install php-cli php-mbstring php-xml php-curl php-mysql`; yangi versiya uchun Ondřej Surý PPA), **Docker** (`php:8.4-cli`, `php:8.4-fpm`) yoki hosting paneli. Jamoada bir xil muhit uchun Docker yoki Laravel Sail tavsiya etiladi.",
+        "",
+        "Tekshirish: `php -v` (versiya), `php -m` (kengaytmalar), `php --ini` (qaysi `php.ini` o'qilgani). Tez sinash uchun `php -S localhost:8000 -t public` dev-serveri ishlatiladi: u bitta jarayonli va productionga yaramaydi.",
+        "",
+        "Kerakli kengaytma (`mbstring`, `intl`, `pdo_mysql`) yetishmasa `Call to undefined function mb_strlen()` chiqadi. CLI va PHP-FPM alohida `php.ini` ishlatishi mumkin. PHP paket menejeri — **Composer**."
       ],
       "priority": "core",
       "level": "Foundation",
@@ -64,7 +74,17 @@ registerSkill({
       "id": "1.45",
       "title": "PHP Syntax",
       "description": [
-        "PHP skripti `<?php` bilan boshlanadi, ifodalar `;` bilan tugaydi; o'zgaruvchilar harfga sezgir, kalit so'z va funksiya nomlari esa sezgir emas."
+        "PHP skripti `<?php` bilan boshlanadi, har ifoda `;` bilan tugaydi, bloklar `{}` ichida yoziladi. Faqat PHP bo'lgan faylda yopuvchi `?>` yozilmaydi (aks holda undan keyingi bo'sh qator `headers already sent` xatosini beradi). PHP bloklaridan tashqaridagi matn to'g'ridan chiqadi, `<?= $x ?>` esa `echo` ning qisqa shakli.",
+        "",
+        "**Case sensitivity:** o'zgaruvchi nomlari harfga sezgir (`$ism` ≠ `$Ism`), kalit so'zlar, funksiya va klass nomlari esa sezgir emas. O'zgaruvchi `$` bilan, so'ng harf yoki `_` bilan boshlanadi va oldindan e'lon qilinmaydi.",
+        "",
+        "```php",
+        "<?php",
+        "$ism = 'Ali';",
+        "echo \"Salom, $ism\";",
+        "```",
+        "",
+        "Parse error xabarida qator raqamiga qarang: muammo ko'pincha oldingi qatorda (unutilgan `;`, yopilmagan qavs yoki tirnoq). Kod uslubi: PSR-12."
       ],
       "priority": "core",
       "level": "Foundation",
@@ -82,7 +102,9 @@ registerSkill({
       "id": "1.46",
       "title": "PHP Comments",
       "description": [
-        "Bir qatorli izohlar `//` va `#`, ularning ahamiyati va yaxshi izoh yozish qoidalari; `#[` — attribute, izoh emas."
+        "Izohlar PHP tomonidan bajarilmaydi. Bir qatorli izoh `//` yoki `#` bilan boshlanadi va qator oxirigacha davom etadi; ko'p qatorli izoh `/* ... */`. **Diqqat:** PHP 8 da `#[` izoh emas, **attribute** boshlanishi (masalan `#[Test]`), shuning uchun `#` dan keyin bo'shliq qoldiring yoki `//` ishlating. Bir qatorli izohda `?>` bo'lsa PHP rejimi tugaydi.",
+        "",
+        "Yaxshi izoh **nima** qilayotganini emas, **nima uchun** shunday qilinganini tushuntiradi (biznes qoida, workaround, ticket raqami): `$i++; // i ni oshiramiz` foydasiz. Kod o'zi tushunarli bo'lishi uchun o'zgaruvchi va funksiyaga yaxshi nom bering, eskirgan izohni yangilang, o'chirilgan kodni izohda qoldirmang (Git bor) va izohga parol yoki token yozmang. Belgilar: `TODO`, `FIXME`."
       ],
       "priority": "important",
       "level": "Foundation",
@@ -100,7 +122,19 @@ registerSkill({
       "id": "1.47",
       "title": "PHP Multiline Comments",
       "description": [
-        "Ko'p qatorli `/* */` izohlar, ichma-ich izoh yo'qligi va hujjat izohlari (`/** */` docblock) bilan `@param`/`@return`."
+        "`/* ... */` izohi bir necha qatorga cho'ziladi, lekin **ichma-ich bo'lmaydi**: birinchi `*/` izohni tugatadi va qolgani kod sifatida parse error beradi. Katta kod blokini o'chirishda `//` yoki IDE'dagi `Ctrl+/` xavfsizroq.",
+        "",
+        "`/** ... */` — **docblock**: Reflection (`getDocComment()`), IDE va PHPStan o'qiydi. Teglar: `@param`, `@return`, `@throws`, `@var`, `@deprecated`, `@see`. Zamonaviy PHP'da oddiy tiplar kodning o'zida e'lon qilinadi, docblock esa PHP ifodalay olmaydigan narsa uchun qoladi: generics (`list<User>`, `array<string, int>`), `@template` va tavsif.",
+        "",
+        "```php",
+        "/**",
+        " * @param  list<int> $ids",
+        " * @return array<int, User>",
+        " */",
+        "function loadUsers(array $ids): array { /* ... */ }",
+        "```",
+        "",
+        "Docblock tipi kod tipiga zid bo'lsa PHPStan xato beradi: ularni sinxron saqlang."
       ],
       "priority": "important",
       "level": "Foundation",
@@ -523,7 +557,9 @@ registerSkill({
       "id": "1.48",
       "title": "PHP Date and Time",
       "description": [
-        "`date()`, `time()`, `mktime()`, `strtotime()`, `checkdate()`, format harflari va timezone sozlash; `DateTime` ga kirish."
+        "`time()` Unix timestamp (1970-01-01 UTC dan beri soniyalar) qaytaradi, `date($format, $ts)` uni formatlaydi, `mktime()` va `strtotime('next monday')` timestamp yaratadi, `checkdate()` sana mavjudligini tekshiradi. Format harflari: `Y-m-d H:i:s` (`m` — oy, `i` — daqiqa: adashtirmang), `D`/`l` hafta kuni, `c` ISO 8601; oy va kun nomlari inglizcha chiqadi.",
+        "",
+        "**Timezone:** server vaqti sizniki bo'lmasligi mumkin, shuning uchun `date.timezone` yoki `date_default_timezone_set('Asia/Tashkent')` ni sozlang; bazada UTC saqlab, ko'rsatishda lokal zonaga o'giring. `strtotime()` noto'g'ri matnda `false` qaytaradi, `+1 month` oy oxirida kutilmagan natija beradi (31-yanvar + 1 oy = mart). Murakkab hisoblar uchun `DateTimeImmutable` (1.30); kod tezligini `microtime(true)` yoki `hrtime(true)` bilan o'lchang."
       ],
       "priority": "important",
       "level": "Junior",
@@ -541,7 +577,11 @@ registerSkill({
       "id": "1.49",
       "title": "PHP Include",
       "description": [
-        "`include`, `require`, `_once` shakllari, `__DIR__` bilan yo'l, qiymat qaytaruvchi fayllar va LFI xavfi."
+        "`include` va `require` boshqa PHP faylni joriy joyda bajaradi. Farq: topilmasa `include` faqat Warning beradi va davom etadi, `require` esa fatal xato bilan to'xtaydi; `_once` varianti faylni bir martagina ulaydi. Muhim bog'liqliklar (konfiguratsiya, klass) uchun `require`, ixtiyoriy shablon bo'laklari uchun `include`.",
+        "",
+        "Yo'lni `__DIR__ . '/header.php'` bilan bering: nisbiy yo'l joriy ishchi papkaga bog'liq. Fayl `return` qilsa, `include` shu qiymatni beradi (`$cfg = require __DIR__ . '/config.php';`, Laravel `config/*.php` shunday ishlaydi). Ulangan fayl chaqirilgan joyning o'zgaruvchi scope'iga kiradi.",
+        "",
+        "Xavfsizlik: `include $_GET['page'] . '.php'` — **LFI** zaifligi; faqat ruxsat etilgan nomlar ro'yxatidan (whitelist) tanlang. Zamonaviy kodda klasslar qo'lda `require` bilan emas, Composer autoload (PSR-4) bilan yuklanadi."
       ],
       "priority": "core",
       "level": "Junior",
@@ -559,7 +599,9 @@ registerSkill({
       "id": "1.50",
       "title": "PHP File Handling",
       "description": [
-        "Fayl funksiyalari (`file_exists`, `filesize`, `readfile`, `unlink`), `fopen` rejimlari, ruxsatlar va path traversal xavfi."
+        "PHP fayl tizimi bilan ishlash uchun funksiyalar beradi: `file_exists`, `is_file`, `is_dir`, `filesize`, `filemtime`, `readfile`, `copy`, `rename`, `unlink`, `mkdir($d, 0755, true)`, `scandir`/`glob`. Fayl oqimi `fopen($path, $mode)` bilan ochiladi: `r` (o'qish), `w` (yozish, faylni **bo'shatadi**), `a` (qo'shish), `x` (faqat yangi fayl), `c` (bo'shatmasdan ochish), `+` (ikkala yo'nalish); ish tugagach `fclose`.",
+        "",
+        "Xatolar `false` va Warning bilan keladi: natijani tekshiring. Veb-server foydalanuvchisida kerakli **ruxsatlar** bo'lishi shart. **Path traversal** xavfi: kiritma `../../etc/passwd` kabi yo'l bo'lishi mumkin, shuning uchun `basename()` yoki `realpath()` bilan ruxsat etilgan papkadan chiqmaslikni tekshiring. Maxfiy fayllarni veb-ildizdan tashqarida saqlang."
       ],
       "priority": "core",
       "level": "Junior",
@@ -577,7 +619,15 @@ registerSkill({
       "id": "1.51",
       "title": "PHP File Open/Read",
       "description": [
-        "`fopen`, `fgets`, `fread`, `feof`, `file_get_contents`, `file()`, `fgetcsv`; katta faylni qator-qator o'qish."
+        "Faylni o'qishning ikki yo'li bor: **butunligicha** (`file_get_contents($p)` satr, `file($p, FILE_IGNORE_NEW_LINES)` qatorlar massivi) va **oqim bilan** (`fopen` → `fgets($h)` qator, `fread($h, $n)` bo'lak, `feof($h)` tugashni tekshirish → `fclose`). Yuzlab MB li fayl butunligicha yuklansa `memory_limit` tugaydi, shuning uchun qator-qator o'qing yoki generator ishlating.",
+        "",
+        "CSV uchun `fgetcsv($h)` (tirnoq va vergulni o'zi to'g'ri ajratadi), satr uchun `str_getcsv`. `fopen` muvaffaqiyatsizlikda `false` qaytaradi: natijani tekshiring va `try/finally` bilan `fclose` qiling. Kodlashni (UTF-8, BOM) unutmang.",
+        "",
+        "```php",
+        "$h = fopen('users.csv', 'r');",
+        "while (($row = fgetcsv($h)) !== false) { /* ... */ }",
+        "fclose($h);",
+        "```"
       ],
       "priority": "core",
       "level": "Junior",
@@ -595,7 +645,9 @@ registerSkill({
       "id": "1.52",
       "title": "PHP File Create/Write",
       "description": [
-        "`fopen` `w/a/x/c` rejimlari, `fwrite`, `file_put_contents` (`FILE_APPEND`, `LOCK_EX`), atomik yozish va log yozish."
+        "Faylga yozishning ikki yo'li: bir chaqiruvda `file_put_contents($p, $data, $flags)` va oqim bilan `fopen` → `fwrite` → `fclose`. Rejimlar: `w` faylni ochilgan zahoti **bo'shatadi**, `a` oxiriga qo'shadi, `x` faqat yangi fayl yaratadi (mavjud bo'lsa xato), `c` bo'shatmasdan ochadi. `FILE_APPEND` bayrog'isiz `file_put_contents` eski mazmunni yo'qotadi.",
+        "",
+        "**Parallel yozish** ma'lumotni aralashtiradi: `FILE_APPEND | LOCK_EX` yoki `flock()` ishlating. Butunlik uchun **atomik yozish**: vaqtinchalik faylga yozib `rename()` bilan almashtirish. `fwrite` qisman yozishi mumkin (disk to'lgan), shuning uchun qaytgan bayt sonini tekshiring. CSV uchun `fputcsv`. Jiddiy loyihada log uchun Monolog/Laravel Log afzal."
       ],
       "priority": "core",
       "level": "Junior",
@@ -613,7 +665,11 @@ registerSkill({
       "id": "1.53",
       "title": "PHP File Upload",
       "description": [
-        "HTML forma `multipart/form-data`, `$_FILES`, `move_uploaded_file`, xato kodlari, hajm/MIME/kengaytma tekshiruvi va xavfsiz saqlash."
+        "Fayl yuklash uchun forma `method=\"post\"` va `enctype=\"multipart/form-data\"` bo'lishi shart. PHP faylni vaqtinchalik papkaga yozadi va `$_FILES['rasm']` ni to'ldiradi (`name`, `type`, `tmp_name`, `error`, `size`); siz tekshirib, `move_uploaded_file()` bilan doimiy joyga ko'chirasiz, aks holda fayl so'rov oxirida o'chadi.",
+        "",
+        "**Xavfsizlik:** `error === UPLOAD_ERR_OK`, hajm limiti, **haqiqiy MIME** `finfo` bilan (`$_FILES['type']` ni brauzer yuboradi va soxtalashtirish mumkin), kengaytma whitelist'i, rasm uchun `getimagesize()`, yangi tasodifiy nom (`bin2hex(random_bytes(16))`). Foydalanuvchi fayl nomini ishlatmang (path traversal, `.php` yuklash). Faylni veb-ildizdan tashqarida saqlang yoki ijroni taqiqlang.",
+        "",
+        "Limitlar: `upload_max_filesize`, `post_max_size` (u `upload_max_filesize` dan kichik bo'lmasin), `max_file_uploads`, Nginx'da `client_max_body_size`."
       ],
       "priority": "important",
       "level": "Junior",
@@ -632,7 +688,9 @@ registerSkill({
       "id": "1.54",
       "title": "PHP Cookies",
       "description": [
-        "`setcookie` (expires, path, secure, httponly, samesite), `$_COOKIE`, cookie o'chirish va xavfsizlik qoidalari."
+        "Cookie — server brauzerga yuborib, brauzer saqlab, har keyingi so'rovda qaytarib yuboradigan kichik ma'lumot (~4 KB). Zamonaviy o'rnatish: `setcookie('til', 'uz', ['expires' => time() + 86400 * 30, 'path' => '/', 'secure' => true, 'httponly' => true, 'samesite' => 'Lax'])`. U **HTML chiqishidan oldin** chaqirilishi kerak (header sifatida ketadi). Yangi cookie joriy so'rovda emas, **keyingi so'rovdan** `$_COOKIE` da ko'rinadi; o'chirish uchun muddatni o'tmishga qo'ying (xuddi shu `path` bilan).",
+        "",
+        "Atributlar: `secure` (faqat HTTPS), `httponly` (JavaScript o'qiy olmaydi: XSS ta'sirini kamaytiradi), `samesite` (`Lax`/`Strict`/`None`: CSRF himoyasi). Cookie foydalanuvchi qo'lida: uni **ishonchsiz kiritma** deb qarang va parol yoki rolni unga yozmang. Analitika va reklama cookie'lari uchun rozilik (GDPR) kerak."
       ],
       "priority": "important",
       "level": "Junior",
@@ -650,7 +708,9 @@ registerSkill({
       "id": "1.55",
       "title": "PHP Sessions",
       "description": [
-        "`session_start`, `$_SESSION`, sessiya ID cookie'si, `session_regenerate_id`, logout, xavfsizlik sozlamalari va qulflash."
+        "Sessiya ma'lumotni **serverda** saqlaydi, brauzerga esa faqat identifikator (`PHPSESSID` cookie) beriladi. `session_start()` (chiqishdan oldin) sessiyani boshlaydi, `$_SESSION['user_id'] = 5` yozadi; logout'da `$_SESSION = []`, cookie'ni o'chirish va `session_destroy()` bajariladi. Ma'lumot odatda faylda, ko'p serverli muhitda **Redis**/DB'da saqlanadi (`session.save_handler`).",
+        "",
+        "**Xavfsizlik:** kirishdan keyin `session_regenerate_id(true)` (session fixation himoyasi), `session.use_strict_mode=1`, `use_only_cookies=1`, `cookie_httponly`, `cookie_secure`, `cookie_samesite`, faoliyatsizlikdan keyin muddatni tugatish (`gc_maxlifetime`). Fayl sessiya parallel so'rovlarni **qulflaydi**: yozishni tugatgach `session_write_close()` chaqiring. Laravel o'z sessiya tizimiga ega, g'oya bir xil."
       ],
       "priority": "core",
       "level": "Junior",
@@ -668,7 +728,9 @@ registerSkill({
       "id": "1.56",
       "title": "PHP Filters",
       "description": [
-        "`filter_var`, `filter_input`, `FILTER_VALIDATE_*` va `FILTER_SANITIZE_*`; validatsiya va sanitizatsiya farqi."
+        "`filter_var($qiymat, $filter, $options)` va `filter_input(INPUT_POST, 'nom', $filter)` tashqaridan kelgan ma'lumotni tekshirish va tozalash uchun standart vosita. **Validatsiya** filtrlari (`FILTER_VALIDATE_INT`, `_FLOAT`, `_BOOLEAN`, `_EMAIL`, `_URL`, `_IP`) qiymatni tekshiradi va muvaffaqiyatsizlikda `false` qaytaradi (`FILTER_NULL_ON_FAILURE` bilan `null`); **sanitizatsiya** filtrlari (`FILTER_SANITIZE_NUMBER_INT`, `_EMAIL`, `_FULL_SPECIAL_CHARS`) keraksiz belgilarni olib tashlaydi. `FILTER_SANITIZE_STRING` PHP 8.1 dan deprecated: HTML chiqarishda `htmlspecialchars()` ishlating.",
+        "",
+        "Muhim tuzoq: `0` to'g'ri qiymat, shuning uchun `if (!$id)` emas, `$id === false` bilan tekshiring. Email filtri faqat sintaksisni tekshiradi, manzil mavjudligini emas. Murakkab biznes qoidalar uchun framework validatori (Laravel `Validator`) ishlating; sanitizatsiya validatsiya o'rnini bosmaydi: noto'g'ri kiritmani tuzatmay, rad eting."
       ],
       "priority": "important",
       "level": "Junior",
@@ -686,7 +748,9 @@ registerSkill({
       "id": "1.57",
       "title": "PHP Filters Advanced",
       "description": [
-        "Filter `options` va `flags`, `FILTER_CALLBACK`, `filter_var_array`, `filter_input_array`, IP oralig'i flaglari."
+        "Filtrlarni `options` (masalan `['options' => ['min_range' => 1, 'max_range' => 100, 'default' => 1]]`) va `flags` bilan sozlash mumkin. Foydali bayroqlar: `FILTER_NULL_ON_FAILURE`, `FILTER_REQUIRE_ARRAY`/`FILTER_FORCE_ARRAY`, `FILTER_FLAG_ALLOW_FRACTION`, IP uchun `FILTER_FLAG_IPV4`, `FILTER_FLAG_NO_PRIV_RANGE`, `FILTER_FLAG_NO_RES_RANGE` (ichki IP'larni rad etish: SSRF himoyasi). `FILTER_VALIDATE_REGEXP` regex bilan, `FILTER_CALLBACK` esa o'z callable'ingiz bilan tekshiradi yoki tozalaydi.",
+        "",
+        "Bir nechta maydonni bir chaqiruvda tekshirish: `filter_var_array($_POST, ['age' => ['filter' => FILTER_VALIDATE_INT, 'options' => [...]], 'email' => FILTER_VALIDATE_EMAIL])` va `filter_input_array(INPUT_POST, $spec)`. Har kalit uchun qiymat, `false` yoki `null` qaytadi: har birini alohida tekshiring. Katta formalar uchun framework validatori qulayroq."
       ],
       "priority": "optional",
       "level": "Junior",
@@ -704,7 +768,9 @@ registerSkill({
       "id": "1.58",
       "title": "PHP Callback Functions",
       "description": [
-        "Callable turlari (satr, massiv, closure, first-class callable), `array_map/filter/usort`, `call_user_func`, `is_callable`."
+        "Callback — boshqa funksiyaga argument sifatida beriladigan va keyin u chaqiradigan funksiya; PHP'da bunday qiymat `callable` tipi bilan ifodalanadi. Turlari: funksiya nomi (`'strtoupper'`), obyekt metodi (`[$obj, 'metod']`), statik metod (`['Klass', 'metod']` yoki `'Klass::metod'`), closure/arrow function, `__invoke` li obyekt va **first-class callable** `strlen(...)` (8.1).",
+        "",
+        "Asosiy ichki funksiyalar: `array_map`, `array_filter` (callback'siz `false`/`0`/`''` ni olib tashlaydi), `array_reduce`, `array_walk`, `usort` (comparator `int` qaytaradi: `<=>`), `preg_replace_callback`, `call_user_func`. Tekshirish: `is_callable()`; chaqirish: `$fn($x)`. `callable` parametr tipi bo'la oladi, lekin **property tipi bo'la olmaydi** (`Closure` ishlating). Satr nomli callback statik tahlilga ko'rinmaydi: closure yoki `Klass::metod(...)` afzal."
       ],
       "priority": "important",
       "level": "Junior",
@@ -722,7 +788,9 @@ registerSkill({
       "id": "1.59",
       "title": "PHP JSON",
       "description": [
-        "`json_encode`, `json_decode`, bayroqlar (`JSON_PRETTY_PRINT`, `JSON_UNESCAPED_UNICODE`, `JSON_THROW_ON_ERROR`), `JsonSerializable` va API javobi."
+        "JSON — API va konfiguratsiya uchun keng tarqalgan matn formati. `json_encode($v, $flags)`: ketma-ket massiv JSON massivga, assotsiativ massiv obyektga aylanadi; foydali bayroqlar `JSON_PRETTY_PRINT`, `JSON_UNESCAPED_UNICODE`, `JSON_UNESCAPED_SLASHES`, `JSON_THROW_ON_ERROR`. `json_decode($s, true)` assotsiativ massiv, `assoc=false` bo'lsa `stdClass` qaytaradi. Xato bo'lsa `null` qaytadi, lekin `null` ham to'g'ri JSON: shuning uchun `JSON_THROW_ON_ERROR` bilan `JsonException` ushlang.",
+        "",
+        "API'da `Content-Type: application/json; charset=utf-8` yuboring, so'rov tanasini `file_get_contents('php://input')` dan o'qing. Obyektning JSON shaklini `JsonSerializable::jsonSerialize()` belgilaydi (aks holda faqat public property'lar kiradi). Cheklovlar: 64-bit dan katta sonlar aniqligini yo'qotadi (ID ni satr qiling), UTF-8 bo'lmagan satr xato beradi, funksiya va resurs ifodalanmaydi."
       ],
       "priority": "core",
       "level": "Junior",
@@ -740,7 +808,9 @@ registerSkill({
       "id": "1.60",
       "title": "PHP Exceptions",
       "description": [
-        "`try/catch/finally`, `throw`, exception metodlari, o'z istisnolari, ko'p turni ushlash, `previous` va `set_exception_handler`."
+        "Exception xatoni oddiy oqimdan ajratib boshqarish mexanizmi: `throw new InvalidArgumentException('...')` tashlaydi, `try { } catch (A | B $e) { } finally { }` ushlaydi; `finally` xato bo'lsa ham bajariladi (resurslarni yopish uchun). Metodlar: `getMessage()`, `getCode()`, `getPrevious()`, `getTraceAsString()`. Zanjirlash: `throw new ImportException('...', 0, $e)` asl sababni (`previous`) saqlaydi.",
+        "",
+        "Ierarxiya: `Throwable` → `Exception` (dastur xatolari) va `Error` (`TypeError`, `ValueError`, `DivisionByZeroError`); ikkalasini ham ushlash mumkin. O'z istisnolaringizni domen ma'nosi bilan yarating (`class InsufficientFundsException extends DomainException`). Bo'sh `catch` xatoni yutib yuboradi; ushlanmagan xatolar uchun `set_exception_handler` ishlatiladi. `catch` bloklarini aniqroq turdan umumiyga qarab tartiblang."
       ],
       "priority": "core",
       "level": "Junior",

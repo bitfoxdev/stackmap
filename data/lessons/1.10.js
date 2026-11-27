@@ -126,9 +126,7 @@ registerLesson("1.10", {
     "`use` ichida klassni ulamaydi, faqat nom beradi. Fayl PSR-4 bo'yicha joylashmagan bo'lsa topilmaydi.",
     "`--classmap-authoritative` bilan runtime'da yaratilgan yangi fayl topilmaydi; deployda `dump-autoload` ni unutmang.",
     "`files` autoload har so'rovda yuklanadi: ko'p fayl qo'shmang.",
-    "Fayl nomi klass nomiga registr bilan mos bo'lmasa Windows'da ishlab, Linux'da `Class not found` beradi.",
     "`class_exists($x)` autoload'ni chaqiradi; `class_exists($x, false)` chaqirmaydi.",
-    "`classmap-authoritative` bilan runtime'da yaratilgan klasslar (generatsiya, cache) topilmaydi.",
     "Bitta faylda ikkita klass PSR-4 ni buzadi: ikkinchisi autoload qilinmaydi."
   ]
 });

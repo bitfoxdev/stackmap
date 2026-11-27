@@ -18,7 +18,7 @@ registerLesson("1.26", {
     "**Typed class constants**, `#[\\Override]`, `json_validate()`, dynamic class constant fetch `Foo::{$name}`, `readonly` property'ni `__clone` ichida qayta yozish, `Randomizer::getBytesFromString`, `mb_str_pad`.",
     "",
     "### Qo'llab-quvvatlash va upgrade",
-    "Faqat faol versiyalar xavfsizlik tuzatishini oladi: 8.1 EOL, 8.2 xavfsizlik 2026-12-31 gacha, 8.3 2027-12-31, 8.4 2028-12-31 gacha. Yangi loyiha uchun eng so'nggi barqaror (8.4+) tanlanadi.",
+    "Faqat faol versiyalar xavfsizlik tuzatishini oladi: 8.1 EOL, 8.2 xavfsizlik 2026-12-31 gacha, 8.3 2027-12-31, 8.4 2028-12-31, 8.5 2029-12-31 gacha (aniq sanalar: php.net/supported-versions). Yangi loyiha uchun eng so'nggi barqaror (8.4+) tanlanadi.",
     "",
     "Upgrade tartibi:",
     "1. `composer.json` da `php` talabini va kutubxona mosligini tekshiring (`composer why-not php 8.4`).",
@@ -137,7 +137,6 @@ registerLesson("1.26", {
     "Rector avtomatik o'zgartirishlarni diff bilan ko'rib chiqing: semantik farqlar bo'lishi mumkin (masalan `match` strict).",
     "Kutubxona `php` talabi sizning versiyangizdan past bo'lsa `composer update` bloklaydi; `composer why-not`.",
     "Minor versiyada ham BC break bo'ladi: upgrade'ni test va staging'siz qilmang.",
-    "Dinamik property deprecation 9.0 da xatoga aylanadi: hozir to'g'rilang.",
     "Debian/Ubuntu paketi upstream EOL bo'lgan versiyani o'zi qo'llab-quvvatlashi mumkin, lekin bu keng ekosistemada qo'llab-quvvatlanishni kafolatlamaydi.",
     "`composer.json` da `php` talabi va `platform` konfiguratsiyasi bo'yicha noto'g'ri versiya kutubxonalarni tanlatib qo'yadi."
   ]

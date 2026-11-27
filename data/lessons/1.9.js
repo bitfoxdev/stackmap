@@ -142,7 +142,6 @@ registerLesson("1.9", {
     "Closure `$this` ni ushlab oladi: uzoq yashovchi closure obyektni xotirada ushlab turadi. Kerak bo'lmasa `static fn`.",
     "Closure'ni `serialize`/cache'ga yozib bo'lmaydi (`Serialization of 'Closure' is not allowed`).",
     "`usort` comparator qaytishi: `bool` emas, `int` (`<=>`). `fn($a,$b) => $a > $b` PHP 8 da ogohlantirish beradi.",
-    "Metod ichida closure `$this` ni ushlaydi va obyektni xotirada uzoq saqlab qolishi mumkin: kerak bo'lmasa `static fn`.",
     "`use ($x)` yaratilish paytidagi qiymatni oladi; loop ichida closure'lar yaratsangiz har biri o'z qiymatini ushlaydi (reference emas).",
     "Statik closure'ni `bind` qilish Warning beradi va ishlamaydi.",
     "Callback ichida exception tashlansa u `array_map` chaqirgan joydan chiqadi: stack trace'da ichki chaqiruv ko'rinadi."

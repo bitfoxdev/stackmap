@@ -129,7 +129,6 @@ registerLesson("1.38", {
     "Persistent ulanishlar uzilishi mumkin: uzoq jarayonda qayta ulanish mantig'i kerak.",
     "Octane'da `static` va singleton'da request ma'lumoti saqlash — foydalanuvchilar o'rtasida sizish.",
     "Worker xotirasi to'planadi: `--max-requests` va monitoring.",
-    "`exit/die` Octane worker'ni to'xtatadi.",
-    "Deploydan keyin worker restart qilinmasa eski kod ishlaydi."
+    "`exit/die` Octane worker'ni to'xtatadi."
   ]
 });

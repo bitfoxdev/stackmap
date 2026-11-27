@@ -145,7 +145,6 @@ registerLesson("1.7", {
     "Bazada enum `value`ini o'zgartirsangiz, eski yozuvlar `ValueError` beradi; migratsiyada ma'lumotni yangilang.",
     "Enum'ni massiv kaliti qilib bo'lmaydi (`TypeError: Illegal offset type`): `->value` ishlating.",
     "Pure enum `json_encode` qilinmaydi: backed qiling yoki `JsonSerializable`/resource orqali.",
-    "DB `ENUM` ustuniga yangi case qo'shish migratsiya talab qiladi; string+cast osonroq.",
-    "Enum'da property saqlab bo'lmaydi: holat kerak bo'lsa alohida obyekt."
+    "DB `ENUM` ustuniga yangi case qo'shish migratsiya talab qiladi; string+cast osonroq."
   ]
 });

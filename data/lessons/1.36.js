@@ -130,7 +130,6 @@ registerLesson("1.36", {
     "`memory_get_usage()` natijasi allocator bloklari tufayli aniq emas; xotirani o'lchaganda qiymatlarni bir necha marta olib solishtiring.",
     "Funksiya ichida massivni o'zgartirish katta massivda to'liq nusxa yaratadi.",
     "Reference qolgan massiv elementi nusxalashda umumiy bo'lib qoladi.",
-    "Million kichik obyekt xotirani to'ldiradi: massiv yoki `SplFixedArray`.",
-    "`memory_get_usage()` CoW'ni ko'rsatadi, lekin allocator bloklari tufayli aniq emas."
+    "Million kichik obyekt xotirani to'ldiradi: massiv yoki `SplFixedArray`."
   ]
 });

@@ -35,7 +35,7 @@ registerLesson("1.6", {
     "",
     "### Intersection tafsiloti",
     "- Faqat klass/interface nomlari; `A&B` hamma shartni qanoatlantiruvchi obyekt.",
-    "- Default qiymat faqat `null` mumkin emas (8.1 da `A&B $x = null` ruxsat yo'q).",
+    "- Intersection tipli parametrga default `null` berib bo'lmaydi (`A&B $x = null` xato): DNF `(A&B)|null` (8.2) ishlating.",
     "- Foydali: `Iterator&Countable`, `Stringable&JsonSerializable`.",
     "- DNF (8.2): `(A&B)|null` — qavs shart.",
     "",

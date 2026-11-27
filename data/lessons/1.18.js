@@ -123,8 +123,6 @@ registerLesson("1.18", {
     "`newInstanceWithoutConstructor()` invariantlarni chetlab o'tadi: obyekt yaroqsiz holatda bo'lishi mumkin.",
     "Union/intersection tiplar uchun `getType()` `ReflectionNamedType` emas: `instanceof` bilan tekshiring.",
     "Reflection natijalarini keshlamasangiz, har so'rovda sekinlik: framework keshlaydi, o'zingizniki ham keshlang.",
-    "Dinamik klass nomini foydalanuvchidan olish ixtiyoriy klassni yuklash: oq ro'yxat.",
-    "Union tip uchun `getType()` `ReflectionNamedType` emas: `getTypes()`.",
-    "`newInstanceWithoutConstructor()` invariantlarni chetlab o'tadi."
+    "Dinamik klass nomini foydalanuvchidan olish ixtiyoriy klassni yuklash: oq ro'yxat."
   ]
 });

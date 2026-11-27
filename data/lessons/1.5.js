@@ -117,6 +117,6 @@ registerLesson("1.5", {
     "PHP ichki funksiyasi (`array_map`, `usort`) sizning callback'ingizni chaqirganda argumentlar har doim yumshoq rejimda o'giriladi, chunki chaqiruvchi ichki kod. Callback ichida o'z tipingizni alohida tekshiring.",
     "Strict rejim return uchun funksiya e'lon qilingan faylga bog'liq: argument va return qoidalari turli fayllardan bo'lishi mumkin.",
     "Eloquent atributlari va PDO natijalari qiymatni satr qilib berishi mumkin: strict kodda `TypeError`. `$casts` ishlating.",
-    "`declare(strict_types=1)` dan oldin hatto bo'sh qator ham bo'lishi mumkin emas (HTML tashqarisida)."
+    "`<?php` dan oldin hech narsa (hatto bo'sh qator ham) bo'lmasin: u HTML sifatida chiqadi va `declare` birinchi ifoda bo'lmay qoladi (fatal xato)."
   ]
 });

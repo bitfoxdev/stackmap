@@ -50,7 +50,7 @@ registerLesson("1.32", {
     "- Bir parametrga ikki marta qiymat berish — `Error`.",
     "",
     "### Operatorlar",
-    "`**`, `**=`, `<=>`, `??`, `??=`, `?->`, `instanceof`, `clone`, `new`, `print`, `@`, backtick (shell: xavfli, 8.5 da deprecated), `xor`. Ustuvorlik jadvali php.net \"Operator Precedence\": `!` > `instanceof` > ... > `??` > `?:` > `=` > `and` > `xor` > `or`.",
+    "`**`, `**=`, `<=>`, `??`, `??=`, `?->`, `instanceof`, `clone`, `new`, `print`, `@`, backtick (shell: xavfli, 8.5 da deprecated), `xor`. Ustuvorlik jadvali php.net \"Operator Precedence\": `clone`/`new` > `**` > unary va cast (`++ -- ~ (int) @`) > `instanceof` > `!` > `* / %` > ... > `??` > `?:` > `=` > `and` > `xor` > `or`.",
     "",
     "### Xavfsiz sintaksis qoidalari",
     "1. `==` o'rniga `===`.",
