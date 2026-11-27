@@ -12,7 +12,7 @@ One person: the owner, a PHP/Laravel developer growing from Middle Strong toward
 
 ## Product Purpose
 
-Laravel Skill Map is a personal learning map and interview trainer in one place, with both jobs weighted equally:
+Stack Map is a personal learning map and interview trainer in one place, with both jobs weighted equally:
 
 - **Knowledge map with progress:** 85 skills and 1597 subskills in 16 groups (Category → Skill → Subskill), each with a description, priority, expected level, a practical task, acceptance criteria and prerequisites. Progress is marked per subskill.
 - **Interview practice:** a bank of interview questions and quiz tests filtered by topic and level (Junior / Middle / Senior), plus a mock simulator and bookmarks.
@@ -27,20 +27,20 @@ A Senior Laravel roadmap written in Uzbek (Latin script) for one learner. Each s
 
 - Opened directly in the browser as `index.html` over `file://`, with no server and no build step.
 - Content is often filled in by an LLM (Flash model) one skill file at a time, following `FLASH.md`.
-- Source of truth for the taxonomy: `tz.txt`. Structure summary: `scratch_analysis_result.txt`.
+- Source of truth for the taxonomy: `tz.txt`. Structure summary: `scratch_analysis_result.txt`. Data checks: `node tools/validate.js`. Printable cheat sheet: `node tools/build-cheatsheet.js` (see `README.md`).
 
 ## Capabilities and Constraints
 
 - Must work without a server or build; plain HTML/CSS/JS (`assets/css/app.css`, `assets/js/app.js`).
 - Content lives in `data/skills/NN-slug.js` files using `registerSkill({...})`. Groups and file order come from `data/manifest.js`. Interview data is in `data/interview-questions.js` and `data/interview-tests.js`. The file format, `id`, `slug`, `title`, `group` and subskill order must not change.
-- Progress is stored locally: localStorage, plus an optional linked JSON file (`data/progress.json`) with export and reset. No accounts, no backend.
+- Progress is stored locally: localStorage, plus an optional linked JSON file (`data/progress.json`) with export and reset. No backend. Optional local accounts (email + password, PBKDF2) live in the browser's IndexedDB; they only separate progress per user on one machine and are not server-side authentication.
 - Supported Markdown in content: paragraphs, `###` headings, lists, fenced code (php/sql/bash highlighted), simple tables, blockquotes.
 - If a skill file is broken, the home page shows a red warning that names the file and line.
 - Existing UI features: sidebar of skills, search (Ctrl+K), light/dark theme toggle, a "more" menu (link file, unlink, export, reset).
 
 ## Brand Commitments
 
-- Name: "Laravel Skill Map".
+- Name: "Stack Map" (earlier working name: "Laravel Skill Map").
 - Language: Uzbek (Latin script) for interface and content; technical terms stay in English.
 
 ## Evidence on Hand

@@ -1,6 +1,6 @@
 Jami guruhlar soni: 16
 Jami skill fayllar soni: 85
-Jami subskilllar soni: 1555
+Jami subskilllar soni: 1597
 
 [*] PHP va Laravel (php-laravel) -- 5 ta skill:
     - [01] PHP (26 ta subskill)
