@@ -7708,5 +7708,155 @@ window.INTERVIEW_QUESTIONS = [
       "Qo'shimcha: kanal xatosini `NotificationFailed` hodisasi bilan kuzating, retry'da xabar ikki marta ketmasligi uchun idempotentlikni o'ylang."
     ],
     "tip": "Event/listener va Mail uchun ham xuddi shu `afterCommit` qoidasi amal qilishini ayting."
+  },
+  {
+    "id": "iq-331",
+    "title": "Dependency Injection va Service Locator farqi nima? Laravel'da qaysi biri afzal?",
+    "level": "middle",
+    "category": "laravel",
+    "categoryLabel": "Laravel",
+    "skillSlug": "laravel",
+    "subskillId": "2.8",
+    "answer": [
+      "**DI** — klass bog'liqliklarini constructor (yoki method) orqali **tashqaridan** oladi, ular ochiq ko'rinadi va almashtirish/mock oson. **Service Locator** — klass ichidan `app(Foo::class)` kabi o'zi so'raydi: bog'liqlik yashirin, testlash qiyin.",
+      "",
+      "Laravel container constructor/method injection'ni avtomatik beradi, shuning uchun biznes kodda constructor injection afzal; `app()`/`resolve()` faqat chekkada (provider, buyruq, closure route). Interfeysga bog'lanish chegarada (to'lov, SMS, storage). 5-7+ parametrli constructor — SRP buzilishi belgisi."
+    ],
+    "tip": "Facade ham yashirin bog'liqlik ekanini va framework servislari uchun qabul qilinganini ayting."
+  },
+  {
+    "id": "iq-332",
+    "title": "`$request->all()` ni `Model::create()` ga berish nega xavfli? To'g'ri yo'li qanday?",
+    "level": "junior",
+    "category": "laravel",
+    "categoryLabel": "Laravel",
+    "skillSlug": "laravel",
+    "subskillId": "2.11",
+    "answer": [
+      "`all()` foydalanuvchi yuborgan **hamma** maydonlarni qaytaradi: `is_admin`, `role` kabi mass assignment orqali yoziladi. To'g'ri yo'l: validatsiya qilib `$request->validated()` (yoki `safe()->only([...])`) berish; model'da `$fillable` ni aniq belgilash.",
+      "",
+      "Kirish ma'lumoti har doim ishonchsiz: `getClientOriginalName()`, MIME ham mijozdan keladi. JSON mijoz `Accept: application/json` yubormasa validatsiya xatosi 422 emas, redirect bo'ladi."
+    ],
+    "tip": "Open redirect (`redirect($request->input('next'))`) xavfini ham eslang."
+  },
+  {
+    "id": "iq-333",
+    "title": "IDOR nima va Laravel'da undan qanday himoyalanasiz?",
+    "level": "middle",
+    "category": "laravel",
+    "categoryLabel": "Laravel",
+    "skillSlug": "laravel",
+    "subskillId": "2.14",
+    "answer": [
+      "IDOR — `/orders/123` ni `/orders/124` ga almashtirib begona resursni ochish. Himoya: (1) policy/ownership tekshiruvi (`Gate::authorize('view', $order)`), (2) scoped route binding (ichma-ich resursda `scopeBindings`), (3) ro'yxatda query'ni cheklash (`whereBelongsTo($user)` yoki global scope).",
+      "",
+      "UUID/ULID xavfsizlik emas, faqat qo'shimcha qatlam. 403 o'rniga 404 (`Response::denyAsNotFound()`) resurs mavjudligini yashiradi. Frontend'da `@can` faqat UX: server tomonida tekshiruv shart."
+    ],
+    "tip": "Avtorizatsiya testlarini (ega / begona / admin / guest) yozishni ayting."
+  },
+  {
+    "id": "iq-334",
+    "title": "Production'da Laravel logging qanday sozlanadi? Nimani loglamaslik kerak?",
+    "level": "middle",
+    "category": "laravel",
+    "categoryLabel": "Laravel",
+    "skillSlug": "laravel",
+    "subskillId": "2.17",
+    "answer": [
+      "Konteynerda `stderr` kanal + **JSON** formatter (log yig'uvchi oladi), yoki `daily` (`days` bilan). `stack` bir nechta kanalni birlashtiradi. `LOG_LEVEL=info`/`warning`, `debug` faqat vaqtincha.",
+      "",
+      "Kontekst: `Log::shareContext(['request_id' => ...])` yoki `Context::add()` — log va queue job'larga avtomatik uzatiladi, bitta so'rovni kuzatish uchun. **Loglamang**: parol, token, karta, `$request->all()`. `Log::error($e)` — stack trace uchun exception obyektini bering."
+    ],
+    "tip": "Alohida kanal (billing/audit) va korrelyatsiya ID'ni ayting."
+  },
+  {
+    "id": "iq-335",
+    "title": "Laravel'da ko'p tillilik qanday ishlaydi? `trans_choice` nima uchun kerak?",
+    "level": "junior",
+    "category": "laravel",
+    "categoryLabel": "Laravel",
+    "skillSlug": "laravel",
+    "subskillId": "2.23",
+    "answer": [
+      "Tarjimalar `lang/` da (Laravel 11+ da `lang:publish`): `lang/uz.json` (satr kalit) yoki `lang/uz/messages.php` (guruhli). Ishlatish: `__('Salom, :name', ['name' => $n])`. Til tanlash: middleware'da foydalanuvchi sozlamasi → `Accept-Language` → default, ruxsat etilgan ro'yxatdan (whitelist) `App::setLocale()`.",
+      "",
+      "`trans_choice` ko'plik shakllari uchun (`{0} yo'q|{1} 1 ta|[2,*] :count ta`): rus/o'zbek tilida ko'plik qoidalari murakkab. Queue/Mail'da request tili yo'q: `->locale()` yoki `HasLocalePreference`."
+    ],
+    "tip": "`fallback_locale` va `Carbon::setLocale` ni ham eslating."
+  },
+  {
+    "id": "iq-336",
+    "title": "API Resource nima uchun kerak va resurs ichida N+1 ni qanday oldini olasiz?",
+    "level": "middle",
+    "category": "laravel",
+    "categoryLabel": "Laravel",
+    "skillSlug": "laravel",
+    "subskillId": "2.25",
+    "answer": [
+      "Resource — modelni JSON'ga o'tkazuvchi qatlam: API shartnomasi DB sxemasidan mustaqil bo'ladi, maxfiy maydonlar allowlist bilan chiqadi, versiyalash mumkin.",
+      "",
+      "N+1: munosabatni `new UserResource($this->whenLoaded('author'))` bilan faqat **oldindan yuklangan** bo'lsa qo'shing, yuklashni controller'da `with()`/`withCount()` bilan qiling (`whenCounted`). Resurs ichida DB so'rovi yo'q. Test: `DB::getQueryLog()` bilan so'rovlar soni elementlar soniga bog'liq emasligini tekshiring."
+    ],
+    "tip": "`paginate` natijasi `data/links/meta` bilan avtomatik qaytishini ham ayting."
+  },
+  {
+    "id": "iq-337",
+    "title": "Laravel paketini qanday yaratasiz va foydalanuvchi loyihasiga qanday ulanadi?",
+    "level": "senior",
+    "category": "laravel",
+    "categoryLabel": "Laravel",
+    "skillSlug": "laravel",
+    "subskillId": "2.26",
+    "answer": [
+      "`composer.json` da `extra.laravel.providers` (auto-discovery) bilan Service Provider ko'rsatiladi. Provider: `register()` da `mergeConfigFrom` va binding, `boot()` da `loadMigrationsFrom`, `loadRoutesFrom`, `loadViewsFrom`, `publishes` (config/migration nashri), buyruqlar `runningInConsole()` da.",
+      "",
+      "Versiya: `illuminate/support` constraint'ni faqat sinalgan major'larga (`^11|^12|^13`) bering, CI'da PHP × Laravel matritsasi, test uchun Orchestra Testbench. Paketda `env()` chaqirmang (config:cache), nom/prefikslarni to'qnashmaydigan qiling."
+    ],
+    "tip": "`spatie/laravel-package-tools` yordamchisini eslating."
+  },
+  {
+    "id": "iq-338",
+    "title": "Blade anonim va klass-asoslangan komponent farqi nima? `$attributes->merge()` nima qiladi?",
+    "level": "middle",
+    "category": "laravel",
+    "categoryLabel": "Laravel",
+    "skillSlug": "laravel",
+    "subskillId": "2.34",
+    "answer": [
+      "**Anonim** komponent — faqat `resources/views/components/*.blade.php` (props `@props`), mantiq kerak bo'lmasa yetarli. **Klass-asoslangan** — `app/View/Components` + shablon: murakkab mantiq va DI kerak bo'lganda.",
+      "",
+      "`$attributes->merge(['class' => 'btn'])` tashqaridan berilgan atributlarni (class, id, wire:...) komponent ichidagi default'lar bilan birlashtiradi; `$attributes` ni chiqarmasangiz tashqi atributlar yo'qoladi. Nomli slot: `<x-slot:title>`. Layout ham komponent bo'lishi mumkin (`<x-layouts.app>` + `{{ $slot }}`)."
+    ],
+    "tip": "Vite: dev'da `public/hot`, production'da `npm run build` va `@vite` ni ham ayting."
+  },
+  {
+    "id": "iq-339",
+    "title": "Hash va Crypt farqi nima? Imzolangan URL nima uchun kerak?",
+    "level": "middle",
+    "category": "laravel",
+    "categoryLabel": "Laravel",
+    "skillSlug": "laravel",
+    "subskillId": "2.39",
+    "answer": [
+      "**Hash** — bir tomonlama, parol uchun (`Hash::make/check`, bcrypt/argon2id, `needsRehash`). **Crypt** — ikki tomonlama shifrlash `APP_KEY` bilan, qaytarib o'qiladigan sir uchun (`encrypted` cast); shifrlangan ustun bo'yicha qidirib bo'lmaydi. Parolni hech qachon shifrlamang.",
+      "",
+      "**Imzolangan URL** (`URL::temporarySignedRoute` + `signed` middleware) havola o'zgartirilmaganini va muddati o'tmaganini tekshiradi: email tasdiqlash, obuna bekor qilish. Kalit almashtirishda `APP_PREVIOUS_KEYS`; `APP_KEY` yo'qolsa shifrlangan ma'lumot va imzolar yaroqsiz."
+    ],
+    "tip": "Imzolangan havola kimga tushsa o'sha ishlatishini ayting."
+  },
+  {
+    "id": "iq-340",
+    "title": "`Sleep::fake()` va `retry()` nima uchun ishlatiladi?",
+    "level": "junior",
+    "category": "laravel",
+    "categoryLabel": "Laravel",
+    "skillSlug": "laravel",
+    "subskillId": "2.40",
+    "answer": [
+      "`Sleep::for(...)` kutishni abstraksiya qiladi: testda `Sleep::fake()` haqiqiy kutmaydi va `assertSlept` bilan tekshiriladi, shuning uchun test tez ishlaydi (`sleep()` o'rniga).",
+      "",
+      "`retry($times, fn, $sleepMs)` beqaror chaqiruvni qayta uradi, lekin **faqat idempotent** amalga (to'lov/email emas). Xatoni jimgina yutish uchun `rescue()` ishlatiladi: u xatoni report qiladi va default qaytaradi."
+    ],
+    "tip": "`Str`/`Arr`/`Number` yordamchilarini o'zingiz qayta yozmaslikni ayting."
   }
 ];

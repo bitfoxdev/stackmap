@@ -144,6 +144,25 @@ registerSkill({
       ]
     },
     {
+      "id": "2.40",
+      "title": "Laravel yordamchilari: Str, Arr, Number, Sleep, Uri",
+      "description": [
+        "Laravel o'zining yordamchi klass va funksiyalarini beradi: `Str` va `str()` (fluent matn), `Arr` va `data_get`, `Number` (format/valyuta/fayl hajmi), `Sleep` (testda tezlashadigan kutish), `Uri`, `retry`, `rescue`, `tap`, `Lottery`, `Benchmark`. Ularni bilish kodni qisqartiradi va ko'p \"o'z yordamchi funksiya\" yozishdan saqlaydi. Kolleksiyalar alohida (Eloquent bo'limi)."
+      ],
+      "priority": "important",
+      "level": "Junior",
+      "practicalTask": "Slug/mask/limit uchun `str()` fluent zanjirini ishlating, ichma-ich massivdan `data_get` bilan xavfsiz qiymat oling, `Number::currency` va `Number::fileSize` bilan formatlang, `retry()` bilan beqaror chaqiruvni qayta uring va `Sleep::fake()` bilan testda kutishni o'tkazib yuboring.",
+      "acceptanceCriteria": [
+        "`Str`/`str()`, `Arr`, `data_get/data_set` ni ishlata oladi",
+        "`Number::format/currency/fileSize` va `intl` talabini biladi",
+        "`retry`, `rescue`, `tap`, `Sleep` (va `Sleep::fake`) ni biladi",
+        "Yordamchi kodni o'zi qayta yozmaslik tamoyilini biladi"
+      ],
+      "prerequisites": [
+        "1.4"
+      ]
+    },
+    {
       "id": "2.12",
       "title": "Validation",
       "description": [
@@ -240,6 +259,26 @@ registerSkill({
         "2.4",
         "20.2",
         "51.14"
+      ]
+    },
+    {
+      "id": "2.39",
+      "title": "Hashing, Encryption va Signed URL",
+      "description": [
+        "Uch xavfsizlik vositasi: **Hash** (bir tomonlama, parollar uchun: bcrypt/argon2id), **Crypt** (ikki tomonlama shifrlash, `APP_KEY` bilan) va **imzolangan URL** (havola o'zgartirilmaganini va muddati o'tmaganini tekshiradi). Farqini bilish muhim: parolni hech qachon shifrlamaysiz (hash), qaytarib o'qish kerak bo'lgan sirni shifrlaysiz, ochiq havolani esa imzolaysiz."
+      ],
+      "priority": "core",
+      "level": "Middle",
+      "practicalTask": "Parolni `Hash::make` / `Hash::check` / `needsRehash` bilan boshqaring, `encrypted` cast bilan API tokenni DB'da shifrlab saqlang, email tasdiqlash uchun `URL::temporarySignedRoute` yarating va `signed` middleware bilan himoyalang; `APP_PREVIOUS_KEYS` bilan kalit almashtirishni tushuntiring.",
+      "acceptanceCriteria": [
+        "Hash va Crypt farqini (qachon qaysi biri) biladi",
+        "`Hash::check`, `needsRehash`, driver (bcrypt/argon2id) va `rounds` ni biladi",
+        "`encrypted` cast, `Crypt::encryptString` va `APP_KEY` ahamiyatini biladi",
+        "`signedRoute`, `temporarySignedRoute`, `signed` middleware va `hasValidSignature` ni biladi"
+      ],
+      "prerequisites": [
+        "2.10",
+        "2.3"
       ]
     },
     {

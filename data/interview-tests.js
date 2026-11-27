@@ -6208,5 +6208,324 @@ window.INTERVIEW_TESTS = [
     "correct": "B",
     "explanation": "`afterCommit` job'ni commit'dan keyin yuboradi.",
     "level": "middle"
+  },
+  {
+    "id": "t-lar-43",
+    "category": "laravel",
+    "categoryLabel": "Laravel asoslari",
+    "skillSlug": "laravel",
+    "subskillId": "2.8",
+    "question": "Qaysi biri Service Locator anti-pattern'iga misol?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Constructor'da `PaymentGateway $gw` type-hint qilish"
+      },
+      {
+        "key": "B",
+        "text": "Metod ichida `app(PaymentGateway::class)` chaqirish"
+      },
+      {
+        "key": "C",
+        "text": "Controller metodiga `Request` type-hint qilish"
+      },
+      {
+        "key": "D",
+        "text": "Interfeysni provider'da bind qilish"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Service Locator — klass ichidan container'dan o'zi so'rashi: bog'liqlik yashirin va testlash qiyin. Qolganlari DI.",
+    "level": "junior"
+  },
+  {
+    "id": "t-lar-44",
+    "category": "laravel",
+    "categoryLabel": "Laravel asoslari",
+    "skillSlug": "laravel",
+    "subskillId": "2.11",
+    "question": "`Model::create($request->all())` ning asosiy xavfi nima?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Sekin ishlaydi"
+      },
+      {
+        "key": "B",
+        "text": "Mass assignment: foydalanuvchi `is_admin` kabi ruxsatsiz maydonni yozishi mumkin"
+      },
+      {
+        "key": "C",
+        "text": "JSON qaytarmaydi"
+      },
+      {
+        "key": "D",
+        "text": "Tranzaksiya ochilmaydi"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Hamma kirish maydonlari modelga yoziladi. `validated()` va aniq `$fillable` ishlating.",
+    "level": "junior"
+  },
+  {
+    "id": "t-lar-45",
+    "category": "laravel",
+    "categoryLabel": "Laravel asoslari",
+    "skillSlug": "laravel",
+    "subskillId": "2.14",
+    "question": "`/orders/123` ni `/orders/124` ga almashtirib begona buyurtmani ochish qaysi zaiflik?",
+    "options": [
+      {
+        "key": "A",
+        "text": "XSS"
+      },
+      {
+        "key": "B",
+        "text": "CSRF"
+      },
+      {
+        "key": "C",
+        "text": "IDOR"
+      },
+      {
+        "key": "D",
+        "text": "SQL injection"
+      }
+    ],
+    "correct": "C",
+    "explanation": "IDOR — resurs identifikatorini o'zgartirib begona obyektga kirish; policy/ownership va scoped binding bilan oldi olinadi.",
+    "level": "middle"
+  },
+  {
+    "id": "t-lar-46",
+    "category": "laravel",
+    "categoryLabel": "Laravel asoslari",
+    "skillSlug": "laravel",
+    "subskillId": "2.17",
+    "question": "Konteynerda Laravel loglarini yig'uvchiga uzatishning eng mos usuli qaysi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`single` kanal, faylga yozish"
+      },
+      {
+        "key": "B",
+        "text": "`stderr` kanal + JSON formatter"
+      },
+      {
+        "key": "C",
+        "text": "`null` kanal"
+      },
+      {
+        "key": "D",
+        "text": "Loglarni DB'ga yozish"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Konteyner o'chsa fayl log yo'qoladi; stderr + JSON log yig'uvchi (ELK/Loki) tomonidan olinadi.",
+    "level": "middle"
+  },
+  {
+    "id": "t-lar-47",
+    "category": "laravel",
+    "categoryLabel": "Laravel asoslari",
+    "skillSlug": "laravel",
+    "subskillId": "2.23",
+    "question": "`lang/uz.json` kabi JSON tarjima faylida kalit nima?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Faqat nuqtali guruh kalit (`messages.welcome`)"
+      },
+      {
+        "key": "B",
+        "text": "Matnning o'zi (masalan, 'Welcome')"
+      },
+      {
+        "key": "C",
+        "text": "Fayl nomi"
+      },
+      {
+        "key": "D",
+        "text": "Route nomi"
+      }
+    ],
+    "correct": "B",
+    "explanation": "JSON tarjimada satrning o'zi kalit bo'ladi: `__('Welcome')`. Guruhli kalit PHP massiv fayllar uchun.",
+    "level": "junior"
+  },
+  {
+    "id": "t-lar-48",
+    "category": "laravel",
+    "categoryLabel": "Laravel asoslari",
+    "skillSlug": "laravel",
+    "subskillId": "2.25",
+    "question": "Resurs ichida munosabatni N+1 siz qo'shishning to'g'ri usuli qaysi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`'author' => $this->author`"
+      },
+      {
+        "key": "B",
+        "text": "`'author' => new UserResource($this->whenLoaded('author'))` va controller'da `with('author')`"
+      },
+      {
+        "key": "C",
+        "text": "Resurs ichida `User::find($this->user_id)`"
+      },
+      {
+        "key": "D",
+        "text": "`$this->author()->first()`"
+      }
+    ],
+    "correct": "B",
+    "explanation": "`whenLoaded` faqat oldindan yuklangan munosabatni qo'shadi va lazy load qilmaydi; yuklash controller'da.",
+    "level": "middle"
+  },
+  {
+    "id": "t-lar-49",
+    "category": "laravel",
+    "categoryLabel": "Laravel asoslari",
+    "skillSlug": "laravel",
+    "subskillId": "2.26",
+    "question": "Paket foydalanuvchi loyihasiga `composer require` dan keyin avtomatik ulanishi uchun nima kerak?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`bootstrap/providers.php` ni qo'lda tahrirlash shart"
+      },
+      {
+        "key": "B",
+        "text": "`composer.json` dagi `extra.laravel.providers` (auto-discovery)"
+      },
+      {
+        "key": "C",
+        "text": "Faqat Facade"
+      },
+      {
+        "key": "D",
+        "text": "`config/app.php` ga aliases"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Package auto-discovery provider'ni o'zi ro'yxatga oladi.",
+    "level": "senior"
+  },
+  {
+    "id": "t-lar-50",
+    "category": "laravel",
+    "categoryLabel": "Laravel asoslari",
+    "skillSlug": "laravel",
+    "subskillId": "2.34",
+    "question": "Komponentda tashqaridan berilgan `class`/`id` atributlari yo'qolmasligi uchun nima qilinadi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`@props(['class'])` yozish"
+      },
+      {
+        "key": "B",
+        "text": "Komponent ildiz elementida `{{ $attributes->merge([...]) }}` chiqarish"
+      },
+      {
+        "key": "C",
+        "text": "`@include` ishlatish"
+      },
+      {
+        "key": "D",
+        "text": "`@stack` ishlatish"
+      }
+    ],
+    "correct": "B",
+    "explanation": "`$attributes` chiqarilmasa tashqi atributlar yo'qoladi; `merge` ularni default'lar bilan birlashtiradi.",
+    "level": "middle"
+  },
+  {
+    "id": "t-lar-51",
+    "category": "laravel",
+    "categoryLabel": "Laravel asoslari",
+    "skillSlug": "laravel",
+    "subskillId": "2.39",
+    "question": "Foydalanuvchi parolini DB'da saqlashning to'g'ri usuli qaysi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`Crypt::encryptString`"
+      },
+      {
+        "key": "B",
+        "text": "`Hash::make` (yoki `hashed` cast)"
+      },
+      {
+        "key": "C",
+        "text": "`md5`"
+      },
+      {
+        "key": "D",
+        "text": "Ochiq matn"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Parol bir tomonlama hash qilinadi; Crypt qaytarib o'qiladi, md5 zaif.",
+    "level": "middle"
+  },
+  {
+    "id": "t-lar-52",
+    "category": "laravel",
+    "categoryLabel": "Laravel asoslari",
+    "skillSlug": "laravel",
+    "subskillId": "2.39",
+    "question": "`signed` middleware nimani tekshiradi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Foydalanuvchi login qilganini"
+      },
+      {
+        "key": "B",
+        "text": "URL imzosi o'zgartirilmaganini va (vaqtinchalik bo'lsa) muddati o'tmaganini"
+      },
+      {
+        "key": "C",
+        "text": "CSRF token'ni"
+      },
+      {
+        "key": "D",
+        "text": "IP manzilni"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Imzo `APP_KEY` bilan hisoblanadi; mos kelmasa 403.",
+    "level": "middle"
+  },
+  {
+    "id": "t-lar-53",
+    "category": "laravel",
+    "categoryLabel": "Laravel asoslari",
+    "skillSlug": "laravel",
+    "subskillId": "2.40",
+    "question": "Testda kutishni (sleep) tezlashtirish uchun nima ishlatiladi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`usleep(0)`"
+      },
+      {
+        "key": "B",
+        "text": "`Sleep::fake()`"
+      },
+      {
+        "key": "C",
+        "text": "`set_time_limit`"
+      },
+      {
+        "key": "D",
+        "text": "`Queue::fake()`"
+      }
+    ],
+    "correct": "B",
+    "explanation": "`Sleep::fake()` haqiqiy kutmaydi va `assertSlept` bilan tekshirish mumkin.",
+    "level": "junior"
   }
 ];
