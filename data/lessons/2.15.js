@@ -74,7 +74,7 @@ registerLesson("2.15", {
       "note": "Controller, route, Blade, test",
       "code": [
         "Gate::authorize('update', $post);                       // controller",
-        "Route::put('/posts/{post}', ...)->middleware('can:update,post');",
+        "Route::put('/posts/{post}', [PostController::class, 'update'])->middleware('can:update,post');",
         "// Blade: @can('update', $post) <a href=\"...\">Tahrirlash</a> @endcan",
         "",
         "public function test_only_author_can_update(): void",

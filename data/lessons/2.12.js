@@ -43,7 +43,7 @@ registerLesson("2.12", {
       "note": "Massiv, shartli, unique ignore",
       "code": [
         "use Illuminate\\Validation\\Rule;",
-        "use Illuminate\\Validation\\Rules\\Password;",
+        "use Illuminate\\Validation\\Rules\\{File, Password};",
         "",
         "$data = $request->validate([",
         "    'email'            => ['required', 'email', Rule::unique('users', 'email')->ignore($request->user()->id)],",
