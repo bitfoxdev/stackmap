@@ -627,24 +627,6 @@
         ${roadmapHtml()}
       </section>
 
-      <section class="lp-section" aria-label="Dars namunasi">
-        <div class="lp-head lp-head-c"><h2>Dars ichida nima bor</h2><p>Tushuntirish, kod, tuzoqlar va holat paneli bir sahifada.</p></div>
-        <div class="lp-mock" aria-hidden="true">
-          <div class="lp-mock-bar"><i></i><i></i><i></i><span>Stack Map / PHP / 1.4 Type Juggling</span></div>
-          <div class="lp-mock-body">
-            <div class="lp-mock-main">
-              <div class="chips"><span class="chip mono">1.4</span><span class="chip important">Muhim</span><span class="chip level">Junior</span></div>
-              <h3>Type Juggling va Type Coercion</h3>
-              <p>PHP <code class="inline-code">==</code> solishtirishda qiymatlarni umumiy tipga keltiradi. PHP 8 da bu qoidalar o'zgargan...</p>
-              <pre class="lp-mock-code"><span class="k">var_dump</span>(0 == <span class="s">"admin"</span>);  <span class="c">// false (PHP 8)</span>
-<span class="k">var_dump</span>(<span class="s">"1e3"</span> == <span class="s">"1000"</span>); <span class="c">// true</span></pre>
-              <ul class="pitfalls"><li><code class="inline-code">in_array</code> strict parametrsiz loose ishlaydi.</li></ul>
-            </div>
-            <div class="lp-mock-rail"><b>Holat</b><span class="st-pill">Boshlanmagan</span><span class="st-pill on">O'rganilmoqda</span><span class="st-pill">Ishonchli</span></div>
-          </div>
-        </div>
-      </section>
-
       <section class="lp-section" id="lp-faq" aria-label="Savol-javob">
         <div class="lp-head lp-head-c"><h2>Savol-javob</h2></div>
         <div class="lp-faq">

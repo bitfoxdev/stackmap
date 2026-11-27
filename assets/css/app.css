@@ -1666,18 +1666,6 @@ a.stk-chip:hover { border-color: var(--accent); transform: translateY(-2px); }
 .lp-steps p, .lp-feats p { font-size: 14px; line-height: 1.55; color: var(--text-3); }
 .lp-step-n { position: absolute; top: var(--sp-4); right: var(--sp-5); font: 800 44px/1 var(--mono); color: var(--accent-soft); -webkit-text-stroke: 1px color-mix(in srgb, var(--accent) 40%, transparent); }
 
-.lp-mock { max-width: 920px; margin: 0 auto; border-radius: var(--r-lg); border: 1px solid var(--border-strong); background: var(--surface); overflow: hidden; box-shadow: 0 30px 80px -30px color-mix(in srgb, var(--accent) 35%, transparent); }
-.lp-mock-bar { display: flex; align-items: center; gap: 6px; padding: 10px 14px; border-bottom: 1px solid var(--border); background: var(--surface-2); }
-.lp-mock-bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--surface-3); }
-.lp-mock-bar span { margin-left: 10px; font: 500 12px var(--mono); color: var(--text-3); }
-.lp-mock-body { display: grid; grid-template-columns: minmax(0, 1fr) 190px; gap: var(--sp-5); padding: var(--sp-5); }
-.lp-mock-main { display: grid; gap: var(--sp-3); }
-.lp-mock-main h3 { font-size: 22px; font-weight: 700; letter-spacing: -.02em; }
-.lp-mock-main p { font-size: 14px; color: var(--text-2); }
-.lp-mock-code { margin: 0; padding: var(--sp-4); border-radius: var(--r); background: var(--bg); border: 1px solid var(--border); font: 13px/1.6 var(--mono); overflow-x: auto; color: var(--text-2); }
-.lp-mock-code .k { color: var(--accent-text); } .lp-mock-code .s { color: #FBBF24; } .lp-mock-code .c { color: var(--text-3); }
-.lp-mock-rail { display: grid; gap: 8px; align-content: start; padding: var(--sp-3); border-radius: var(--r); border: 1px solid var(--border); font-size: 12px; }
-.lp-mock-rail b { color: var(--text-3); text-transform: uppercase; letter-spacing: .06em; font-size: 11px; }
 .st-pill { padding: 6px 10px; border-radius: var(--r-sm); border: 1px solid var(--border); color: var(--text-3); }
 .st-pill.on { color: var(--accent-text); border-color: var(--accent); background: var(--accent-soft); }
 
