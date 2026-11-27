@@ -7858,5 +7858,170 @@ window.INTERVIEW_QUESTIONS = [
       "`retry($times, fn, $sleepMs)` beqaror chaqiruvni qayta uradi, lekin **faqat idempotent** amalga (to'lov/email emas). Xatoni jimgina yutish uchun `rescue()` ishlatiladi: u xatoni report qiladi va default qaytaradi."
     ],
     "tip": "`Str`/`Arr`/`Number` yordamchilarini o'zingiz qayta yozmaslikni ayting."
+  },
+  {
+    "id": "iq-341",
+    "title": "`composer.json` da `require`, `require-dev`, `autoload` va `config` nima uchun kerak? `composer validate --strict` nima qiladi?",
+    "level": "junior",
+    "category": "composer",
+    "categoryLabel": "Composer",
+    "skillSlug": "composer",
+    "subskillId": "7.1",
+    "answer": [
+      "`require` — production bog'liqliklari, `require-dev` — faqat dev/test, `autoload` — PSR-4/classmap xaritasi, `config` — Composer xatti-harakati (`allow-plugins`, `sort-packages`, `platform`).",
+      "",
+      "`composer validate --strict` fayl sintaksisi va sxemasini tekshiradi, `--strict` ogohlantirishlarni ham xato sanaydi (CI uchun). Lock'ning `composer.json` bilan sinxronligini ham ko'rsatadi."
+    ],
+    "tip": "Ilova (root) va kutubxona `composer.json` si farqini ayting: kutubxonada `version` yozilmaydi."
+  },
+  {
+    "id": "iq-342",
+    "title": "Direct va tranzitiv bog'liqlik farqi nima? Paket nega o'rnatilganini qanday aniqlaysiz?",
+    "level": "middle",
+    "category": "composer",
+    "categoryLabel": "Composer",
+    "skillSlug": "composer",
+    "subskillId": "7.3",
+    "answer": [
+      "**Direct** — o'zingiz `require` qilgan, **tranzitiv** — ularning bog'liqliklari. Tranzitiv paketlar ham zaiflik/konflikt manbai bo'lishi mumkin.",
+      "",
+      "`composer why vendor/pkg` kim talab qilganini, `why-not vendor/pkg 2.*` nima to'sganini, `composer outdated --direct` eskirganlarni ko'rsatadi."
+    ],
+    "tip": "Paket tanlash mezonlari: faollik, advisory, abandoned, litsenziya, tranzitiv og'irlik."
+  },
+  {
+    "id": "iq-343",
+    "title": "SemVer'da MAJOR.MINOR.PATCH nimani anglatadi va `0.x` versiyalarda nima o'zgaradi?",
+    "level": "junior",
+    "category": "composer",
+    "categoryLabel": "Composer",
+    "skillSlug": "composer",
+    "subskillId": "7.4",
+    "answer": [
+      "MAJOR — mos kelmaydigan o'zgarish, MINOR — orqaga mos yangi imkoniyat, PATCH — orqaga mos tuzatish.",
+      "",
+      "`0.x` da barqarorlik kafolati yo'q; Composer'da `^0.3` faqat `>=0.3.0 <0.4.0` ni beradi (minor major kabi ishlaydi). Pre-release tartibi: dev < alpha < beta < RC < stable."
+    ],
+    "tip": "Kutubxona mualliflari SemVer'ga amal qilmasligi mumkin: lock va testlar kerak."
+  },
+  {
+    "id": "iq-344",
+    "title": "PSR-4 autoload nima uchun 'Class not found' beradi? Productionda autoloaderni qanday tezlashtirasiz?",
+    "level": "middle",
+    "category": "composer",
+    "categoryLabel": "Composer",
+    "skillSlug": "composer",
+    "subskillId": "7.6",
+    "answer": [
+      "Namespace → papka xaritasi `composer.json` da, **fayl nomi klass nomi bilan harf registriga mos** bo'lishi kerak (Linux case-sensitive). `composer.json` `autoload` o'zgargach `composer dump-autoload` kerak.",
+      "",
+      "Production: `-o` (classmap), `-a` (`--classmap-authoritative`, diskka qaramaydi), `--apcu-autoloader`. `--strict-psr` PSR-4 buzilishlarni topadi (exit 1)."
+    ],
+    "tip": "Windows/Mac'da ishlab Linux'da yiqilgan holatni (registr) misol keltiring."
+  },
+  {
+    "id": "iq-345",
+    "title": "`composer install`, `update`, `require` va `remove` farqi nima?",
+    "level": "junior",
+    "category": "composer",
+    "categoryLabel": "Composer",
+    "skillSlug": "composer",
+    "subskillId": "7.7",
+    "answer": [
+      "`install` — lock bo'yicha o'rnatadi (lock yo'q bo'lsa resolve qilib yaratadi). `update` — constraint doirasida yangilab lock'ni qayta yozadi. `require` — `composer.json` ga qo'shib o'rnatadi. `remove` — olib tashlaydi.",
+      "",
+      "Aniq paket: `composer update vendor/pkg` (`-W` bog'liqliklari bilan). `--dry-run` oldindan ko'rsatadi. `reinstall` paketni qayta yuklaydi."
+    ],
+    "tip": "CI/production'da `update` emas, `install`."
+  },
+  {
+    "id": "iq-346",
+    "title": "Composer scripts qanday ishlaydi? `allow-plugins` nima uchun xavfsizlik chorasi?",
+    "level": "middle",
+    "category": "composer",
+    "categoryLabel": "Composer",
+    "skillSlug": "composer",
+    "subskillId": "7.9",
+    "answer": [
+      "Eventlar: `pre/post-install-cmd`, `post-update-cmd`, `post-autoload-dump` va h.k. **Faqat root** `composer.json` skriptlari ishlaydi; turlari: PHP callback, shell, `@php`, `@composer`, `@putenv`.",
+      "",
+      "Plaginlar o'rnatish vaqtida kod bajaradi; `config.allow-plugins` faqat ruxsat berilganlarni ishga tushiradi (default bo'sh). `--no-scripts/--no-plugins` ishonchsiz kontekstda."
+    ],
+    "tip": "Laravel'da `post-autoload-dump` → `package:discover`."
+  },
+  {
+    "id": "iq-347",
+    "title": "Private paketlarni Composer'da qanday ulaysiz? Dependency confusion nima?",
+    "level": "senior",
+    "category": "composer",
+    "categoryLabel": "Composer",
+    "skillSlug": "composer",
+    "subskillId": "7.10",
+    "answer": [
+      "`repositories`: `vcs` (private git), `path` (monorepo/lokal), `composer` (Satis/Private Packagist/Artifactory), `artifact`. Auth: `auth.json` yoki `COMPOSER_AUTH` (CI maxfiy env), repoga commit qilinmaydi.",
+      "",
+      "Dependency confusion: ichki nom ommaviy Packagist'da ham mavjud bo'lsa, noto'g'ri manba tanlanishi mumkin. Himoya: noyob vendor prefiksi, private repo'ni ustuvor qilish/Packagist'ni cheklash (Composer versiyasi docs'iga qarang), ommaviy nomni band qilish."
+    ],
+    "tip": "`auth.json`ni image/artefaktga qoldirmaslikni ayting."
+  },
+  {
+    "id": "iq-348",
+    "title": "Packagist kodni saqlaydimi? Paket qanday nashr qilinadi va yangi paketni tanlashda nimaga qaraysiz?",
+    "level": "middle",
+    "category": "composer",
+    "categoryLabel": "Composer",
+    "skillSlug": "composer",
+    "subskillId": "7.11",
+    "answer": [
+      "Packagist faqat **metadata** saqlaydi; kod VCS (GitHub) dan yuklanadi. Nashr: ommaviy repo + `name`li `composer.json` + git teg (SemVer) + webhook.",
+      "",
+      "Tanlash: oxirgi release, advisory, abandoned belgisi, faollik, tranzitiv bog'liqliklar, litsenziya. Typosquatting (`laravle/...`) xavfi: nomni tekshiring."
+    ],
+    "tip": "`version` maydonini `composer.json` ga yozmang, teg ishlating."
+  },
+  {
+    "id": "iq-349",
+    "title": "Reproducible build nima va Composer'da qanday ta'minlanadi?",
+    "level": "senior",
+    "category": "composer",
+    "categoryLabel": "Composer",
+    "skillSlug": "composer",
+    "subskillId": "7.14",
+    "answer": [
+      "Bir xil kirishdan (kod + lock) bir xil `vendor/`. Omillar: `composer.lock` commit va faqat `install`, qotirilgan Composer va PHP versiyasi, platform mosligi (`check-platform-reqs`).",
+      "",
+      "Tamoyil: artefakt **bir marta** CI'da quriladi (Docker image tegi — commit SHA) va staging → production'ga o'zgarishsiz ko'chiriladi; production'da `composer install` qilinmaydi."
+    ],
+    "tip": "Ikki build `vendor/` hash'ini solishtirishni ayting."
+  },
+  {
+    "id": "iq-350",
+    "title": "Production uchun Composer'ni qanday ishga tushirasiz?",
+    "level": "junior",
+    "category": "composer",
+    "categoryLabel": "Composer",
+    "skillSlug": "composer",
+    "subskillId": "7.15",
+    "answer": [
+      "`composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction` (yoki `-a`). `--no-dev` `require-dev` va `autoload-dev` ni chiqarib tashlaydi.",
+      "",
+      "Qo'shimcha: `check-platform-reqs`, `composer audit --no-dev --locked`, Laravel `artisan optimize`. Production'da `update` va root ostida ishlatmang."
+    ],
+    "tip": "`classmap-authoritative` da yangi klass qo'shsangiz qayta dump kerakligini ayting."
+  },
+  {
+    "id": "iq-351",
+    "title": "Bog'liqliklarni yangilash strategiyangiz qanday?",
+    "level": "senior",
+    "category": "composer",
+    "categoryLabel": "Composer",
+    "skillSlug": "composer",
+    "subskillId": "7.16",
+    "answer": [
+      "Kichik va muntazam: patch/minor guruhlab (Renovate/Dependabot PR), major alohida va rejali; har yangilashda testlar + `composer audit`. Yangilash alohida PR'da.",
+      "",
+      "Qo'shimcha: `outdated --direct --strict`, `update --dry-run`, `--minimal-changes`; yangi versiyani bir necha kun kutish (supply-chain himoyasi). `composer bump` ni kutubxonada ko'r-ko'rona ishlatmang."
+    ],
+    "tip": "Yillab yangilamaslik va hammasini birdan ko'tarishning xavfini ayting."
   }
 ];

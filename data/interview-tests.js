@@ -6527,5 +6527,324 @@ window.INTERVIEW_TESTS = [
     "correct": "B",
     "explanation": "`Sleep::fake()` haqiqiy kutmaydi va `assertSlept` bilan tekshirish mumkin.",
     "level": "junior"
+  },
+  {
+    "id": "t-cmp-4",
+    "category": "composer",
+    "categoryLabel": "Composer",
+    "skillSlug": "composer",
+    "subskillId": "7.1",
+    "question": "`composer validate --strict` nima qiladi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Paketlarni yangilaydi"
+      },
+      {
+        "key": "B",
+        "text": "`composer.json` ni tekshiradi, ogohlantirishlarni ham xato sanaydi"
+      },
+      {
+        "key": "C",
+        "text": "Lock'ni o'chiradi"
+      },
+      {
+        "key": "D",
+        "text": "Autoload'ni dump qiladi"
+      }
+    ],
+    "correct": "B",
+    "explanation": "`validate` fayl to'g'riligini tekshiradi; `--strict` ogohlantirishlarni ham xato sifatida qaytaradi.",
+    "level": "junior"
+  },
+  {
+    "id": "t-cmp-5",
+    "category": "composer",
+    "categoryLabel": "Composer",
+    "skillSlug": "composer",
+    "subskillId": "7.3",
+    "question": "Paket nima uchun o'rnatilganini qaysi buyruq ko'rsatadi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`composer why vendor/pkg`"
+      },
+      {
+        "key": "B",
+        "text": "`composer show -a`"
+      },
+      {
+        "key": "C",
+        "text": "`composer dump-autoload`"
+      },
+      {
+        "key": "D",
+        "text": "`composer clear-cache`"
+      }
+    ],
+    "correct": "A",
+    "explanation": "`why` (depends) shu paketga kim bog'liqligini ko'rsatadi.",
+    "level": "middle"
+  },
+  {
+    "id": "t-cmp-6",
+    "category": "composer",
+    "categoryLabel": "Composer",
+    "skillSlug": "composer",
+    "subskillId": "7.4",
+    "question": "Composer'da `^0.3.1` qaysi oraliqni bildiradi?",
+    "options": [
+      {
+        "key": "A",
+        "text": ">=0.3.1 <1.0.0"
+      },
+      {
+        "key": "B",
+        "text": ">=0.3.1 <0.4.0"
+      },
+      {
+        "key": "C",
+        "text": ">=0.3.1 <0.3.2"
+      },
+      {
+        "key": "D",
+        "text": "Faqat 0.3.1"
+      }
+    ],
+    "correct": "B",
+    "explanation": "`0.x` da caret minor'ni major kabi cheklaydi: `>=0.3.1 <0.4.0`.",
+    "level": "junior"
+  },
+  {
+    "id": "t-cmp-7",
+    "category": "composer",
+    "categoryLabel": "Composer",
+    "skillSlug": "composer",
+    "subskillId": "7.6",
+    "question": "Windows'da ishlab, Linux serverda 'Class not found' chiqishining tipik sababi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "PHP versiyasi"
+      },
+      {
+        "key": "B",
+        "text": "Fayl nomi va klass nomi registri mos emas"
+      },
+      {
+        "key": "C",
+        "text": "`vendor/` katta"
+      },
+      {
+        "key": "D",
+        "text": "Composer eski"
+      }
+    ],
+    "correct": "B",
+    "explanation": "PSR-4 da fayl nomi klass nomiga registr bilan mos bo'lishi kerak; Linux case-sensitive.",
+    "level": "middle"
+  },
+  {
+    "id": "t-cmp-8",
+    "category": "composer",
+    "categoryLabel": "Composer",
+    "skillSlug": "composer",
+    "subskillId": "7.7",
+    "question": "Lock'ga tegmasdan faqat bitta paketni yangilash qaysi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`composer update`"
+      },
+      {
+        "key": "B",
+        "text": "`composer update vendor/pkg`"
+      },
+      {
+        "key": "C",
+        "text": "`composer install`"
+      },
+      {
+        "key": "D",
+        "text": "`composer dump-autoload`"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Aniq paket nomi bilan `update` faqat uni (va kerakli bog'liqliklarini) yangilaydi.",
+    "level": "junior"
+  },
+  {
+    "id": "t-cmp-9",
+    "category": "composer",
+    "categoryLabel": "Composer",
+    "skillSlug": "composer",
+    "subskillId": "7.9",
+    "question": "Bog'liq paketning `composer.json` dagi `scripts` o'rnatishda ishlaydimi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Ha, doim"
+      },
+      {
+        "key": "B",
+        "text": "Yo'q, faqat root `composer.json` skriptlari ishlaydi"
+      },
+      {
+        "key": "C",
+        "text": "Faqat `--dev` bilan"
+      },
+      {
+        "key": "D",
+        "text": "Faqat Windows'da"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Composer faqat root paketning skriptlarini bajaradi (plaginlar esa alohida, `allow-plugins` bilan).",
+    "level": "middle"
+  },
+  {
+    "id": "t-cmp-10",
+    "category": "composer",
+    "categoryLabel": "Composer",
+    "skillSlug": "composer",
+    "subskillId": "7.10",
+    "question": "Private repo uchun kredensiallarni CI'da saqlashning to'g'ri usuli?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`auth.json` ni repoga commit qilish"
+      },
+      {
+        "key": "B",
+        "text": "CI maxfiy env (`COMPOSER_AUTH`)"
+      },
+      {
+        "key": "C",
+        "text": "`composer.json` ichiga yozish"
+      },
+      {
+        "key": "D",
+        "text": "Image'ga qoldirish"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Kredensial maxfiy env orqali beriladi va repo/image'da qolmaydi.",
+    "level": "senior"
+  },
+  {
+    "id": "t-cmp-11",
+    "category": "composer",
+    "categoryLabel": "Composer",
+    "skillSlug": "composer",
+    "subskillId": "7.11",
+    "question": "Packagist nimani saqlaydi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Paketlarning kod arxivini"
+      },
+      {
+        "key": "B",
+        "text": "Faqat metadata; kod VCS'dan yuklanadi"
+      },
+      {
+        "key": "C",
+        "text": "Faqat litsenziyalar"
+      },
+      {
+        "key": "D",
+        "text": "Faqat lock fayllar"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Packagist — metadata katalogi; dist/source asl manbadan olinadi.",
+    "level": "middle"
+  },
+  {
+    "id": "t-cmp-12",
+    "category": "composer",
+    "categoryLabel": "Composer",
+    "skillSlug": "composer",
+    "subskillId": "7.14",
+    "question": "Reproducible build uchun eng muhim shart qaysi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`composer update` har build'da"
+      },
+      {
+        "key": "B",
+        "text": "`composer.lock` + `install` va qotirilgan Composer/PHP"
+      },
+      {
+        "key": "C",
+        "text": "`--ignore-platform-reqs`"
+      },
+      {
+        "key": "D",
+        "text": "`latest` image"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Lock va `install` bir xil versiyalarni beradi; Composer/PHP versiyasi qotirilishi kerak.",
+    "level": "senior"
+  },
+  {
+    "id": "t-cmp-13",
+    "category": "composer",
+    "categoryLabel": "Composer",
+    "skillSlug": "composer",
+    "subskillId": "7.15",
+    "question": "Production'da dev paketlarni qaysi flag chiqarib tashlaydi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`--no-scripts`"
+      },
+      {
+        "key": "B",
+        "text": "`--no-dev`"
+      },
+      {
+        "key": "C",
+        "text": "`--prefer-source`"
+      },
+      {
+        "key": "D",
+        "text": "`--dry-run`"
+      }
+    ],
+    "correct": "B",
+    "explanation": "`--no-dev` `require-dev` ni o'rnatmaydi va `autoload-dev` ni generatsiya qilmaydi.",
+    "level": "junior"
+  },
+  {
+    "id": "t-cmp-14",
+    "category": "composer",
+    "categoryLabel": "Composer",
+    "skillSlug": "composer",
+    "subskillId": "7.16",
+    "question": "Major yangilanishlarni qanday olib borish to'g'ri?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bitta PR'da hammasini"
+      },
+      {
+        "key": "B",
+        "text": "Alohida, rejali va testlangan holda"
+      },
+      {
+        "key": "C",
+        "text": "Production'da `update`"
+      },
+      {
+        "key": "D",
+        "text": "Hech qachon yangilamaslik"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Major'lar alohida PR/branch'da, upgrade guide va testlar bilan yangilanadi.",
+    "level": "middle"
   }
 ];

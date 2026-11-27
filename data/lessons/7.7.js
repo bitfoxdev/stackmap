@@ -1,52 +1,71 @@
 /* Chuqur dars: 7.7. Maydonlar: lesson (markdown), examples [{title, lang, code, note}], pitfalls [] */
 registerLesson("7.7", {
   "lesson": [
-    "### O'rnatish",
-    "- `composer require vendor/pkg` — paketni `composer.json` ga qo'shadi, o'rnatadi, lock'ni yangilaydi (eng mos diapazon `^x.y`).",
-    "- `composer require vendor/pkg:^2.0`, `--dev` (`require-dev`ga).",
-    "- `composer install` — lock bo'yicha hammasini o'rnatadi.",
-    "- `composer create-project laravel/laravel app` — yangi loyiha.",
-    "- `composer global require ...` (global vositalar, ehtiyot bilan).",
+    "### require / remove",
+    "- `composer require vendor/pkg` — versiyani o'zi tanlaydi (agar ko'rsatilmasa, tavsiya etilgan cheklov), `composer.json` ga yozadi, resolve qiladi, lock va `vendor/` ni yangilaydi. `composer require vendor/pkg:^2.1`.",
+    "- `--dev` — `require-dev` ga. `--no-update` — faqat `composer.json` ni tahrirlaydi (`--no-install` ni nazarda tutadi). `--dry-run` — hech narsani o'zgartirmaydi.",
+    "- `-w` (`--update-with-dependencies`) va `-W` (`--update-with-all-dependencies`): yangi paketning bog'liqliklarini ham yangilashga ruxsat (`-W` root talablarini ham). Bloklovchi cheklov bo'lsa kerak bo'ladi.",
+    "- `--fixed` — aniq versiyani yozadi (faqat `project` turi yoki `--dev`).",
+    "- `composer remove vendor/pkg` — `composer.json` dan olib, o'chiradi; `--unused` — endi kerak bo'lmagan paketlarni olib tashlaydi; `--dev` — `require-dev` dan.",
     "",
-    "### O'chirish",
-    "`composer remove vendor/pkg` — `composer.json`dan chiqaradi, `vendor/` va lock'ni yangilaydi. Bog'liq (tranzitiv) paketlar ham kerak bo'lmasa o'chadi.",
+    "### install va update",
+    "- `composer install` — lock bo'yicha (7.2). Yangi mashina/CI/deploy: faqat shu.",
+    "- `composer update` — hamma narsani `composer.json` cheklovlari doirasida yangilaydi (xavfli, katta diff).",
+    "- `composer update vendor/pkg` — faqat shu paket (agar `composer.json` da bo'lsa, vaqtinchalik cheklov uning ichida bo'lishi kerak). `-w`/`-W` — bog'liqliklari bilan.",
+    "- `--with vendor/pkg:1.2.3` — `composer.json` ni tahrirlamay vaqtinchalik cheklov (docs: barcha paketlar yangilanadi).",
+    "- `--minimal-changes` (`-m`) — faqat zarur o'zgarishlar (`COMPOSER_MINIMAL_CHANGES=1`).",
+    "- `--lock` — versiyalarni o'zgartirmay lock hash'ini yangilaydi.",
+    "- `--dry-run` — simulyatsiya. `--prefer-lowest` / `--prefer-stable` — pastki chegarani sinash (kutubxonalar uchun).",
+    "- `composer reinstall vendor/pkg` — `vendor/` dagi buzilgan/o'zgartirilgan paketni qayta o'rnatadi.",
     "",
-    "### Yangilash",
-    "`composer update vendor/pkg` (bitta), `composer update` (hammasi). `--with-dependencies` / `-w` tranzitiv ham.",
+    "### Xavfsiz odat",
+    "1. `--dry-run` bilan oldindan ko'ring.",
+    "2. Ismli yangilash; keyin `git diff composer.lock` — kutilgan paketlar o'zgardimi?",
+    "3. Testlar va `composer audit` (7.13).",
+    "4. Lock + `composer.json` bitta commit'da.",
+    "5. Production'da hech qachon `require`/`update`: faqat `install`.",
     "",
-    "### Ma'lumot",
-    "`composer show`, `composer show vendor/pkg`, `composer outdated`, `composer search`, `composer home vendor/pkg`.",
-    "",
-    "### Optsiyalar",
-    "- `--prefer-dist` (zip, tez), `--prefer-source` (git clone).",
-    "- `--no-scripts` (hook'siz), `--no-dev`, `--ignore-platform-reqs` (xavfli: faqat istisno).",
-    "- `--dry-run` nima o'zgarishini ko'rish.",
-    "- `--no-interaction` (CI).",
-    "",
-    "### Plagin va scripts",
-    "Paket o'rnatilganda plagin/skript ishga tushishi mumkin: `allow-plugins` ni ongli bering; ishonchsiz paketni o'rnatmang.",
+    "### Fayl rejimi",
+    "`vendor/` ni qo'lda tahrirlamang (qayta o'rnatishda yo'qoladi); o'zgartirish kerak bo'lsa fork yoki patch paket (`cweagans/composer-patches`).",
     "",
     "### Qoidalar",
-    "- Kerak bo'lmagan paketni o'chiring.",
-    "- Dev vositalarini `--dev` bilan.",
-    "- O'rnatishdan oldin paketni tekshiring (faol, litsenziya, xavfsizlik)."
+    "1. `vendor/` git'da emas; lock git'da.",
+    "2. Aniq paketni yangilang, \"hammasini\" emas.",
+    "3. Har `require` dan keyin `why` bilan tranzitivlarni ko'ring.",
+    "4. Olib tashlaganda kodda ham ishlatilishini tozalang (`remove` + `grep`)."
   ],
   "examples": [
     {
-      "title": "Buyruqlar",
+      "title": "Ongli yangilash",
       "lang": "bash",
+      "note": "dry-run, ismli update, diff",
       "code": [
+        "composer require spatie/laravel-permission --dry-run",
         "composer require spatie/laravel-permission",
-        "composer require --dev pestphp/pest",
-        "composer remove vendor/unused",
-        "composer update vendor/pkg --with-dependencies --dry-run"
+        "composer update monolog/monolog -W --dry-run",
+        "composer update monolog/monolog -W",
+        "git diff --stat composer.lock",
+        "composer audit && php artisan test"
+      ]
+    },
+    {
+      "title": "Tozalash",
+      "lang": "bash",
+      "note": "remove, reinstall",
+      "code": [
+        "composer remove barryvdh/laravel-debugbar --dev",
+        "composer remove --unused",
+        "composer reinstall vendor/broken-pkg        # vendor/ da buzilgan paket",
+        "composer install --no-dev --no-scripts      # production (skriptsiz sinash)"
       ]
     }
   ],
   "pitfalls": [
-    "`--ignore-platform-reqs` bilan o'rnatish ishlamaydigan muhitga paket tushiradi: istisno holatda.",
-    "`require` o'rniga `composer.json` ni qo'lda o'zgartirib lock'ni yangilamaslik.",
-    "Ishonchsiz paketning plugin/scripts'iga `allow-plugins` bermang.",
-    "Dev vositani oddiy `require` ga qo'shish production'ga ortiqcha paket tushiradi."
+    "Production serverda `composer update`: lock o'zgaradi, versiyalar kutilmagan siljiydi.",
+    "Hamma narsani yangilovchi `composer update` ni boshqa ishlar bilan birga qilish: regressiyani topish qiyin.",
+    "`-W` ni ko'r-ko'rona ishlatish: root talablarini ham ko'taradi; avval `--dry-run`.",
+    "`vendor/` ichidagi kodni qo'lda tuzatish: `install` da yo'qoladi; fork/patch.",
+    "`composer require` dan keyin `composer.json` da `*` yoki juda keng cheklov qolishi: tahrirlab toraytiring.",
+    "`--no-update` dan keyin `install` ni unutish: `composer.json` va `lock` mos emas."
   ]
 });

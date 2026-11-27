@@ -1,45 +1,70 @@
 /* Chuqur dars: 7.2. Maydonlar: lesson (markdown), examples [{title, lang, code, note}], pitfalls [] */
 registerLesson("7.2", {
   "lesson": [
-    "### composer.lock",
-    "`composer install`/`update` natijasida paketlarning **aniq versiyalari** (commit hash, manba URL, bog'liqliklar) shu faylga yoziladi. `composer.json` — \"nima xohlayman\" (diapazonlar), `composer.lock` — \"aynan nima o'rnatildi\".",
-    "",
-    "### Nima uchun",
-    "**Reproducible builds:** jamoa a'zolari, CI va production **bir xil** versiyalarni oladi. Usiz `^1.2` diapazoni vaqt o'tishi bilan turli versiya beradi.",
+    "### Tarkibi",
+    "- `packages` va `packages-dev` — har paket: `name`, `version` (aniq), `source`/`dist` (URL + reference/hash), `require`, `autoload`, `time`.",
+    "- `content-hash` — `composer.json` ning bog'liqlikka ta'sir qiluvchi qismlarining hash'i: `composer.json` o'zgargan, lock yangilanmagan bo'lsa Composer ogohlantiradi.",
+    "- `platform` / `platform-dev` — loyiha talab qilgan PHP/ext versiyalari.",
+    "- `minimum-stability`, `stability-flags`, `prefer-stable`, `aliases`.",
     "",
     "### install vs update",
-    "- `composer install` — `composer.lock` bo'yicha aniq o'rnatadi (lock bo'lmasa `update` qiladi). Deploy va CI'da shu.",
-    "- `composer update` — diapazon ichida eng yangi versiyalarni topib, `lock`ni **yangilaydi**. Ongli, alohida commit.",
-    "- `composer update vendor/paket` — faqat bittasini.",
-    "- `composer require x` ham lock'ni yangilaydi.",
+    "- `composer install`: lock **bor** bo'lsa uni aynan o'sha versiyalar bilan o'rnatadi (yangi versiya qidirmaydi). Lock **yo'q** bo'lsa resolve qiladi va lock yaratadi.",
+    "- `composer update [paket...]`: `composer.json` cheklovlariga mos **eng yangi** versiyalarni hal qilib, lock'ni qayta yozadi; keyin o'rnatadi. Ismli paket bo'lsa faqat u (va kerak bo'lsa bog'liqliklari).",
+    "- `composer update --lock` — versiyalarni o'zgartirmay faqat `content-hash` va metadata'ni yangilaydi (\"lock eskirgan\" ogohlantirishini yo'qotadi).",
     "",
-    "### Hash",
-    "`content-hash` `composer.json` bog'liqlik qismidan olinadi: json lock bilan mos bo'lmasa ogohlantirish (\"lock file is not up to date\").",
+    "### Nega commit qilinadi",
+    "Docs bo'yicha lock hamma muhitda (dasturchilar, CI, production) bir xil versiyalarni ta'minlaydi va keyingi oylarda ham ishlaydigan holatni qayta tiklash imkonini beradi. Ilovada **majburiy**. Lock'siz CI'da `install` har kuni boshqa versiya olishi mumkin (\"mening kompyuterimda ishlaydi\").",
     "",
-    "### Git",
-    "Ilova (project): `composer.lock` **Git'ga kiritiladi**. Kutubxona (library): ko'pincha lock Git'ga kiritilmaydi yoki ixtiyoriy (foydalanuvchilar o'z lock'ini yaratadi), lekin CI uchun matritsa sinovi.",
+    "### Jamoa ish tartibi",
+    "- Lock'ni qo'lda tahrir qilmang; faqat `composer require/update/remove` orqali.",
+    "- `composer.lock` PR'da o'zgarsa — nima yangilanganini ko'rib chiqing (`composer show -D`, diff). Katta, sababsiz yangilash — shubhali.",
+    "- Merge konflikti: lock'ni qo'lda birlashtirmang: `composer.json` ni hal qiling, so'ng `composer update --lock` yoki kerakli paketlar uchun `composer update vendor/a vendor/b` bilan qayta yarating.",
+    "- `COMPOSER_NO_INTERACTION` bilan CI'da `composer install` (hech qachon `update`).",
     "",
-    "### Merge konfliktlar",
-    "`composer.lock` konfliktida qo'lda tahrirlamang: `composer.json` ni tuzating, keyin `composer update --lock` yoki `composer install` va qayta yaratish.",
-    "",
-    "### Xavfsizlik",
-    "Lock'dagi paket hash'lari yaxlitlikni ta'minlaydi; `composer audit` lock bo'yicha zaifliklarni tekshiradi."
+    "### Qoidalar",
+    "1. Ilovada `composer.lock` git'da.",
+    "2. CI/production: `composer install` (lock bo'yicha), `update` emas.",
+    "3. `update` — ongli, kichik, alohida PR'da.",
+    "4. Lock eskirganini `composer validate` ushlasin."
   ],
   "examples": [
     {
-      "title": "install va update",
+      "title": "Lock oqimi",
       "lang": "bash",
+      "note": "install va update",
       "code": [
-        "composer install --no-interaction --prefer-dist       # lock bo'yicha (deploy/CI)",
-        "composer update monolog/monolog                        # faqat bitta paketni yangilash",
-        "composer update --lock                                 # json o'zgardi, versiyalar o'zgarmasin"
+        "composer install                       # lock bo'yicha: reproducible",
+        "composer update monolog/monolog        # faqat shu paket (va kerakli bog'liqliklar)",
+        "composer update --lock                 # composer.json o'zgardi, versiyalar o'zgarmasin",
+        "composer validate --strict             # lock eskirganmi?",
+        "git diff composer.lock | grep '\"version\"'   # nima o'zgardi"
+      ]
+    },
+    {
+      "title": "Lock fragmenti",
+      "lang": "json",
+      "note": "Aniq versiya va hash",
+      "code": [
+        "{",
+        "  \"content-hash\": \"9a7f...c3\",",
+        "  \"packages\": [",
+        "    {",
+        "      \"name\": \"monolog/monolog\",",
+        "      \"version\": \"3.8.0\",",
+        "      \"source\": { \"type\": \"git\", \"url\": \"https://github.com/Seldaek/monolog.git\", \"reference\": \"5cf826f2...\" },",
+        "      \"dist\": { \"type\": \"zip\", \"url\": \"https://api.github.com/repos/Seldaek/monolog/zipball/5cf826f2...\" }",
+        "    }",
+        "  ]",
+        "}"
       ]
     }
   ],
   "pitfalls": [
-    "`composer.lock` ni Git'ga kiritmaslik jamoada turli versiyalarga olib keladi.",
-    "Deploy'da `composer update` ishlatish production'da kutilmagan versiyalarni o'rnatadi: `install`.",
-    "Lock merge konfliktini qo'lda tahrirlash buzuq fayl beradi.",
-    "`update` ni katta jamoada keraksiz tez-tez qilish ko'p regressiyaga olib keladi."
+    "CI/production'da `composer update` ishlatish: har deploy boshqa versiya, takrorlanmaydigan xatolar.",
+    "Lock'ni `.gitignore` ga qo'yish: har muhitda turli versiya.",
+    "Lock merge-konfliktini qo'lda tahrirlash: `content-hash` va bog'liqliklar nomuvofiq bo'ladi; qayta yarating.",
+    "`composer.json` ni o'zgartirib lock'ni yangilamaslik: `install` ogohlantiradi, CI'da eski bog'liqliklar o'rnatiladi.",
+    "Katta `composer update` ni boshqa o'zgarishlar bilan bitta commit'da qilish: regressiyani topish qiyin.",
+    "`packages-dev` ni production'da o'rnatish: `install --no-dev` ni unutish."
   ]
 });
