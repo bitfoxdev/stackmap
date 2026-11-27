@@ -7535,5 +7535,178 @@ window.INTERVIEW_QUESTIONS = [
       "Laravel'da: `image|max:2048` validatsiyasi va `store()`."
     ],
     "tip": "`$_FILES['type']` ga ishonmaslik va fayl nomini o'zingiz yaratish — eng ko'p so'raladigan ikki nuqta."
+  },
+  {
+    "id": "iq-320",
+    "title": "Laravel Scheduler qanday ishlaydi va ko'p serverli muhitda vazifa bir necha marta ishlab ketmasligi uchun nima qilinadi?",
+    "level": "middle",
+    "category": "laravel",
+    "categoryLabel": "Laravel",
+    "skillSlug": "laravel",
+    "subskillId": "2.19",
+    "answer": [
+      "Serverda **bitta** cron yozuvi bo'ladi: `* * * * * php artisan schedule:run`. Har daqiqa Laravel jadvaldagi vazifalarni joriy vaqtga solishtirib, mos kelganlarini bajaradi. Jadval kodda (`routes/console.php`) yoziladi.",
+      "",
+      "Ko'p serverda har serverning cron'i vazifani ishga tushiradi. Yechim: `->onOneServer()` (umumiy cache driver kerak: redis/database/memcached/dynamodb; `file`/`array` ishlamaydi) va `->withoutOverlapping()` (oldingi nusxa tugamaguncha yangisi boshlanmaydi; qulf default 24 soat).",
+      "",
+      "```php",
+      "Schedule::command('reports:daily')->dailyAt('02:00')->onOneServer()->withoutOverlapping(30);",
+      "```",
+      "",
+      "Qo'shimcha: closure vazifalarga `->name()` bering, deploy'dan keyin `schedule:interrupt`, monitoring uchun `pingOnFailure`."
+    ],
+    "tip": "Cache driver `file` bo'lsa `onOneServer` ishlamasligini va idempotentlik (DST/qayta ishga tushish) ni ayting."
+  },
+  {
+    "id": "iq-321",
+    "title": "Scheduler'da DST (yozgi/qishki vaqt) va timezone qanday muammo tug'diradi? Qanday himoyalanasiz?",
+    "level": "senior",
+    "category": "laravel",
+    "categoryLabel": "Laravel",
+    "skillSlug": "laravel",
+    "subskillId": "2.19",
+    "answer": [
+      "Timezone bilan berilgan vazifa DST o'tishida **ikki marta yoki umuman** ishlamasligi mumkin (masalan, 02:30 mavjud bo'lmagan yoki takrorlangan soat). Laravel docs ham iloji bo'lsa timezone bilan ishlashdan qochishni tavsiya qiladi.",
+      "",
+      "Himoya: serverni va jadvalni **UTC**'da yuriting (`schedule_timezone` yoki `->timezone()` ni minimal ishlating), vazifani **idempotent** yozing (ikki marta ishlasa zarar yo'q), muhim hisobotlarni 'sana bo'yicha qulf/belgi' bilan ikki marta hisoblashdan saqlang va ishlamay qolishni monitoring qiling (`pingOnFailure`, healthcheck)."
+    ],
+    "tip": "Muvaffaqiyat emas, **ishlamay qolish** monitoring qilinishini alohida ta'kidlang."
+  },
+  {
+    "id": "iq-322",
+    "title": "Artisan buyrug'ida `Isolatable` va `PromptsForMissingInput` nima qiladi, exit code nima uchun muhim?",
+    "level": "middle",
+    "category": "laravel",
+    "categoryLabel": "Laravel",
+    "skillSlug": "laravel",
+    "subskillId": "2.18",
+    "answer": [
+      "`Isolatable` — buyruq bir vaqtda faqat bitta nusxada ishlashini ta'minlaydi (`--isolated` option avtomatik qo'shiladi); boshqa nusxa ishlayotgan bo'lsa buyruq o'tkazib yuboriladi va `0` qaytaradi. Qulf umumiy cache'da bo'lishi shart.",
+      "",
+      "`PromptsForMissingInput` — majburiy argument berilmasa xato o'rniga interaktiv so'raydi (Laravel Prompts bilan).",
+      "",
+      "Exit code: `0` = muvaffaqiyat, nolga teng bo'lmagan = xato. Cron, CI va schedule hook'lari (`onFailure`) aynan shunga qaraydi, shuning uchun xatoda `return self::FAILURE` yoki `$this->fail()` ishlatiladi; xatoni yutib yuborib `0` qaytarish muammoni yashiradi."
+    ],
+    "tip": "Cron/`--no-interaction` rejimida so'rov chiqmasligi uchun argument/option yo'lini ham bering."
+  },
+  {
+    "id": "iq-323",
+    "title": "Laravel Mail'da biriktirma (attachment) qanday qo'shiladi va queue bilan ishlaganda qanday xavflar bor?",
+    "level": "middle",
+    "category": "laravel",
+    "categoryLabel": "Laravel",
+    "skillSlug": "laravel",
+    "subskillId": "2.36",
+    "answer": [
+      "Mailable'ning `attachments()` metodida `Attachment` obyektlari qaytariladi: `Attachment::fromPath($p)`, `fromStorageDisk('s3', $path)`, `fromData(fn () => $pdf, 'a.pdf')`; `->as('nom.pdf')->withMime('application/pdf')`.",
+      "",
+      "Queue xavflari: (1) `fromPath` lokal fayl worker boshqa serverda bo'lsa topilmaydi, umumiy disk (S3) yoki `fromData` ishlating; (2) tranzaksiya ichida yuborganda `afterCommit` kerak; (3) katta fayl provayder limitidan oshadi, imzolangan havola yuboring; (4) Mailable'ga butun modelni berish payloadni kattalashtiradi."
+    ],
+    "tip": "`Mail::fake()` + `assertQueued` bilan testlashni ham eslatib o'ting."
+  },
+  {
+    "id": "iq-324",
+    "title": "Mailable va Notification o'rtasidagi farq nima? Qachon qaysi birini ishlatasiz?",
+    "level": "junior",
+    "category": "laravel",
+    "categoryLabel": "Laravel",
+    "skillSlug": "laravel",
+    "subskillId": "2.36",
+    "answer": [
+      "**Mailable** — bitta email'ning to'liq tavsifi (shablon, biriktirma, dizayn nazorati). **Notification** — bitta xabarni **bir nechta kanal** (mail, database, broadcast, Slack, SMS) orqali yuborish mexanizmi; `via()` kanallarni tanlaydi.",
+      "",
+      "Foydalanuvchi sozlamasiga qarab kanal tanlash, in-app bildirishnoma (database) va email birga kerak bo'lsa — Notification. Murakkab shablonli, biriktirmali xat — Mailable (Notification ichidan ham qaytarilishi mumkin). Ikkalasi ham `ShouldQueue` bilan queue'ga tushadi."
+    ],
+    "tip": "Notification'da `afterCommit` va `shouldSend()` ni ham eslang."
+  },
+  {
+    "id": "iq-325",
+    "title": "Laravel'da backed enum'ni Eloquent cast, validatsiya va route'da qanday ishlatasiz?",
+    "level": "middle",
+    "category": "laravel",
+    "categoryLabel": "Laravel",
+    "skillSlug": "laravel",
+    "subskillId": "2.35",
+    "answer": [
+      "Model: `casts()` da `'status' => OrderStatus::class` (bazada oddiy string/int, kodda enum). Validatsiya: `Rule::enum(OrderStatus::class)->only([...])`. Route: parametrni enum bilan type-hint qilsangiz, qiymat enum'da bo'lmasa avtomatik **404**.",
+      "",
+      "Enum ichiga `label()` va holat o'tish qoidalarini (`canTransitionTo`) joylashtiring. Bazadagi eski noto'g'ri qiymat o'qishda `ValueError` beradi. Migratsiyada DB `enum()` ustuni o'rniga `string` ishlating (yangi qiymat `ALTER TABLE` talab qilmasin)."
+    ],
+    "tip": "Enum qiymatini (`'paid'`) o'zgartirmaslik, faqat case nomini o'zgartirish mumkinligini ayting."
+  },
+  {
+    "id": "iq-326",
+    "title": "Blade'da `{{ }}` va `{!! !!}` farqi nima? XSS'dan qanday himoyalanasiz?",
+    "level": "junior",
+    "category": "laravel",
+    "categoryLabel": "Laravel",
+    "skillSlug": "laravel",
+    "subskillId": "2.33",
+    "answer": [
+      "`{{ $x }}` qiymatni `htmlspecialchars` bilan **escape** qiladi (XSS himoyasi); `{!! $x !!}` xom HTML chiqaradi. Foydalanuvchi kiritgan ma'lumotni faqat `{{ }}` bilan chiqaring; `{!! !!}` faqat o'zingiz tozalagan ishonchli HTML uchun.",
+      "",
+      "JS'ga ma'lumot uzatishda `{!! json_encode($x) !!}` o'rniga `@json($x)` yoki `Js::from($x)` ishlating (`</script>` kiritilganda buzilmaydi). Formada `@csrf` va `@method('PUT')` ni unutmang."
+    ],
+    "tip": "Test: `assertDontSee('<script>', false)` bilan escape'ni isbotlash mumkin."
+  },
+  {
+    "id": "iq-327",
+    "title": "Production'da katta jadvalga NOT NULL ustun qo'shishni downtime'siz qanday qilasiz?",
+    "level": "senior",
+    "category": "laravel",
+    "categoryLabel": "Laravel",
+    "skillSlug": "laravel",
+    "subskillId": "2.37",
+    "answer": [
+      "Qadamma-qadam (expand → migrate → contract): (1) ustunni **nullable** (yoki default bilan) qo'shing: tez; (2) ma'lumotni **backfill** qiling bo'laklab (`chunkById`, queue); (3) kod yangi ustunga yozsin/o'qisin; (4) so'ng `NOT NULL`/unique/foreign key constraint qo'shing.",
+      "",
+      "PostgreSQL'da indeks `CREATE INDEX CONCURRENTLY` (migratsiyada `$withinTransaction = false`). Migratsiya yangi kod deploy qilinishidan **oldin** ishlaydi, shuning uchun eski kod ham yangi sxemada ishlashi shart. Bajarilgan migratsiya faylini tahrirlamang; `migrate:fresh` production'da hech qachon."
+    ],
+    "tip": "Cascade delete xavfini va rollback o'rniga oldinga tuzatishni ham eslating."
+  },
+  {
+    "id": "iq-328",
+    "title": "Cache stampede nima va Laravel'da qanday oldini olasiz (`Cache::lock`, `flexible`)?",
+    "level": "senior",
+    "category": "laravel",
+    "categoryLabel": "Laravel",
+    "skillSlug": "laravel",
+    "subskillId": "2.38",
+    "answer": [
+      "Mashhur kalit tugaganda ko'p so'rov bir vaqtda qimmat hisobni boshlaydi (stampede). Yechimlar: `Cache::lock('build:key', 30)->block(10, fn () => ...)` — faqat bitta jarayon hisoblaydi; `Cache::flexible('k', [fresh, stale], fn)` — stale-while-revalidate (eski qiymat qaytariladi, fonda yangilanadi); TTL'ga tasodifiy jitter.",
+      "",
+      "Qulf uchun umumiy store (redis/database/memcached) shart, `file` ko'p serverda ishlamaydi. Eloquent modelni emas, massiv/DTO keshlang; `Cache::flush()` butun store'ni o'chiradi: production'da ishlatmang."
+    ],
+    "tip": "Invalidatsiya (yozilganda `forget`) TTL'dan muhimroq ekanini ayting."
+  },
+  {
+    "id": "iq-329",
+    "title": "`php artisan config:cache` dan keyin `env()` nima uchun `null` qaytaradi va deploy tartibi qanday bo'lishi kerak?",
+    "level": "senior",
+    "category": "laravel",
+    "categoryLabel": "Laravel",
+    "skillSlug": "laravel",
+    "subskillId": "2.41",
+    "answer": [
+      "`config:cache` barcha konfiguratsiyani bitta faylga keshlaydi va shundan keyin `.env` **yuklanmaydi**, shuning uchun ilova kodidagi `env('X')` `null` qaytaradi. `env()` faqat `config/*.php` ichida chaqiriladi, kodda `config('...')`.",
+      "",
+      "Deploy: `composer install --no-dev --optimize-autoloader` → `npm run build` → `migrate --force` → `optimize` → symlink almashtirish → `queue:restart`/`reload` + `schedule:interrupt` → health-check (`/up`). Queue worker eski kodni xotirada ushlab turadi, shuning uchun qayta ishga tushirish majburiy."
+    ],
+    "tip": "`APP_KEY` deploy'lar orasida o'zgarmasligini va `APP_DEBUG=false` ni qo'shing."
+  },
+  {
+    "id": "iq-330",
+    "title": "Notification queued bo'lsa va tranzaksiya ichida yuborilsa qanday muammo chiqadi?",
+    "level": "middle",
+    "category": "laravel",
+    "categoryLabel": "Laravel",
+    "skillSlug": "laravel",
+    "subskillId": "2.21",
+    "answer": [
+      "Job commit tugamasdan worker'ga yetib borishi mumkin: worker hali commit bo'lmagan yozuvni topa olmaydi (`ModelNotFoundException`) yoki eski holatni ko'radi. Yechim: notification klassida `public $afterCommit = true;` (yoki dispatch'ni tranzaksiyadan keyin qiling). Model o'chirilishi mumkin bo'lsa `deleteWhenMissingModels = true`.",
+      "",
+      "Qo'shimcha: kanal xatosini `NotificationFailed` hodisasi bilan kuzating, retry'da xabar ikki marta ketmasligi uchun idempotentlikni o'ylang."
+    ],
+    "tip": "Event/listener va Mail uchun ham xuddi shu `afterCommit` qoidasi amal qilishini ayting."
   }
 ];

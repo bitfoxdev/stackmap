@@ -5860,5 +5860,353 @@ window.INTERVIEW_TESTS = [
     "correct": "B",
     "explanation": "`unserialize` klass nomi va property'larni manbadan oladi: tajovuzkor mavjud klasslardan 'gadget' zanjiri yig'ishi mumkin. Alternativa: `json_decode` yoki `unserialize($s, ['allowed_classes' => false])`.",
     "level": "senior"
+  },
+  {
+    "id": "t-lar-31",
+    "category": "laravel",
+    "categoryLabel": "Laravel asoslari",
+    "skillSlug": "laravel",
+    "subskillId": "2.19",
+    "question": "Ikki serverda ishlayotgan ilovada `Schedule::command('x')->daily()` ikkala serverda ham bajarilmoqda. Nima qilish kerak?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`->withoutOverlapping()` qo'shish kifoya, umumiy cache shart emas"
+      },
+      {
+        "key": "B",
+        "text": "`->onOneServer()` qo'shish va hamma server umumiy cache driver'ga (redis/database/memcached) ulangan bo'lishi"
+      },
+      {
+        "key": "C",
+        "text": "Cron yozuvini bitta serverdan o'chirish mumkin emas, shuning uchun hech narsa qilib bo'lmaydi"
+      },
+      {
+        "key": "D",
+        "text": "`->runInBackground()` qo'shish"
+      }
+    ],
+    "correct": "B",
+    "explanation": "`onOneServer()` qulfni umumiy cache orqali oladi: `file`/`array` driver'da ishlamaydi. `withoutOverlapping` faqat bitta nusxa ichida oldingi bajarilish tugamaguncha kutadi va serverlararo kafolat bermaydi (u ham umumiy cache'ga tayanadi).",
+    "level": "middle"
+  },
+  {
+    "id": "t-lar-32",
+    "category": "laravel",
+    "categoryLabel": "Laravel asoslari",
+    "skillSlug": "laravel",
+    "subskillId": "2.19",
+    "question": "Vazifa `->withoutOverlapping()` bilan ishlayapti, jarayon qulab tushdi. Keyingi bajarilish qachon bo'ladi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Darhol, qulf avtomatik bekor bo'ladi"
+      },
+      {
+        "key": "B",
+        "text": "Qulf muddati (default 24 soat yoki berilgan daqiqa) tugagach yoki `schedule:clear-cache` bajarilgach"
+      },
+      {
+        "key": "C",
+        "text": "Hech qachon, faqat server qayta ishga tushsa"
+      },
+      {
+        "key": "D",
+        "text": "Keyingi daqiqada, chunki qulf faqat 60 soniya"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Qulf cache'da saqlanadi; default 24 soat. Jarayon yiqilsa vazifa shu muddat 'jim' turib qoladi. `withoutOverlapping(10)` muddatni qisqartiradi, qotib qolsa `schedule:clear-cache`.",
+    "level": "middle"
+  },
+  {
+    "id": "t-lar-33",
+    "category": "laravel",
+    "categoryLabel": "Laravel asoslari",
+    "skillSlug": "laravel",
+    "subskillId": "2.18",
+    "question": "Artisan buyrug'ida xato yuz berdi, lekin `handle()` hech narsa qaytarmadi. Cron/CI nimani ko'radi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Muvaffaqiyatsizlikni, chunki xato bor"
+      },
+      {
+        "key": "B",
+        "text": "Muvaffaqiyatni (exit code 0), shuning uchun xatoda `return self::FAILURE` yoki `$this->fail()` kerak"
+      },
+      {
+        "key": "C",
+        "text": "Faqat log'ni"
+      },
+      {
+        "key": "D",
+        "text": "Hech narsa, buyruq ishlamaydi"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Qaytish qiymati berilmasa exit code `0`. Cron, CI va schedule `onFailure` hook'lari faqat exit code'ga qaraydi.",
+    "level": "junior"
+  },
+  {
+    "id": "t-lar-34",
+    "category": "laravel",
+    "categoryLabel": "Laravel asoslari",
+    "skillSlug": "laravel",
+    "subskillId": "2.36",
+    "question": "`Attachment::fromPath('/tmp/a.pdf')` bilan queued mail yuborilganda nima xavf bor?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Hech qanday xavf yo'q"
+      },
+      {
+        "key": "B",
+        "text": "Worker boshqa serverda bo'lsa fayl topilmaydi: S3/umumiy disk yoki `fromData` ishlatish kerak"
+      },
+      {
+        "key": "C",
+        "text": "Queue fayllarni qo'llab-quvvatlamaydi"
+      },
+      {
+        "key": "D",
+        "text": "Fayl avtomatik o'chiriladi"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Queued mail worker jarayonida bajariladi, ko'p serverli muhitda lokal yo'l mavjud bo'lmasligi mumkin. `fromStorageDisk('s3', ...)` yoki `fromData(...)` xavfsizroq.",
+    "level": "middle"
+  },
+  {
+    "id": "t-lar-35",
+    "category": "laravel",
+    "categoryLabel": "Laravel asoslari",
+    "skillSlug": "laravel",
+    "subskillId": "2.36",
+    "question": "Mailable'ni tranzaksiya ichida `queue()` qilganda qaysi sozlama kerak?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`$tries = 1`"
+      },
+      {
+        "key": "B",
+        "text": "`public $afterCommit = true;`"
+      },
+      {
+        "key": "C",
+        "text": "`$timeout = 0`"
+      },
+      {
+        "key": "D",
+        "text": "`ShouldBeUnique`"
+      }
+    ],
+    "correct": "B",
+    "explanation": "`afterCommit` job'ni tranzaksiya commit bo'lgandan keyin dispatch qiladi, aks holda worker hali saqlanmagan ma'lumotni topa olmaydi.",
+    "level": "middle"
+  },
+  {
+    "id": "t-lar-36",
+    "category": "laravel",
+    "categoryLabel": "Laravel asoslari",
+    "skillSlug": "laravel",
+    "subskillId": "2.35",
+    "question": "Enum bilan type-hint qilingan route parametrga enum'da yo'q qiymat kelsa nima bo'ladi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "500 xatosi"
+      },
+      {
+        "key": "B",
+        "text": "Avtomatik 404"
+      },
+      {
+        "key": "C",
+        "text": "Default case olinadi"
+      },
+      {
+        "key": "D",
+        "text": "Validatsiya 422 qaytaradi"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Implicit enum binding noto'g'ri qiymatda `404` qaytaradi.",
+    "level": "middle"
+  },
+  {
+    "id": "t-lar-37",
+    "category": "laravel",
+    "categoryLabel": "Laravel asoslari",
+    "skillSlug": "laravel",
+    "subskillId": "2.33",
+    "question": "Foydalanuvchi kiritgan matnni Blade'da xavfsiz chiqarish usuli qaysi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`{!! $text !!}`"
+      },
+      {
+        "key": "B",
+        "text": "`{{ $text }}`"
+      },
+      {
+        "key": "C",
+        "text": "`@php echo $text; @endphp`"
+      },
+      {
+        "key": "D",
+        "text": "`@json($text)` va u HTML'ga qo'yiladi"
+      }
+    ],
+    "correct": "B",
+    "explanation": "`{{ }}` avtomatik escape qiladi. `{!! !!}` va xom `echo` XSS xavfini ochadi.",
+    "level": "junior"
+  },
+  {
+    "id": "t-lar-38",
+    "category": "laravel",
+    "categoryLabel": "Laravel asoslari",
+    "skillSlug": "laravel",
+    "subskillId": "2.37",
+    "question": "Katta jadvalga NOT NULL ustunni downtime'siz qo'shishning to'g'ri tartibi qaysi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bir migratsiyada `NOT NULL` ustun qo'shib, default'siz qoldirish"
+      },
+      {
+        "key": "B",
+        "text": "Nullable qo'shish → backfill → kod yozadi/o'qiydi → constraint qo'shish"
+      },
+      {
+        "key": "C",
+        "text": "`migrate:fresh` qilib qayta yaratish"
+      },
+      {
+        "key": "D",
+        "text": "Ustunni qo'lda production DB'da qo'shish"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Expand → migrate → contract: uzoq qulfdan qochiladi va eski/yangi kod birga ishlaydi.",
+    "level": "senior"
+  },
+  {
+    "id": "t-lar-39",
+    "category": "laravel",
+    "categoryLabel": "Laravel asoslari",
+    "skillSlug": "laravel",
+    "subskillId": "2.38",
+    "question": "`Cache::tags()` qaysi driverlarda ishlamaydi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "redis"
+      },
+      {
+        "key": "B",
+        "text": "memcached"
+      },
+      {
+        "key": "C",
+        "text": "file va database"
+      },
+      {
+        "key": "D",
+        "text": "array"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Teglar faqat redis, memcached va array'da ishlaydi; file/database'da yo'q.",
+    "level": "middle"
+  },
+  {
+    "id": "t-lar-40",
+    "category": "laravel",
+    "categoryLabel": "Laravel asoslari",
+    "skillSlug": "laravel",
+    "subskillId": "2.41",
+    "question": "`config:cache` dan keyin ilova kodidagi `env('PAYMENT_KEY')` nima qaytaradi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Hamon `.env` dagi qiymat"
+      },
+      {
+        "key": "B",
+        "text": "`null`, chunki `.env` yuklanmaydi: `env()` faqat `config/*.php` da, kodda `config()`"
+      },
+      {
+        "key": "C",
+        "text": "Xato tashlaydi"
+      },
+      {
+        "key": "D",
+        "text": "Bo'sh satr"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Config keshlanganda `.env` o'qilmaydi, shuning uchun ilova kodidagi `env()` chaqiruvlari `null` qaytaradi.",
+    "level": "senior"
+  },
+  {
+    "id": "t-lar-41",
+    "category": "laravel",
+    "categoryLabel": "Laravel asoslari",
+    "skillSlug": "laravel",
+    "subskillId": "2.41",
+    "question": "Deploy'dan keyin queue worker'lar uchun nima qilish kerak?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Hech narsa, ular o'zi yangilanadi"
+      },
+      {
+        "key": "B",
+        "text": "`php artisan queue:restart` (yoki `reload`): worker eski kodni xotirada ushlab turadi"
+      },
+      {
+        "key": "C",
+        "text": "`config:clear`"
+      },
+      {
+        "key": "D",
+        "text": "`migrate:fresh`"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Worker uzoq yashovchi jarayon: kod o'zgarsa qayta ishga tushirmaguncha eski kod ishlaydi.",
+    "level": "senior"
+  },
+  {
+    "id": "t-lar-42",
+    "category": "laravel",
+    "categoryLabel": "Laravel asoslari",
+    "skillSlug": "laravel",
+    "subskillId": "2.21",
+    "question": "Queued Notification'da tranzaksiya bilan bog'liq muammoni qaysi xossa hal qiladi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`$tries`"
+      },
+      {
+        "key": "B",
+        "text": "`public $afterCommit = true;`"
+      },
+      {
+        "key": "C",
+        "text": "`$backoff`"
+      },
+      {
+        "key": "D",
+        "text": "`$deleteWhenMissingModels`"
+      }
+    ],
+    "correct": "B",
+    "explanation": "`afterCommit` job'ni commit'dan keyin yuboradi.",
+    "level": "middle"
   }
 ];
