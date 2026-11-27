@@ -12,26 +12,20 @@ registerSkill({
       "id": "2.2",
       "title": "Application Structure",
       "description": [
-        "Standart tuzilma: `app/` (Models, Http, Providers), `bootstrap/`, `config/`, `database/` (migrations, factories, seeders), `public/` (yagona web root), `resources/` (views, lang, assets), `routes/`, `storage/` (logs, cache, uploads), `tests/`, `vendor/`.",
-        "",
-        "Laravel 11+ da struktura soddalashtirilgan: kernel class'lari yo'q, middleware va exception sozlamalari `bootstrap/app.php` da. Katta loyihalarda `app/` ichini domen bo'yicha (masalan `app/Domain/Billing`) yoki modullarga ajratish odatiy — muhimi, jamoa bitta konvensiyaga amal qilishi.",
-        "",
-        "```text",
-        "app/",
-        "  Actions/        Billing/CreateInvoice.php",
-        "  Http/Controllers/",
-        "  Models/",
-        "  Services/",
-        "```"
+        "Laravel loyiha tuzilmasi (11+ \"yupqa skelet\"): `app/` (kod), `bootstrap/` (`app.php`, `providers.php`, `cache/`), `config/`, `database/` (migrations, factories, seeders), `public/`, `resources/` (views, js, css, lang), `routes/` (`web.php`, `console.php`; `api.php` ixtiyoriy), `storage/`, `tests/`. Eski `Http/Kernel`, `Console/Kernel`, `Exceptions/Handler`, `RouteServiceProvider` yo'q. Senior uchun: kodni qatlamlash (Actions, Services, DTO) va papka konvensiyalari."
       ],
       "priority": "core",
       "level": "Junior",
-      "practicalTask": "Loyiha uchun papka konvensiyasini (Actions, Services, DTO) belgilab, README'da hujjatlashtiring.",
+      "practicalTask": "Yangi loyiha yarating (`laravel new`), `install:api` va `make:*` buyruqlari bilan papkalar qanday paydo bo'lishini kuzating, `app/Actions` va `app/DTO` kabi qatlam qo'shing, `bootstrap/providers.php` dagi provider ro'yxatini toping va `.gitignore` dagi nimalarni (vendor, .env, storage/*.key) tushuntiring.",
       "acceptanceCriteria": [
-        "Faqat `public/` web root bo'lishi kerakligini biladi",
-        "`storage/` va `bootstrap/cache` yozish ruxsatlarini tushuntira oladi"
+        "Har papkaning vazifasini biladi (app, bootstrap, config, database, routes, storage)",
+        "Laravel 11+ da nima olib tashlanganini va yangi joyini biladi (`bootstrap/app.php`)",
+        "`storage` yozish huquqi va `bootstrap/cache` ni biladi",
+        "Kodni domen bo'yicha qatlamlashning variantlarini biladi"
       ],
-      "prerequisites": []
+      "prerequisites": [
+        "2.1"
+      ]
     },
     {
       "id": "2.10",
@@ -134,21 +128,16 @@ registerSkill({
       "id": "2.11",
       "title": "Request va Response Lifecycle",
       "description": [
-        "`Illuminate\\Http\\Request` (Symfony Request ustiga qurilgan) kiruvchi ma'lumotlarga yagona interfeys: `input()`, `query()`, `file()`, `header()`, `user()`, `ip()`, `validated()`. Javob turlari: `response()`, `json()`, `redirect()`, `download()`, `streamDownload()`, view, `Responsable` obyektlar.",
-        "",
-        "Javob middleware zanjiri orqali qaytadi (header qo'shish, cookie shifrlash, session saqlash), so'ng yuboriladi va `terminate` bosqichi ishlaydi. `TrustProxies` noto'g'ri sozlansa `ip()` va `isSecure()` yolg'on qiymat beradi.",
-        "",
-        "```php",
-        "return response()->json(['data' => $order], 201)",
-        "    ->header('Location', route('orders.show', $order));",
-        "```"
+        "Request va Response — so'rov (`Illuminate\\Http\\Request`: Symfony ustida) va javob (view, JSON, redirect, fayl, stream). Bilish kerak: kiruvchi ma'lumotni o'qish (`input`, `query`, `json`, `file`), so'rov turini aniqlash (`expectsJson`), JSON/status javoblar, cookie, sarlavha, redirect va flash. Senior uchun: kirishni **ishonchsiz** deb ko'rish, `$request->all()` xavfi va ishonchli proksi (`TrustProxies`)."
       ],
       "priority": "important",
       "level": "Junior",
-      "practicalTask": "Katta CSV hisobotni `streamDownload` bilan xotiraga yuklamasdan qaytaring.",
+      "practicalTask": "JSON API endpoint yozing: `Request` dan faqat kerakli maydonlarni oling (`only`/`validated`), `201` + `Location` sarlavhali JSON javob, `stream`/`streamDownload` bilan katta CSV eksport va `redirect()->back()->with()` flash xabar; HTTP testlari bilan tekshiring.",
       "acceptanceCriteria": [
-        "`input()`, `query()` va `validated()` farqini biladi",
-        "Load balancer ortida `TrustProxies` ni to'g'ri sozlaydi"
+        "`input`, `query`, `json`, `file`, `has/filled`, `boolean`, `integer`, `only/except` ni farqlaydi",
+        "JSON/redirect/download/stream javoblarini va status kodlarini to'g'ri ishlatadi",
+        "`expectsJson`, `wantsJson`, `is()`, `ip()`, `user()` ni biladi",
+        "`TrustProxies`, `Accept` sarlavhasi va content negotiation'ni biladi"
       ],
       "prerequisites": [
         "2.1"
@@ -385,25 +374,16 @@ registerSkill({
       "id": "2.6",
       "title": "Service Container",
       "description": [
-        "Service container — Laravel'ning yuragi: class'larni yaratadi, dependency'larni inject qiladi va bog'lanishlarni (binding) saqlaydi. `bind` — har safar yangi obyekt, `singleton` — bitta nusxa, `scoped` — so'rov/job doirasida bitta, `instance` — tayyor obyekt.",
-        "",
-        "Interfeysni implementatsiyaga bog'lash orqali kod abstraksiyaga tayanadi; contextual binding bir interfeysni turli class'larga turlicha berish imkonini beradi. Konkret class'lar uchun binding shart emas — container Reflection bilan autowiring qiladi.",
-        "",
-        "```php",
-        "$this->app->singleton(PaymentGateway::class, fn ($app) =>",
-        "    new PaymeGateway(config('services.payme.key')));",
-        "",
-        "$this->app->when(ReportExporter::class)",
-        "    ->needs(Filesystem::class)",
-        "    ->give(fn () => Storage::disk('s3'));",
-        "```"
+        "Service Container — Laravel'ning IoC konteyneri: klass bog'liqliklarini **avtomatik** (reflection orqali) hal qiladi va `bind`/`singleton`/`scoped` bilan interfeysni implementatsiyaga bog'laydi. Hamma narsa (Request, Cache, DB, Facade) shu orqali keladi. Senior uchun: lifecycle (transient/singleton/scoped), contextual binding, tagging, `resolving` hodisalari, Octane'da singleton xavfi va testda `instance()`/`mock`."
       ],
       "priority": "core",
       "level": "Middle",
-      "practicalTask": "Interfeys + ikki implementatsiya yozing va config orqali qaysi biri ishlatilishini container'da tanlang.",
+      "practicalTask": "`PaymentGateway` interfeysini `StripeGateway` ga bog'lang (`bind`), konfiguratsiya talab qiladigan klassni `singleton` qiling, `when()->needs()->give()` bilan kontekstli binding yozing, `app()->make` o'rniga constructor injection ishlating va testda mock bilan almashtiring.",
       "acceptanceCriteria": [
-        "`bind`, `singleton` va `scoped` farqini (Octane kontekstida ham) biladi",
-        "Contextual binding'ni ishlata oladi"
+        "`bind`, `singleton`, `scoped`, `instance` farqini va lifecycle'ini biladi",
+        "Avto-resolution (reflection) va primitive parametr uchun contextual binding'ni biladi",
+        "Interfeys → implementatsiya bog'lash va test uchun almashtirishni biladi",
+        "Octane/queue worker'da singleton holat sizishi xavfini biladi"
       ],
       "prerequisites": [
         "1.18",
@@ -414,27 +394,16 @@ registerSkill({
       "id": "2.7",
       "title": "Service Providers",
       "description": [
-        "Service provider — ilovani \"yig'ish\" markazi. `register()` da faqat container binding'lari (boshqa servislarga murojaat qilmaslik kerak), `boot()` da esa barcha provider'lar ro'yxatdan o'tgandan keyingi ishlar: event listener'lar, route'lar, view composer'lar, macro'lar, `Gate` qoidalari.",
-        "",
-        "**Deferred provider** (`DeferrableProvider`) faqat uning servisi so'ralganda yuklanadi — bootstrapping vaqtini kamaytiradi. Laravel 11+ da provider'lar `bootstrap/providers.php` da ro'yxatga olinadi.",
-        "",
-        "```php",
-        "final class BillingServiceProvider extends ServiceProvider implements DeferrableProvider",
-        "{",
-        "    public function register(): void",
-        "    {",
-        "        $this->app->singleton(InvoiceNumberGenerator::class);",
-        "    }",
-        "    public function provides(): array { return [InvoiceNumberGenerator::class]; }",
-        "}",
-        "```"
+        "Service Provider — ilova va paketlarni \"yuklash\" (bootstrap) joyi: container binding'lari (`register`) va hodisa, route, view, policy kabi sozlamalar (`boot`). Laravel 11+ da `bootstrap/providers.php` provider ro'yxatini saqlaydi; standart bitta `AppServiceProvider`. Senior uchun: `register` vs `boot` qoidasi, deferred provider, paket auto-discovery va provider'ni og'irlashtirmaslik."
       ],
       "priority": "core",
       "level": "Middle",
-      "practicalTask": "Modul uchun alohida service provider yarating: binding, config merge va route yuklash bilan.",
+      "practicalTask": "`PaymentServiceProvider` yarating: `register()` da binding, `boot()` da `Gate::policy`/`Route::bind`/morph map; `bootstrap/providers.php` ga qo'shing; `php artisan about` va `provider:list`-ga o'xshash tekshiruv bilan yuklanganini isbotlang.",
       "acceptanceCriteria": [
-        "`register()` da boshqa servisni resolve qilish nega xavfli ekanini tushuntira oladi",
-        "Deferred provider qachon foydali ekanini biladi"
+        "`register()` va `boot()` farqini va nega `register` da boshqa servis ishlatib bo'lmasligini biladi",
+        "`bootstrap/providers.php` va `make:provider` ni biladi",
+        "Deferred provider va paket auto-discovery'ni biladi",
+        "Provider'ga og'ir ish (so'rov, tarmoq) qo'ymaslik qoidasini biladi"
       ],
       "prerequisites": [
         "2.6"
@@ -444,26 +413,16 @@ registerSkill({
       "id": "2.8",
       "title": "Dependency Injection",
       "description": [
-        "DI — obyekt o'z dependency'larini o'zi yaratmaydi, ular tashqaridan (odatda constructor orqali) beriladi. Laravel'da controller, job, listener, command `handle()` va middleware'lar container orqali avtomatik inject qilinadi.",
-        "",
-        "Foyda: testda dependency'ni fake bilan almashtirish oson, bog'liqliklar aniq ko'rinadi, class'lar qayta ishlatiladi. Constructor'da 5–6 dan ortiq dependency — class juda ko'p ish qilayotgani belgisi. `app()`/`resolve()` ni biznes kod ichida chaqirish (service locator) bog'liqlikni yashiradi.",
-        "",
-        "```php",
-        "final class SendInvoice",
-        "{",
-        "    public function __construct(",
-        "        private readonly InvoiceRepository $invoices,",
-        "        private readonly Mailer $mailer,",
-        "    ) {}",
-        "}",
-        "```"
+        "Dependency Injection — klass o'ziga kerakli narsalarni **tashqaridan** oladi (o'zi yaratmaydi). Laravel'da constructor/method injection container orqali avtomatik. Natija: bog'liqlik ko'rinadi, almashtirish va mock qilish oson. Senior uchun: interfeysga bog'lanish, constructor ko'payib ketishi (SRP belgisi), \"service locator\" anti-pattern'i va DI'da qiymat obyektlari."
       ],
       "priority": "core",
       "level": "Middle",
-      "practicalTask": "Ichida `new` va `app()` ishlatilgan class'ni constructor injection'ga o'tkazib, unit test yozing.",
+      "practicalTask": "`new StripeClient()` ni to'g'ridan-to'g'ri chaqiruvchi servisni DI'ga o'tkazing: interfeys + constructor injection + provider binding; unit test (mock) va constructor 5+ parametrga yetsa nima qilishni ko'rsating.",
       "acceptanceCriteria": [
-        "Constructor va method injection farqini biladi",
-        "Service locator anti-pattern'ini tushuntira oladi"
+        "Constructor, method va property injection farqini biladi",
+        "DI va Service Locator (`app()`) farqini biladi",
+        "Interfeysga bog'lanish orqali testlashni osonlashtira oladi",
+        "Katta constructor'ni SRP belgisi sifatida taniydi"
       ],
       "prerequisites": [
         "2.6",
@@ -474,22 +433,16 @@ registerSkill({
       "id": "2.9",
       "title": "Facades",
       "description": [
-        "Facade — container'dagi servisga statik ko'rinishdagi proxy: `Cache::get()` aslida `app('cache')->get()`. Ichkarida `getFacadeAccessor()` va `__callStatic` ishlaydi. Real-time facade (`Facades\\App\\Services\\X`) istalgan class'ni facade qiladi.",
-        "",
-        "Facade'lar testlanadi: `Cache::shouldReceive()`, `Mail::fake()`, `Queue::fake()`. Lekin ular dependency'ni yashiradi — domen va servis qatlamida constructor injection, controller/route kabi \"chegaraviy\" kodda facade ishlatish keng tarqalgan muvozanat.",
-        "",
-        "```php",
-        "Mail::fake();",
-        "// ... action",
-        "Mail::assertSent(InvoiceMail::class, fn ($m) => $m->hasTo('a@b.uz'));",
-        "```"
+        "Facade — container'dagi servisga \"statik ko'rinishli\" interfeys (`Cache::get()`, `Log::info()`). Aslida statik emas: `__callStatic` orqali container'dan obyektni olib metodini chaqiradi. Qulay va ixcham, lekin yashirin bog'liqlik hosil qiladi. Senior uchun: facade vs DI tanlovi, `Facade::fake()`/`shouldReceive` bilan test, real-time facade, va \"class creep\" xavfi."
       ],
       "priority": "important",
       "level": "Middle",
-      "practicalTask": "O'zingizning servisingiz uchun facade yarating va testda `shouldReceive` bilan mock qiling.",
+      "practicalTask": "Bitta servisda `Cache::get` ni facade'dan constructor injection (`CacheRepository`) ga o'tkazing, ikkala variantni ham testlang (`Cache::shouldReceive` va mock) va `Storage::fake`/`Mail::fake` qaysi mexanizmga tayanishini tushuntiring.",
       "acceptanceCriteria": [
-        "Facade qanday qilib container'dan obyekt olishini tushuntira oladi",
-        "Facade va DI o'rtasida asosli tanlov qiladi"
+        "Facade qanday ishlashini (`getFacadeAccessor`, `__callStatic`, container) tushuntira oladi",
+        "Facade va DI'ni solishtirib tanlay oladi",
+        "`Facade::fake()`, `shouldReceive`, `spy` bilan testlaydi",
+        "Real-time facade (`Facades\\...`) ni biladi"
       ],
       "prerequisites": [
         "1.20",
@@ -500,25 +453,16 @@ registerSkill({
       "id": "2.1",
       "title": "Laravel Request Lifecycle",
       "description": [
-        "So'rov `public/index.php` ga keladi → Composer autoloader yuklanadi → `bootstrap/app.php` da `Application` (service container) yaratiladi → HTTP Kernel bootstrapper'larni ishga tushiradi (env, config, exception handler, facade'lar, provider'larni **register**, keyin **boot**) → global middleware → router route'ni topadi → route middleware → controller → javob middleware orqali qaytadi → `terminate()` (terminable middleware).",
-        "",
-        "Bu zanjirni bilish \"nega config'im o'qilmayapti\", \"middleware nega ishlamayapti\" kabi savollarga tez javob beradi.",
-        "",
-        "```php",
-        "// bootstrap/app.php (Laravel 11+)",
-        "return Application::configure(basePath: dirname(__DIR__))",
-        "    ->withRouting(web: __DIR__.'/../routes/web.php', api: __DIR__.'/../routes/api.php')",
-        "    ->withMiddleware(fn (Middleware $m) => $m->append(TrustProxies::class))",
-        "    ->withExceptions(fn (Exceptions $e) => null)",
-        "    ->create();",
-        "```"
+        "So'rov Laravel'da bitta kirish nuqtasidan (`public/index.php`) o'tadi: autoload → `bootstrap/app.php` (container va sozlama) → HTTP kernel → global middleware → router → route middleware → controller → javob teskari tartibda chiqadi → `terminate`. Hayot sikli xatoni qayerda izlashni (provider, middleware, controller) va nega `register` ichida boshqa servisni ishlatib bo'lmasligini tushuntiradi. Laravel 11+ da skelet yupqa: sozlash `bootstrap/app.php` da."
       ],
       "priority": "core",
       "level": "Middle",
-      "practicalTask": "So'rov hayotiy siklining har bosqichiga log qo'shib, tartibni amalda kuzating va diagramma chizing.",
+      "practicalTask": "Bitta so'rovni kuzating: global middleware, route middleware va controller'ga `Log::info` qo'ying, `terminate()` qo'shing va log tartibini (before → controller → after → terminate) chiqaring; `provider.register` ichida `auth()->user()` nega ishlamasligini isbotlang.",
       "acceptanceCriteria": [
-        "register va boot bosqichlari farqini tushuntira oladi",
-        "Terminable middleware qachon ishlashini biladi"
+        "So'rovning `index.php` dan javobgacha yo'lini ketma-ket aytib bera oladi",
+        "`register` va `boot`, global va route middleware, `terminate` o'rnini biladi",
+        "Laravel 11+ da `bootstrap/app.php` va `bootstrap/providers.php` rolini biladi",
+        "`route:list`, `about`, `optimize` yordamida muhitni tekshira oladi"
       ],
       "prerequisites": [
         "2.6",
