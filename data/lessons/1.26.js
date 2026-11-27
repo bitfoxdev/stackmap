@@ -2,7 +2,7 @@
 registerLesson("1.26", {
   "lesson": [
     "### Qo'llab-quvvatlash va upgrade",
-    "Faqat faol versiyalar xavfsizlik tuzatishini oladi: 8.1 EOL, 8.2 xavfsizlik 2026-12-31 gacha, 8.3 2027-12-31, 8.4 2028-12-31, 8.5 2029-12-31 gacha (aniq sanalar: php.net/supported-versions). Yangi loyiha uchun eng so'nggi barqaror versiya (8.4 yoki 8.5) tanlanadi.",
+    "Faqat faol versiyalar xavfsizlik tuzatishini oladi: 8.1 EOL, 8.2 xavfsizlik 2026-12-31 gacha, 8.3 2027-12-31, 8.4 2028-12-31, 8.5 2029-12-31, 8.6 (2026-11-19 da chiqqan) 2030-12-31 gacha (aniq sanalar: php.net/supported-versions). Yangi loyiha uchun eng so'nggi barqaror versiya (8.5; paketlar tayyor bo'lsa 8.6) tanlanadi.",
     "",
     "Upgrade tartibi:",
     "1. `composer.json` da `php` talabini va kutubxona mosligini tekshiring (`composer why-not php 8.4`).",
@@ -10,7 +10,7 @@ registerLesson("1.26", {
     "3. PHPStan darajasini oshiring, Rector (`PHP_83`/`PHP_84` set) bilan avtomatik o'zgartiring.",
     "4. Deprecation'larni log orqali kuzating (`E_DEPRECATED`) va tuzating.",
     "",
-    "Eng yangi yangiliklar: 1.34 (Property Hooks), 1.41 (8.4 va 8.5), 1.40 (Fibers).",
+    "Eng yangi yangiliklar: 1.34 (Property Hooks), 1.41 (8.4, 8.5 va 8.6), 1.40 (Fibers).",
     "",
     "### Versiya bo'yicha batafsil",
     "",

@@ -14,7 +14,7 @@ registerLesson("1.55", {
     "Standart fayl sessiyada so'rov sessiyani **qulflaydi**: parallel so'rovlar navbatlashadi. Yozish tugagach `session_write_close()` bilan qulfni oching.",
     "",
     "### Sessiya sozlamalari (php.ini)",
-    "`session.save_handler` (files/redis), `session.save_path`, `session.name` (default PHPSESSID), `session.gc_maxlifetime` (soniya), `session.cookie_lifetime`, `session.use_strict_mode`, `session.use_only_cookies`, `session.cookie_httponly/secure/samesite`. Ko'p serverda sessiyalarni **Redis** yoki DB'da saqlash kerak (fayl sessiya bitta serverga bog'langan).",
+    "`session.save_handler` (files/redis), `session.save_path`, `session.name` (default PHPSESSID), `session.gc_maxlifetime` (soniya), `session.cookie_lifetime`, `session.use_strict_mode`, `session.use_only_cookies`, `session.cookie_httponly/secure/samesite` (8.6 dan `use_strict_mode` va `cookie_httponly` default yoqiq, `samesite` default `Lax`; 8.5 gacha qo'lda yoqing). Ko'p serverda sessiyalarni **Redis** yoki DB'da saqlash kerak (fayl sessiya bitta serverga bog'langan).",
     "",
     "### Sessiya hayot tsikli",
     "1. `session_start()` — ID bo'lmasa yaratadi, bo'lsa ma'lumotni yuklaydi, faylni qulflaydi.",

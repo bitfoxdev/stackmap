@@ -170,11 +170,11 @@ window.INTERVIEW_TESTS = [
       },
       {
         "key": "D",
-        "text": "`json_validate()` satrni faqat sintaktik tahlil qiladi va xotirada hech qanday PHP massiv yoki obyekt daraxtini (zval) yaratmaydi, natijada katta JSON ma'lumotlarda O(1) minimal xotira sarflaydi"
+        "text": "`json_validate()` satrni faqat sintaktik tahlil qiladi va xotirada hech qanday PHP massiv yoki obyekt daraxtini (zval) yaratmaydi, natijada tekshiruv uchun faqat parser steki (JSON chuqurligiga bog'liq) ishlatiladi"
       }
     ],
     "correct": "D",
-    "explanation": "Ilgari JSON validligini tekshirish uchun json_decode($string) qilinardi, bu esa gigabaytlab xotira yeb qo'yishi mumkin edi. PHP 8.3 da kiritilgan json_validate() hech qanday xotira ajratmasdan faqat C darajasida JSON sintaksisini juda tez tekshiradi."
+    "explanation": "Ilgari JSON validligini tekshirish uchun json_decode($string) qilinardi, bu esa gigabaytlab xotira yeb qo'yishi mumkin edi. PHP 8.3 da kiritilgan json_validate() to'liq PHP qiymatlar daraxtini qurmasdan faqat C darajasida JSON sintaksisini juda tez tekshiradi."
   },
   {
     "id": "t-php-7",
@@ -406,7 +406,7 @@ window.INTERVIEW_TESTS = [
       }
     ],
     "correct": "B",
-    "explanation": "PHP 8.1 Fibers — bu stackful coroutine mexanizmi. U dastur bajarilishini Fiber::suspend() orqali to'xtatib, keyinchalik ->resume() orqali to'xtagan joyidan davom ettirish imkonini beradi. Bu RevoltPHP, Amp yoki Swoole kabi event-loop kutubxonalari uchun sinxron ko'rinishdagi toza asinxron kod yozish asosi hisoblanadi."
+    "explanation": "PHP 8.1 Fibers — bu stackful coroutine mexanizmi. U dastur bajarilishini Fiber::suspend() orqali to'xtatib, keyinchalik ->resume() orqali to'xtagan joyidan davom ettirish imkonini beradi. Bu RevoltPHP yoki Amp kabi event-loop kutubxonalari uchun sinxron ko'rinishdagi toza asinxron kod yozish asosi hisoblanadi."
   },
   {
     "id": "t-php-15",
@@ -580,7 +580,7 @@ window.INTERVIEW_TESTS = [
       }
     ],
     "correct": "C",
-    "explanation": "PHP 5.3 dan boshlab Goldman va Bacon tomonidan ishlab chiqilgan Cyclic Garbage Collector qo'llaniladi. U refcount kamayganda ehtimoliy sikllarni 'binafsha' buferga joylaydi va bufer to'lganda (10,000 ta ob'ekt) simulyatsiya orqali sikllarni aniqlab (oq tugunlarni) xotiradan tozalaydi."
+    "explanation": "PHP 5.3 dan boshlab Bacon va Rajan tomonidan ishlab chiqilgan Cyclic Garbage Collector qo'llaniladi. U refcount kamayganda ehtimoliy sikllarni 'binafsha' buferga joylaydi va bufer to'lganda (10,000 ta ob'ekt) simulyatsiya orqali sikllarni aniqlab (oq tugunlarni) xotiradan tozalaydi."
   },
   {
     "id": "t-php-21",

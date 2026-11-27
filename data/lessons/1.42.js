@@ -25,7 +25,7 @@ registerLesson("1.42", {
     "Kengaytma `.php`. Fayl ichida oddiy HTML va PHP bloklari (`<?php ... ?>`) aralash bo'lishi mumkin. Faqat PHP bo'lsa, yopuvchi `?>` yozilmaydi.",
     "",
     "### PHP versiyalari va rivoji",
-    "- **PHP 5** (2004): OOP asoslari. **PHP 7** (2015): ikki barobar tezlik, skalyar tiplar, `??`. **PHP 8** (2020): JIT, attributes, `match`, named arguments; **8.1** enum/readonly, **8.4** property hooks, **8.5** pipe operatori.",
+    "- **PHP 5** (2004): OOP asoslari. **PHP 7** (2015): ikki barobar tezlik, skalyar tiplar, `??`. **PHP 8** (2020): JIT, attributes, `match`, named arguments; **8.1** enum/readonly, **8.4** property hooks, **8.5** pipe operatori, **8.6** partial function application (`f(?, 2)`).",
     "- Har yil noyabrda yangi minor versiya chiqadi; har versiya ~2 yil to'liq, yana ~2 yil faqat xavfsizlik tuzatishlari bilan qo'llab-quvvatlanadi.",
     "",
     "### Frontend va backend farqi",

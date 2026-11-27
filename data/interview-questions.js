@@ -98,7 +98,7 @@ window.INTERVIEW_QUESTIONS = [
       "    public private(set) string $slug; // Tashqaridan faqat o'qiladi",
       "",
       "    public string $name {",
-      "        set => {",
+      "        set {",
       "            $this->name = trim($value);",
       "            $this->slug = strtolower(str_replace(' ', '-', $this->name));",
       "        }",
@@ -1074,7 +1074,7 @@ window.INTERVIEW_QUESTIONS = [
   },
   {
     id: "iq-42",
-    title: "OPcache qanday ishlaydi va PHP 7.4+ da chiqqan opcache.preload mexanizmi unumdorlikni qanday qilib 15-30% ga oshiradi?",
+    title: "OPcache qanday ishlaydi va PHP 7.4+ da chiqqan opcache.preload mexanizmi unumdorlikni qanday oshiradi?",
     level: "middle",
     category: "php",
     categoryLabel: "PHP tili",
@@ -1110,7 +1110,7 @@ window.INTERVIEW_QUESTIONS = [
       "",
       "```php",
       "$fiber = new Fiber(function (): void {",
-      "    $value = Fiber::suspend('to\'xtatildi');",
+      "    $value = Fiber::suspend(\"to'xtatildi\");",
       "    echo \"Qayta tiklandi: {$value}\\n\";",
       "});",
       "",
@@ -2064,7 +2064,7 @@ window.INTERVIEW_QUESTIONS = [
       "}",
       "$order = new Order();",
       "echo $order->status; // OK",
-      "// $order->status = 'cancelled'; // Fatal error: Cannot modify private(set) property",
+      "// $order->status = 'cancelled'; // Error: Cannot modify private(set) property Order::$status from global scope",
       "```",
       "",
       "**2. Property Hooks (get va set hooklar):**",
@@ -2108,7 +2108,7 @@ window.INTERVIEW_QUESTIONS = [
       "$hasAdmin = array_any($users, fn($u) => $u['role'] === 'admin'); // true",
       "```"
 ],
-    tip: "Bu funksiyalar C tilida yozilgani va birinchi topilgan joyida to'xtashi sababli PHP darajasidagi foreach siklidan ancha tezroq ishlaydi."
+    tip: "Bu funksiyalar birinchi mos elementda to'xtaydi (`array_filter` esa hammasini aylanadi) va niyatni aniq ifodalaydi; tezlik foydasi asosan shu early-exit'dan, callback chaqiruvi narxi baribir qoladi."
   },
   {
     id: "iq-86",
@@ -2638,7 +2638,7 @@ window.INTERVIEW_QUESTIONS = [
       "count($map); // 0",
       "```"
     ],
-    "tip": "ORM larda (Doctrine yoki Eloquent Identity Map) obyektlar keshini xotirani to'ldirib yubormasdan boshqarishda aynan WeakMap ishlatiladi."
+    "tip": "WeakMap obyektga bog'langan keshni (memoization, metadata) obyektning umriga bog'lab, xotira sizishini oldini oladi."
   },
   {
     "id": "iq-107",
@@ -2653,7 +2653,7 @@ window.INTERVIEW_QUESTIONS = [
       "",
       "**Nega Laravel / Web ilovalarda katta farq yo'q?**",
       "- Veb-ilovalar 90% vaqtini **I/O Bound** (MySQL dan ma'lumot kutish, Redis ga so'rov, tarmoq orqali HTTP kutish, diskdan fayl o'qish) bilan o'tkazadi. CPU hisob-kitoblariga juda oz vaqt ketadi.",
-      "- **JIT qachon foyda beradi? CPU Bound vazifalarda:** Mashinaviy o'rganish (ML), 3D matematika, tasvirlarni qayta ishlash, matn tokenizatsiyasi yoki katta sonlarni hisoblashda 2x-5x tezlik berishi mumkin."
+      "- **JIT qachon foyda beradi? CPU Bound vazifalarda:** Mashinaviy o'rganish (ML), 3D matematika, tasvirlarni qayta ishlash, matn tokenizatsiyasi yoki katta sonlarni hisoblashda bir necha baravar tezlik berishi mumkin (aniq foyda ishga bog'liq: o'lchang)."
     ],
     "tip": "Intervyuda 'PHP 8 ga o'tsak saytimiz 3 barobar tezlashadi, chunki JIT bor' deb aytmang — vebda asosiy to'siq I/O ekanligini ta'kidlash Seniorlik belgisidir."
   },
@@ -2698,12 +2698,12 @@ window.INTERVIEW_QUESTIONS = [
     "skillSlug": "php",
     "subskillId": "1.16",
     "answer": [
-      "PHP 8.0 gacha metadata (masalan `@Route('/home')` yoki `@ORM\\\\Column`) faqat matnli izoh (DocBlock) sifatida yozilar va regex bilan o'qilar edi (xatoliklar xavfi yuqori, tiplar yo'q).",
+      "PHP 8.0 gacha metadata (masalan `@Route('/home')` yoki `@ORM\\Column`) faqat matnli izoh (DocBlock) sifatida yozilar va regex bilan o'qilar edi (xatoliklar xavfi yuqori, tiplar yo'q).",
       "",
       "**PHP 8 Attributes (Native sintaksis):**",
       "- Attributlar haqiqiy PHP sinflaridir (`#[Attribute]`).",
-      "- Ular kompilyatsiya vaqtida sintaksis tekshiruvidan o'tadi, qat'iy tiplar va avtoto'ldirish (IDE autocomplete) ishlaydi.",
-      "- `ReflectionClass::getAttributes()` orqali bir necha mikrosekundda o'qiladi.",
+      "- Sintaksis kompilyatsiya vaqtida tekshiriladi; attribute klassining mosligi (mavjudligi, target, argumentlar) esa `newInstance()` chaqirilganda tekshiriladi. IDE autocomplete ishlaydi.",
+      "- `ReflectionClass::getAttributes()` orqali o'qiladi; obyekt faqat `newInstance()` bilan yaratiladi (lazy).",
       "```php",
       "#[Attribute(Attribute::TARGET_METHOD)]",
       "class RateLimit {",
@@ -2716,7 +2716,7 @@ window.INTERVIEW_QUESTIONS = [
       "}",
       "```"
     ],
-    "tip": "Laravel 11 da ko'plab routing va event tinglovchilarida aynan Native Attributes keng qo'llanilmoqda."
+    "tip": "Symfony (`#[Route]`), Doctrine (`#[ORM\\Column]`) va PHPUnit (`#[Test]`, `#[DataProvider]`) kabi kutubxonalar annotatsiyalar o'rniga native attribute'larga o'tgan."
   },
   {
     "id": "iq-110",
@@ -2845,10 +2845,10 @@ window.INTERVIEW_QUESTIONS = [
     "skillSlug": "php",
     "subskillId": "1.35",
     "answer": [
-      "PHP dagi oddiy massiv (Associative Array) aslida murakkab Hash Table tuzilmasidir va har bir element uchun katta miqdorda qo'shimcha xotira sarflaydi.",
+      "PHP dagi oddiy massiv (Associative Array) aslida tartiblangan Hash Table; faqat 0..n-1 kalitli (packed) massiv ixcham saqlanadi, lekin assotsiativ massiv har element uchun ko'proq xotira oladi.",
       "",
-      "- **SplFixedArray:** Faqat sonli indekslarga ega, o'lchami qat'iy belgilangan massiv. Oddiy massivga qaraganda 3 barobar kam xotira sarflaydi va tezroq ishlaydi (Millionlab qatorlarni xotirada saralashda qo'l keladi).",
-      "- **SplPriorityQueue (Ustuvorlik navbati):** Elementlarni berilgan ustuvorlik (Priority) bo'yicha saralab beruvchi Heap (uyum) daraxti. Eng muhim vazifani $O(\\log N)$ vaqtda olish imkonini beradi."
+      "- **SplFixedArray:** Faqat sonli indekslarga ega, o'lchami qat'iy belgilangan massiv. PHP 7+ da oddiy `packed` massiv ham ixcham, shuning uchun xotira va tezlik farqi odatda sezilarli emas (1 mln butun son: ikkalasi ~16 MB, SplFixedArray tezroq emas); foydasi — qat'iy o'lcham va faqat butun indekslar (Millionlab qatorlarni xotirada saralashda qo'l keladi).",
+      "- **SplPriorityQueue (Ustuvorlik navbati):** Elementlarni berilgan ustuvorlik (Priority) bo'yicha saralab beruvchi Heap (uyum) daraxti. Eng muhim vazifani $O(\\log N)$ vaqtda olish imkonini beradi. Bir xil ustuvorlikdagi elementlarning chiqish tartibi **kafolatlanmaydi** (FIFO emas): kerak bo'lsa ustuvorlikka ketma-ket raqamni qo'shib `[priority, counter]` massivini ishlating."
     ],
     "tip": "Katta masshtabli algoritmlarda xotira tejash uchun SPL tuzilmalarini bilish nomzodning chuqur kompyuter ilmlari (CS fundamentals) asosiga egaligini ko'rsatadi."
   },
@@ -5208,7 +5208,7 @@ window.INTERVIEW_QUESTIONS = [
       "",
       "1. **`final class`:**",
       "   - Sinf oldiga `final` qo'yilsa, undan boshqa hech qanday sinf meros ololmaydi (`extends` qilib bo'lmaydi).",
-      "   ```php\n   final class PaymentService {}\n   class CustomPayment extends PaymentService {} // Fatal error: Class CustomPayment may not inherit from final class\n   ```",
+      "   ```php\n   final class PaymentService {}\n   class CustomPayment extends PaymentService {} // Fatal error: Class CustomPayment cannot extend final class PaymentService\n   ```",
       "",
       "2. **`final public function`:**",
       "   - Sinfning aniq bir metodi oldiga `final` qo'yilsa, voris sinflar bu metodni o'zgartira (override qila) olmaydi.",

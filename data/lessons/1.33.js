@@ -2,7 +2,7 @@
 registerLesson("1.33", {
   "lesson": [
     "### Readonly property",
-    "PHP 8.1: `public readonly string $name;` — qiymat **bir marta**, faqat klass ichidan beriladi, keyin o'zgarmaydi (o'zgartirish `Error`). Tipli bo'lishi shart, default qiymat bo'lishi mumkin emas. Konstruktor promotion bilan juda qulay.",
+    "PHP 8.1: `public readonly string $name;` — qiymat **bir marta**, faqat klass ichidan beriladi, keyin o'zgarmaydi (o'zgartirish `Error`). Tipli bo'lishi shart, default qiymat bo'lishi mumkin emas (8.6 dan readonly property default qiymat olishi mumkin). Konstruktor promotion bilan juda qulay.",
     "",
     "### Readonly class",
     "8.2: `readonly class` hamma property'ni readonly qiladi va dinamik property'ni taqiqlaydi. Faqat tipli property'lar bo'lishi mumkin va static property bo'lmaydi.",
@@ -20,7 +20,7 @@ registerLesson("1.33", {
     "8.5 da `clone($obj, ['prop' => $v])` readonly obyektdan o'zgartirilgan nusxa yaratishni sodda qiladi. Undan oldin `new static(...)` yoki `clone` + reflection hiylalari kerak edi (readonly bo'lsa `__clone` ichida qayta yozish 8.3 dan ruxsat).",
     "",
     "### Readonly chuqurroq",
-    "- Property tipli bo'lishi shart (`mixed` ham); tipsiz yoki default qiymatli bo'lmaydi.",
+    "- Property tipli bo'lishi shart (`mixed` ham); tipsiz bo'lmaydi; default qiymat 8.6 gacha mumkin emas.",
     "- Faqat **e'lon qilingan klass doirasidan** initsializatsiya qilinadi bir marta. PHP 8.4 gacha readonly xossa implicit `private(set)` edi (faqat e'lon qilgan klass yozadi); 8.4 dan u implicit `protected(set)`: voris klass ham uni initsializatsiya qila oladi, kerak bo'lsa `private(set)` bilan aniq cheklang.",
     "- `unset()` faqat initsializatsiyadan oldin klass ichidan; clone `__clone` ichida (8.3).",
     "- Static property readonly bo'la olmaydi.",
@@ -128,7 +128,7 @@ registerLesson("1.33", {
   ],
   "pitfalls": [
     "`readonly` sayoz: ichki obyektni baribir o'zgartirish mumkin; chuqur immutabilitet uchun ichki tiplarni ham immutable qiling.",
-    "Readonly property default qiymat olmaydi va klass tashqarisidan initsializatsiya qilinmaydi (`Cannot initialize readonly property from global scope`).",
+    "Readonly property (8.6 gacha) default qiymat olmaydi va klass tashqarisidan initsializatsiya qilinmaydi (`Cannot initialize readonly property from global scope`).",
     "Readonly class ota klassi ham readonly bo'lishi kerak; oddiy klassdan readonly klass yaratib bo'lmaydi.",
     "Hook (8.4) va `readonly` birga ishlamaydi: cheklov kerak bo'lsa `private(set)`.",
     "`with*` metodlarida validatsiyani qayta chaqiring, aks holda yaroqsiz obyekt yaratish mumkin."

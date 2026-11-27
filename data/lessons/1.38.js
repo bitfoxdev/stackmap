@@ -33,7 +33,7 @@ registerLesson("1.38", {
     "Laravel so'rovi: `public/index.php` → autoload → `bootstrap/app.php` → Kernel → providers (register/boot) → middleware → controller → response → `terminate`.",
     "",
     "### Shared-nothing afzalliklari va narxi",
-    "Afzallik: xotira so'rov bilan tozalanadi, holat so'rovlar orasida aralashmaydi, deploy oson. Narx: har so'rovda framework boot (Laravel ~ 10–40 ms), ulanishlar qayta ochiladi (DB), kesh holati yo'q → Octane/Swoole bu narxni kamaytiradi, lekin xavfsizlik mas'uliyatini dasturchiga beradi.",
+    "Afzallik: xotira so'rov bilan tozalanadi, holat so'rovlar orasida aralashmaydi, deploy oson. Narx: har so'rovda framework boot (Laravel: o'nlab millisekund, ilovaga bog'liq), ulanishlar qayta ochiladi (DB), kesh holati yo'q → Octane/Swoole bu narxni kamaytiradi, lekin xavfsizlik mas'uliyatini dasturchiga beradi.",
     "",
     "### Octane xavfsiz kodlash qoidalari",
     "1. Singleton ichiga `Request`, `Auth`, `Session`, `config` snapshot'ini yozmang; `Container::getInstance()` o'rniga closure/resolve.",

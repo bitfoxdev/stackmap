@@ -10,7 +10,7 @@ registerLesson("1.15", {
     "",
     "### try / catch / finally",
     "- Bir nechta catch, `catch (A | B $e)` — bir nechta tip.",
-    "- `finally` — har doim bajariladi (xato bo'lsa ham, `return` bo'lsa ham). `finally` ichida `return` istisnoni yutib yuboradi.",
+    "- `finally` — har doim bajariladi (xato bo'lsa ham, `return` bo'lsa ham). `finally` ichida `return` istisnoni yutib yuboradi (8.6 dan deprecated).",
     "- Qayta tashlash: `throw $e;` yoki o'rash `throw new X('...', 0, $e)` (**previous**) — zanjir saqlanadi.",
     "",
     "### Maxsus istisnolar",
