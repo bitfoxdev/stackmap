@@ -8023,5 +8023,140 @@ window.INTERVIEW_QUESTIONS = [
       "Qo'shimcha: `outdated --direct --strict`, `update --dry-run`, `--minimal-changes`; yangi versiyani bir necha kun kutish (supply-chain himoyasi). `composer bump` ni kutubxonada ko'r-ko'rona ishlatmang."
     ],
     "tip": "Yillab yangilamaslik va hammasini birdan ko'tarishning xavfini ayting."
+  },
+  {
+    "id": "iq-352",
+    "title": "SQL buyruqlari qanday guruhlarga bo'linadi va MySQL'da DDL tranzaksiyaga qanday ta'sir qiladi?",
+    "level": "junior",
+    "category": "database",
+    "categoryLabel": "SQL",
+    "skillSlug": "sql",
+    "subskillId": "9.25",
+    "answer": [
+      "**DDL** (`CREATE`, `ALTER`, `DROP`, `TRUNCATE`) — tuzilma, **DML** (`SELECT`, `INSERT`, `UPDATE`, `DELETE`) — ma'lumot, **DCL** (`GRANT`, `REVOKE`) — ruxsat, **TCL** (`COMMIT`, `ROLLBACK`, `SAVEPOINT`) — tranzaksiya.",
+      "",
+      "MySQL'da DDL **implicit commit** qiladi: ochiq tranzaksiya tugaydi va `ROLLBACK` uni qaytara olmaydi. PostgreSQL'da DDL tranzaksiyali."
+    ],
+    "tip": "Migration yarim yo'lda to'xtasa MySQL'da qisman o'zgarish qolishini ayting."
+  },
+  {
+    "id": "iq-353",
+    "title": "`DELETE`, `TRUNCATE` va `DROP` farqi nima?",
+    "level": "junior",
+    "category": "database",
+    "categoryLabel": "SQL",
+    "skillSlug": "sql",
+    "subskillId": "9.26",
+    "answer": [
+      "`DELETE` — DML: `WHERE` bilan, qator-qator, tranzaksiyada qaytariladi, trigger ishlaydi, `AUTO_INCREMENT` davom etadi. `TRUNCATE` — DDL: hamma qatorni tez o'chiradi, `WHERE` yo'q, `AUTO_INCREMENT` qayta boshlanadi, MySQL'da commit qiladi. `DROP` — jadvalning o'zini (tuzilma bilan) o'chiradi.",
+      "",
+      "FK bilan havola qilingan jadvalni `TRUNCATE`/`DROP` qilish xato beradi. PostgreSQL'da `TRUNCATE` tranzaksiyali, `CASCADE` bog'liq jadvallarni ham bo'shatadi."
+    ],
+    "tip": "Production'da `DROP`/`TRUNCATE` ni zaxirasiz ishlatmaslikni ayting."
+  },
+  {
+    "id": "iq-354",
+    "title": "Katta jadvalga `NOT NULL` ustun qo'shishni production'da qanday xavfsiz bajarasiz?",
+    "level": "senior",
+    "category": "database",
+    "categoryLabel": "SQL",
+    "skillSlug": "sql",
+    "subskillId": "9.27",
+    "answer": [
+      "`ALTER` metadata lock oladi va katta jadvalda uzoq bloklashi mumkin. Tartib: (1) `ADD COLUMN ... NULL` (MySQL'da ko'pincha `ALGORITHM=INSTANT`), (2) ilova yangi ustunni yoza boshlaydi, (3) eski qatorlarni bo'lak-bo'lak to'ldirish, (4) `MODIFY ... NOT NULL`.",
+      "",
+      "`ALGORITHM`/`LOCK` ni aniq yozing (`INPLACE, LOCK=NONE`): mumkin bo'lmasa xato beradi. Juda katta jadval uchun `gh-ost`/`pt-online-schema-change`. Uzoq tranzaksiya `ALTER` ni navbatda ushlab hamma so'rovni bloklashi mumkin."
+    ],
+    "tip": "Staging'da vaqtni o'lchashni va `down` migration'ni ayting."
+  },
+  {
+    "id": "iq-355",
+    "title": "`NOT IN` nega NULL bilan kutilmagan natija beradi va qanday to'g'rilanadi?",
+    "level": "middle",
+    "category": "database",
+    "categoryLabel": "SQL",
+    "skillSlug": "sql",
+    "subskillId": "9.28",
+    "answer": [
+      "`x NOT IN (1, 2, NULL)` hech qachon true bo'lmaydi: NULL bilan taqqoslash noma'lum (`UNKNOWN`) beradi, natija **bo'sh** bo'ladi.",
+      "",
+      "To'g'risi: `NOT EXISTS (SELECT 1 ... WHERE b.user_id = u.id)` yoki subquery'da `WHERE col IS NOT NULL`. `NOT EXISTS` NULL-xavfsiz va ko'pincha tezroq."
+    ],
+    "tip": "`BETWEEN` chegaralarini va `LIKE '%x'` indeks ishlatmasligini ham eslatib o'ting."
+  },
+  {
+    "id": "iq-356",
+    "title": "`BETWEEN` sana ustunida qanday tuzoq beradi?",
+    "level": "junior",
+    "category": "database",
+    "categoryLabel": "SQL",
+    "skillSlug": "sql",
+    "subskillId": "9.28",
+    "answer": [
+      "`BETWEEN a AND b` ikkala chegarani qamraydi. Vaqtli ustunda `BETWEEN '2026-01-01' AND '2026-01-31'` 31-yanvarning faqat `00:00:00` ini oladi, kun oxiri tushib qoladi.",
+      "",
+      "To'g'ri: `>= '2026-01-01' AND < '2026-02-01'` (yarim ochiq oraliq). Ustunga `DATE(col)` qo'llamang: indeks ishlamaydi."
+    ],
+    "tip": "Laravel'da `whereBetween` ham xuddi shunday."
+  },
+  {
+    "id": "iq-357",
+    "title": "Least privilege nima va ilova uchun DB hisoblarini qanday ajratasiz?",
+    "level": "middle",
+    "category": "database",
+    "categoryLabel": "SQL",
+    "skillSlug": "sql",
+    "subskillId": "9.29",
+    "answer": [
+      "Har servisga faqat kerakli huquq: `app` — kerakli jadvallarda `SELECT/INSERT/UPDATE/DELETE`; `migrator` — DDL (deploy vaqtida); `report` — faqat `SELECT`. `DROP`, `ALTER`, `GRANT OPTION` ilovada yo'q.",
+      "",
+      "MySQL 8: avval `CREATE USER`, so'ng `GRANT ... ON db.* TO 'app'@'host'`, tekshirish `SHOW GRANTS`. `root` ilovada bo'lsa SQL injection butun serverga yetadi."
+    ],
+    "tip": "Rollar (`CREATE ROLE`) va host cheklovini ayting."
+  },
+  {
+    "id": "iq-358",
+    "title": "SQL mantiqiy bajarilish tartibi qanday va alias nega `WHERE` da ishlamaydi?",
+    "level": "junior",
+    "category": "database",
+    "categoryLabel": "SQL",
+    "skillSlug": "sql",
+    "subskillId": "9.30",
+    "answer": [
+      "`FROM/JOIN` → `WHERE` → `GROUP BY` → `HAVING` → window → `SELECT` → `DISTINCT` → `ORDER BY` → `LIMIT`. Alias `SELECT` da hosil bo'ladi, `WHERE` undan oldin bajariladi, shuning uchun u yerda ko'rinmaydi.",
+      "",
+      "`ORDER BY` da alias ko'rinadi. Alias bo'yicha filtr kerak bo'lsa CTE/subquery. MySQL `GROUP BY/HAVING` da aliasga ruxsat beradi, lekin bu standart emas."
+    ],
+    "tip": "Subquery `FROM` da alias majburiyligini ham ayting."
+  },
+  {
+    "id": "iq-359",
+    "title": "`ROW_NUMBER`, `RANK` va `DENSE_RANK` farqi? `LAST_VALUE` nega kutilgan natija bermaydi?",
+    "level": "middle",
+    "category": "database",
+    "categoryLabel": "SQL",
+    "skillSlug": "sql",
+    "subskillId": "9.31",
+    "answer": [
+      "Ballar 90, 90, 80: `ROW_NUMBER` 1,2,3; `RANK` 1,1,3 (bo'shliq); `DENSE_RANK` 1,1,2.",
+      "",
+      "`ORDER BY` bor bo'lsa default frame `UNBOUNDED PRECEDING..CURRENT ROW`, shuning uchun `LAST_VALUE` joriy qatorni qaytaradi; frame'ni `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` qiling. Window natijasini `WHERE` da ishlatib bo'lmaydi (CTE)."
+    ],
+    "tip": "Top-N har guruhda misolini yozing."
+  },
+  {
+    "id": "iq-360",
+    "title": "`SAVEPOINT` nima va Laravel ichma-ich tranzaksiyani qanday bajaradi?",
+    "level": "middle",
+    "category": "database",
+    "categoryLabel": "SQL",
+    "skillSlug": "sql",
+    "subskillId": "9.32",
+    "answer": [
+      "`SAVEPOINT x` tranzaksiya ichida qaytarish nuqtasi; `ROLLBACK TO SAVEPOINT x` faqat undan keyingi o'zgarishlarni bekor qiladi, tranzaksiya ochiq qoladi (`COMMIT` kerak). `RELEASE SAVEPOINT` nuqtani olib tashlaydi.",
+      "",
+      "Laravel ichki `DB::transaction()` uchun `SAVEPOINT trans2` yuboradi: ichki xato faqat ichki qismni qaytaradi (exception tashqarida ushlansa). Tashqi tranzaksiyani qisqa saqlang, ichida tashqi API chaqirmang."
+    ],
+    "tip": "`afterCommit` bilan yon ta'sirlarni ayting."
   }
 ];

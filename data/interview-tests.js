@@ -6846,5 +6846,266 @@ window.INTERVIEW_TESTS = [
     "correct": "B",
     "explanation": "Major'lar alohida PR/branch'da, upgrade guide va testlar bilan yangilanadi.",
     "level": "middle"
+  },
+  {
+    "id": "t-sql-1",
+    "category": "database",
+    "categoryLabel": "SQL",
+    "skillSlug": "sql",
+    "subskillId": "9.25",
+    "question": "Qaysi buyruq DDL guruhiga kiradi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`UPDATE`"
+      },
+      {
+        "key": "B",
+        "text": "`TRUNCATE`"
+      },
+      {
+        "key": "C",
+        "text": "`GRANT`"
+      },
+      {
+        "key": "D",
+        "text": "`COMMIT`"
+      }
+    ],
+    "correct": "B",
+    "explanation": "`TRUNCATE` — DDL (tuzilma buyrug'i); `UPDATE` — DML, `GRANT` — DCL, `COMMIT` — TCL.",
+    "level": "junior"
+  },
+  {
+    "id": "t-sql-2",
+    "category": "database",
+    "categoryLabel": "SQL",
+    "skillSlug": "sql",
+    "subskillId": "9.26",
+    "question": "MySQL'da `TRUNCATE TABLE` haqida qaysi gap to'g'ri?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Tranzaksiyada `ROLLBACK` bilan qaytariladi"
+      },
+      {
+        "key": "B",
+        "text": "`WHERE` bilan ishlaydi"
+      },
+      {
+        "key": "C",
+        "text": "`AUTO_INCREMENT` ni qayta boshlaydi va implicit commit qiladi"
+      },
+      {
+        "key": "D",
+        "text": "`DELETE` triggerlarini ishga tushiradi"
+      }
+    ],
+    "correct": "C",
+    "explanation": "`TRUNCATE` DDL: commit qiladi, qaytarilmaydi, `WHERE` yo'q, trigger ishlamaydi, `AUTO_INCREMENT` qayta boshlanadi.",
+    "level": "junior"
+  },
+  {
+    "id": "t-sql-3",
+    "category": "database",
+    "categoryLabel": "SQL",
+    "skillSlug": "sql",
+    "subskillId": "9.27",
+    "question": "Katta jadvalda MySQL'da `ALTER` ni minimal bloklash bilan bajarishda nimani aniq yozish tavsiya etiladi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`FORCE`"
+      },
+      {
+        "key": "B",
+        "text": "`ALGORITHM=INPLACE, LOCK=NONE` (mumkin bo'lmasa xato beradi)"
+      },
+      {
+        "key": "C",
+        "text": "`DROP TABLE`"
+      },
+      {
+        "key": "D",
+        "text": "`SET autocommit=0`"
+      }
+    ],
+    "correct": "B",
+    "explanation": "`ALGORITHM`/`LOCK` aniq yozilsa, DBMS jimgina qimmat `COPY` variantiga o'tmaydi, mumkin bo'lmasa xato beradi.",
+    "level": "middle"
+  },
+  {
+    "id": "t-sql-4",
+    "category": "database",
+    "categoryLabel": "SQL",
+    "skillSlug": "sql",
+    "subskillId": "9.28",
+    "question": "`WHERE id NOT IN (SELECT user_id FROM blocks)` da `user_id` ustunida NULL bo'lsa natija qanday?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Hamma qator qaytadi"
+      },
+      {
+        "key": "B",
+        "text": "Bo'sh natija"
+      },
+      {
+        "key": "C",
+        "text": "Faqat NULL qatorlar"
+      },
+      {
+        "key": "D",
+        "text": "Xato"
+      }
+    ],
+    "correct": "B",
+    "explanation": "NULL bilan taqqoslash UNKNOWN bo'lgani uchun `NOT IN` hech qachon true bo'lmaydi; `NOT EXISTS` ishlating.",
+    "level": "middle"
+  },
+  {
+    "id": "t-sql-5",
+    "category": "database",
+    "categoryLabel": "SQL",
+    "skillSlug": "sql",
+    "subskillId": "9.28",
+    "question": "`WHERE name LIKE '%son'` haqida qaysi gap to'g'ri?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Indeksdan to'liq foydalanadi"
+      },
+      {
+        "key": "B",
+        "text": "Boshida `%` bo'lgani uchun indeks ishlamaydi (full scan)"
+      },
+      {
+        "key": "C",
+        "text": "`_` bilan bir xil"
+      },
+      {
+        "key": "D",
+        "text": "Faqat sonlar uchun"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Prefiksli (`'ab%'`) andoza indeksdan foydalanadi, `'%son'` yo'q.",
+    "level": "junior"
+  },
+  {
+    "id": "t-sql-6",
+    "category": "database",
+    "categoryLabel": "SQL",
+    "skillSlug": "sql",
+    "subskillId": "9.29",
+    "question": "Ilova DB hisobi uchun eng to'g'ri yondashuv qaysi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`root` hisobi"
+      },
+      {
+        "key": "B",
+        "text": "Kerakli jadvallarda faqat DML huquqi"
+      },
+      {
+        "key": "C",
+        "text": "`ALL PRIVILEGES WITH GRANT OPTION`"
+      },
+      {
+        "key": "D",
+        "text": "Hammaga bir xil umumiy hisob"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Least privilege: ilova faqat kerakli DML'ni oladi; DDL alohida `migrator` hisobida.",
+    "level": "middle"
+  },
+  {
+    "id": "t-sql-7",
+    "category": "database",
+    "categoryLabel": "SQL",
+    "skillSlug": "sql",
+    "subskillId": "9.30",
+    "question": "Quyidagilardan qaysi birida `SELECT` ichida yaratilgan alias standart SQL'da ko'rinadi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "`WHERE`"
+      },
+      {
+        "key": "B",
+        "text": "`ORDER BY`"
+      },
+      {
+        "key": "C",
+        "text": "`FROM`"
+      },
+      {
+        "key": "D",
+        "text": "`JOIN ... ON`"
+      }
+    ],
+    "correct": "B",
+    "explanation": "`ORDER BY` `SELECT` dan keyin bajariladi; `WHERE` undan oldin, shuning uchun alias ko'rinmaydi.",
+    "level": "junior"
+  },
+  {
+    "id": "t-sql-8",
+    "category": "database",
+    "categoryLabel": "SQL",
+    "skillSlug": "sql",
+    "subskillId": "9.31",
+    "question": "Ballar 90, 90, 80 va `ORDER BY score DESC`. `RANK()` qaytaradigan qiymatlar?",
+    "options": [
+      {
+        "key": "A",
+        "text": "1, 2, 3"
+      },
+      {
+        "key": "B",
+        "text": "1, 1, 2"
+      },
+      {
+        "key": "C",
+        "text": "1, 1, 3"
+      },
+      {
+        "key": "D",
+        "text": "1, 2, 2"
+      }
+    ],
+    "correct": "C",
+    "explanation": "`RANK` teng qiymatlarga bir xil o'rin beradi va keyingisida bo'shliq qoldiradi (1, 1, 3); `DENSE_RANK` — 1, 1, 2.",
+    "level": "middle"
+  },
+  {
+    "id": "t-sql-9",
+    "category": "database",
+    "categoryLabel": "SQL",
+    "skillSlug": "sql",
+    "subskillId": "9.32",
+    "question": "`ROLLBACK TO SAVEPOINT s1` dan keyin tranzaksiya qanday holatda?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Yopilgan va qaytarilgan"
+      },
+      {
+        "key": "B",
+        "text": "Ochiq, faqat s1 dan keyingi o'zgarishlar bekor"
+      },
+      {
+        "key": "C",
+        "text": "Avtomatik commit bo'lgan"
+      },
+      {
+        "key": "D",
+        "text": "Barcha o'zgarishlar bekor"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Tranzaksiya ochiq qoladi; faqat nuqtadan keyingi o'zgarishlar bekor qilinadi, `COMMIT` kerak.",
+    "level": "middle"
   }
 ];
