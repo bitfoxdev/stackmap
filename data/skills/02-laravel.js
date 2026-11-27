@@ -37,24 +37,16 @@ registerSkill({
       "id": "2.10",
       "title": "Configuration va Environment Variables",
       "description": [
-        "`.env` — muhitga xos qiymatlar (DB parol, API kalitlari); `config/*.php` — ilova sozlamalari, `.env` ni `env()` orqali o'qiydi. **Qoida:** `env()` ni faqat config fayllarida chaqiring — `php artisan config:cache` dan keyin `.env` umuman o'qilmaydi va kod ichidagi `env()` `null` qaytaradi.",
-        "",
-        "`.env` git'ga qo'shilmaydi, `.env.example` esa qo'shiladi. Production'da secret'larni secret manager'dan olish va `php artisan env:encrypt` imkoniyatlari bor.",
-        "",
-        "```php",
-        "// config/services.php",
-        "'payme' => ['key' => env('PAYME_KEY'), 'timeout' => (int) env('PAYME_TIMEOUT', 10)],",
-        "",
-        "// kodda",
-        "$key = config('services.payme.key');",
-        "```"
+        "Konfiguratsiya: `.env` (muhitga xos sirlar va qiymatlar) → `config/*.php` (`env()` faqat shu yerda) → kodda `config('app.name')`. Production'da `config:cache` bilan hamma sozlama bitta faylga keshlanadi, shundan keyin `.env` o'qilmaydi. Senior uchun: sirlarni boshqarish, `.env` ni shifrlash, muhitga qarab xatti-harakat va `env()` tuzog'i."
       ],
       "priority": "core",
       "level": "Junior",
-      "practicalTask": "Kod ichidagi barcha `env()` chaqiruvlarini config'ga ko'chiring va `config:cache` bilan tekshiring.",
+      "practicalTask": "`config/billing.php` yarating (`env()` bilan default'lar), kodda `config()` bilan o'qing, `config:cache` dan keyin `env()` ni to'g'ridan-to'g'ri chaqirgan joy buzilishini isbotlang va `env:encrypt` bilan `.env` ni shifrlang; testda `config(['billing.x' => 1])` bilan almashtiring.",
       "acceptanceCriteria": [
-        "`config:cache` dan keyin `env()` nega `null` qaytarishini tushuntira oladi",
-        "Secret'larni repozitoriyga tushirmaslik amaliyotini biladi"
+        "`env()` ni faqat `config/*.php` ichida ishlatish qoidasini va sababini biladi",
+        "`config:cache`, `config:clear`, `optimize` ni biladi",
+        "`app()->environment()`, `isProduction()`, `.env.testing` ni biladi",
+        "`env:encrypt/decrypt` va sirlarni git'ga qo'ymaslik tamoyilini biladi"
       ],
       "prerequisites": [
         "2.2"
@@ -84,22 +76,16 @@ registerSkill({
       "id": "2.3",
       "title": "Routing va Route Model Binding",
       "description": [
-        "Route'lar `routes/web.php` (session, CSRF) va `routes/api.php` (stateless, `/api` prefiks) da. Imkoniyatlar: nomlangan route'lar, guruhlar (`prefix`, `middleware`, `name`), parametr cheklovlari, `Route::resource()`.",
-        "",
-        "**Route model binding**: `{post}` parametri `Post` modeliga avtomatik aylanadi; topilmasa 404. Boshqa ustun bo'yicha: `{post:slug}`. Scoped binding (`->scopeBindings()`) bola resursni ota resurs doirasida qidiradi — IDOR xatolarining oldini oladi.",
-        "",
-        "```php",
-        "Route::middleware('auth')->prefix('users/{user}')->scopeBindings()->group(function () {",
-        "    Route::get('posts/{post:slug}', [PostController::class, 'show'])->name('users.posts.show');",
-        "});",
-        "```"
+        "Routing so'rovni controller/closure'ga yo'naltiradi. Laravel 11+ da route fayllari `bootstrap/app.php` (`withRouting`) orqali ulanadi; `routes/web.php` (session, CSRF) va `routes/api.php` (`php artisan install:api` bilan qo'shiladi, `/api` prefiksi, stateless) farqlanadi. Senior uchun: **route model binding** (implicit/explicit, scoped), nomli route, guruhlar, constraint, `route:cache` va \"closure route cache'lanmaydi\" tuzog'i."
       ],
       "priority": "core",
       "level": "Junior",
-      "practicalTask": "Ichma-ich resurs uchun scoped binding ishlatib, boshqa foydalanuvchi postiga kirish 404 qaytarishini testda isbotlang.",
+      "practicalTask": "`posts` va ichma-ich `posts.comments` resurs route'larini yozing: `scopeBindings()`, UUID constraint, `withTrashed()` bilan binding, nomli route, `Route::fallback`, va `route:list` hamda `route:cache` bilan tekshiring.",
       "acceptanceCriteria": [
-        "Implicit va explicit binding farqini biladi",
-        "`php artisan route:cache` cheklovlarini (closure route'lar) biladi"
+        "`web` va `api` route farqini (middleware guruhi, prefiks, session) biladi",
+        "Implicit, explicit va scoped binding hamda `withTrashed()` ni biladi",
+        "Constraint (`whereNumber`, `whereUuid`, `whereIn`) va `Route::fallback` ni biladi",
+        "`route:cache` closure bilan ishlamasligini va `route:list` ni biladi"
       ],
       "prerequisites": [
         "2.1"
@@ -109,27 +95,16 @@ registerSkill({
       "id": "2.4",
       "title": "Middleware",
       "description": [
-        "Middleware — so'rov controller'ga yetguncha va javob qaytayotganda bajariladigan qatlam (autentifikatsiya, CORS, rate limit, locale). Har biri `handle($request, Closure $next)` metodiga ega; `$next($request)` dan oldingi kod — \"before\", keyingi — \"after\".",
-        "",
-        "Turlari: global, guruh (`web`, `api`), route middleware, parametrli middleware (`role:admin`) va terminable. Tartib muhim — `priority` ro'yxati bilan boshqariladi.",
-        "",
-        "```php",
-        "final class SetLocale",
-        "{",
-        "    public function handle(Request $request, Closure $next): Response",
-        "    {",
-        "        app()->setLocale($request->header('Accept-Language', 'uz'));",
-        "        return $next($request);",
-        "    }",
-        "}",
-        "```"
+        "Middleware — so'rov controller'ga yetguncha (va javob qaytguncha) o'tadigan \"piyoz qatlamlari\": autentifikatsiya, rate limit, CORS, lokalizatsiya, loglash. Laravel 11+ da `app/Http/Kernel.php` yo'q: hammasi `bootstrap/app.php` dagi `->withMiddleware(function (Middleware $middleware) { ... })` da. Senior uchun: tartib, terminable middleware, parametrli middleware va global vs guruh farqi."
       ],
       "priority": "core",
       "level": "Junior",
-      "practicalTask": "So'rov davomiyligini o'lchab `X-Response-Time` header qo'shadigan middleware yozing va testlang.",
+      "practicalTask": "`EnsureTenant` middleware yozing (parametrli: `tenant:required`), `bootstrap/app.php` da alias bering, `web` guruhiga `append` qiling, terminable qism bilan so'rov davomiyligini loglang va `Http::fake`siz feature test yozing.",
       "acceptanceCriteria": [
-        "Before/after middleware farqini kod bilan ko'rsata oladi",
-        "Middleware tartibining ahamiyatini tushuntira oladi"
+        "Before/after middleware farqini va `$next($request)` ni tushuntira oladi",
+        "`append`, `prepend`, `alias`, `group`, `priority` ni `bootstrap/app.php` da ishlata oladi",
+        "Parametrli middleware va `terminate()` ni biladi",
+        "Middleware tartibi natijaga ta'sir qilishini biladi"
       ],
       "prerequisites": [
         "2.1"
@@ -139,24 +114,16 @@ registerSkill({
       "id": "2.5",
       "title": "Controllers va Resource Controllers",
       "description": [
-        "Controller — HTTP so'rovni qabul qilib, ishni service/action'ga topshiradigan va javob qaytaradigan yupqa qatlam. `php artisan make:controller PostController --resource` 7 ta standart metod (`index`, `create`, `store`, `show`, `edit`, `update`, `destroy`) yaratadi; `--api` create/edit'siz.",
-        "",
-        "Bitta vazifali controller'lar uchun `__invoke`. Controller'da biznes mantiq, so'rov tuzish va tashqi API chaqiruvlari bo'lmasligi kerak — ular Action/Service class'larga ko'chiriladi.",
-        "",
-        "```php",
-        "public function store(StorePostRequest $request, CreatePost $action): RedirectResponse",
-        "{",
-        "    $post = $action->handle($request->user(), $request->validated());",
-        "    return to_route('posts.show', $post);",
-        "}",
-        "```"
+        "Controller HTTP so'rovni qabul qilib, Action/Service'ga topshiradi va javob qaytaradi: **yupqa** bo'lishi kerak. Resource controller 7 ta standart metod beradi (`index, create, store, show, edit, update, destroy`), API variantida `create/edit` yo'q. Laravel 11+ da `Controller` bazaviy klassi bo'sh (middleware/`authorize` yordamchilari olib tashlangan): middleware route'da yoki `HasMiddleware` interfeysi bilan beriladi."
       ],
       "priority": "core",
       "level": "Junior",
-      "practicalTask": "\"Semiz\" controller metodini Form Request + Action class'ga ajrating.",
+      "practicalTask": "`PostController` ni `apiResource` + `--invokable` `PublishPostController` bilan yozing: DI bilan `PublishPost` Action'ni oling, `HasMiddleware` bilan middleware bering, Form Request + API Resource ishlating va controller 15 qatordan oshmasligini ta'minlang.",
       "acceptanceCriteria": [
-        "Resource route'lar va metodlar mosligini biladi",
-        "Controller'ni yupqa saqlash tamoyilini amalda qo'llaydi"
+        "Resource va API resource route'larini (`Route::resource/apiResource`, `only/except`) biladi",
+        "Invokable (single-action) controller va `HasMiddleware` ni biladi",
+        "Constructor va method injection farqini biladi",
+        "Controller'ni yupqa saqlab, mantiqni Action/Service'ga ajratadi"
       ],
       "prerequisites": [
         "2.3",
@@ -191,25 +158,16 @@ registerSkill({
       "id": "2.12",
       "title": "Validation",
       "description": [
-        "Validatsiya kiruvchi ma'lumotni biznes mantiqqa yetishidan oldin tekshiradi. `$request->validate([...])`, `Validator::make()`, `Rule::unique()->ignore()`, `Rule::enum()`, `Rule::exists()`, shartli qoidalar (`sometimes`, `required_if`, `exclude_if`), massiv qoidalari (`items.*.qty`) va custom rule class'lar.",
-        "",
-        "Muhim: faqat `validated()` dagi ma'lumotni ishlating; `bail` birinchi xatoda to'xtatadi; DB'ga murojaat qiluvchi qoidalar (`unique`, `exists`) so'rov soniga ta'sir qiladi.",
-        "",
-        "```php",
-        "$data = $request->validate([",
-        "    'email' => ['required', 'email:rfc', Rule::unique('users')->ignore($user)],",
-        "    'items' => ['required', 'array', 'min:1'],",
-        "    'items.*.qty' => ['required', 'integer', 'between:1,100'],",
-        "    'status' => [Rule::enum(OrderStatus::class)],",
-        "]);",
-        "```"
+        "Validation — kiruvchi ma'lumotni qoidalar bilan tekshirish. Xato bo'lsa veb'da avtomatik redirect + `$errors` + `old()`, JSON so'rovda **422** va xatolar massivi qaytadi. Asosiy yo'l: `$request->validate()` yoki Form Request (2.13). Senior uchun: shartli qoidalar, massiv/wildcard, `Rule` obyektlari, `validated()` bilan mass assignment himoyasi va `after` hook'lar."
       ],
       "priority": "core",
       "level": "Junior",
-      "practicalTask": "Murakkab buyurtma formasi uchun validatsiya yozing va har bir qoida uchun feature test qo'shing.",
+      "practicalTask": "Buyurtma yaratish endpoint'i uchun qoidalarni yozing: ichki massiv (`items.*.product_id`), `Rule::unique()->ignore()`, shartli `required_if`, `Password::min(8)->mixedCase()`, fayl turi/hajmi va faqat `validated()` ni saqlang; 422 javobini test qiling.",
       "acceptanceCriteria": [
-        "`validated()` va `all()` farqi (mass assignment xavfi)ni tushuntira oladi",
-        "Custom rule class yoza oladi"
+        "`validate()` xatti-harakatini (web redirect vs JSON 422) biladi",
+        "Massiv/wildcard va shartli qoidalarni (`required_if`, `exclude_if`, `sometimes`, `nullable`) yoza oladi",
+        "`Rule::unique/exists/in/enum` va `Password`/`File` qoidalarini biladi",
+        "`validated()`/`safe()` bilan faqat tekshirilgan ma'lumotni ishlatadi"
       ],
       "prerequisites": [
         "2.11"
@@ -219,28 +177,20 @@ registerSkill({
       "id": "2.13",
       "title": "Form Requests",
       "description": [
-        "Form Request — validatsiya va avtorizatsiyani controller'dan alohida class'ga chiqaradi: `rules()`, `authorize()`, `messages()`, `attributes()`, `prepareForValidation()` (normallashtirish), `after()` (qo'shimcha tekshiruvlar).",
-        "",
-        "Controller metodiga type-hint qilinganda avtomatik ishlaydi; xato bo'lsa web'da redirect, API'da 422 JSON qaytadi. `authorize()` da policy chaqirish — avtorizatsiyani ham markazlashtiradi.",
-        "",
-        "```php",
-        "final class StoreOrderRequest extends FormRequest",
-        "{",
-        "    public function authorize(): bool { return $this->user()->can('create', Order::class); }",
-        "    protected function prepareForValidation(): void { $this->merge(['phone' => preg_replace('/\\D/', '', $this->phone)]); }",
-        "    public function rules(): array { return ['phone' => ['required', 'digits:12']]; }",
-        "}",
-        "```"
+        "Form Request — validatsiya va ruxsatni controller'dan alohida klassga olib chiqadi: `authorize()` (kim qila oladi), `rules()` (nima to'g'ri), `messages()`/`attributes()`, `prepareForValidation()` va `after()`. Controller yupqa qoladi: `store(StorePostRequest $request)` chaqirilishidan oldin so'rov allaqachon tekshirilgan bo'ladi."
       ],
       "priority": "core",
       "level": "Junior",
-      "practicalTask": "Controller ichidagi `validate()` chaqiruvlarini Form Request'larga ko'chiring.",
+      "practicalTask": "`UpdatePostRequest` yozing: `authorize()` da policy tekshiruvi, `rules()` da `Rule::unique()->ignore($this->post)`, `prepareForValidation()` da slug normalizatsiyasi, `after()` hook va `validated()` bilan Action'ga uzating; ruxsatsiz foydalanuvchi uchun 403 va noto'g'ri ma'lumot uchun 422 testlarini yozing.",
       "acceptanceCriteria": [
-        "`prepareForValidation` va `passedValidation` dan to'g'ri foydalanadi",
-        "API so'rovlarida 422 javob formatini biladi"
+        "`authorize()` va `rules()` vazifasini ajratadi (403 vs 422)",
+        "`prepareForValidation`, `passedValidation`, `after()` ni biladi",
+        "Route parametrlariga `$this->route('post')` yoki modelga murojaat qila oladi",
+        "`validated()`/`safe()` ni Action/Service'ga uzatadi"
       ],
       "prerequisites": [
-        "2.12"
+        "2.12",
+        "2.15"
       ]
     },
     {
