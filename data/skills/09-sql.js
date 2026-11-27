@@ -5,7 +5,7 @@ registerSkill({
   "id": 9,
   "slug": "sql",
   "title": "SQL",
-  "group": "database",
+  "group": "sql",
   "description": "SQL — relyatsion ma'lumotlar bazalari tili. ORM qanchalik qulay bo'lmasin, Senior dasturchi Eloquent qanday SQL yaratayotganini ko'ra olishi, murakkab hisobotlarni to'g'ridan-to'g'ri SQL'da yozishi, tranzaksiya va lock'larni tushunishi hamda sekin so'rovlarni tahlil qila olishi shart.",
   "subskills": [
     {

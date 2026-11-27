@@ -13,6 +13,14 @@ window.SKILL_GROUPS = [
     ]
   },
   {
+    "id": "sql",
+    "title": "SQL",
+    "icon": "database",
+    "skills": [
+      9
+    ]
+  },
+  {
     "id": "code-quality",
     "title": "Dizayn va kod sifati",
     "icon": "layers",
@@ -30,7 +38,6 @@ window.SKILL_GROUPS = [
     "title": "Ma'lumotlar bazasi",
     "icon": "database",
     "skills": [
-      9,
       10,
       11,
       14,
