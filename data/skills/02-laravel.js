@@ -529,20 +529,16 @@ registerSkill({
       "id": "2.14",
       "title": "Authorization",
       "description": [
-        "Autentifikatsiya \"kimsiz?\", avtorizatsiya \"bunga ruxsatingiz bormi?\" savoliga javob beradi. Laravel'da avtorizatsiya Gate va Policy orqali: `$user->can()`, `$this->authorize()`, `Gate::authorize()`, `can` middleware, Blade'da `@can`.",
-        "",
-        "Asosiy tamoyil: **har bir** resursga kirish server tomonida tekshiriladi (faqat UI'da tugmani yashirish yetarli emas), standart holat — rad etish (deny by default). Ro'yxatlarda ham query darajasida filtrlash kerak, aks holda ma'lumot sizib chiqadi.",
-        "",
-        "```php",
-        "Route::put('/posts/{post}', [PostController::class, 'update'])->can('update', 'post');",
-        "```"
+        "Authorization — \"kim nima qila oladi\" (autentifikatsiya, ya'ni \"kim ekan\", dan alohida). Laravel'da uch qatlam: **Gate** (umumiy qoida), **Policy** (model uchun, 2.15) va **middleware/route** darajasidagi tekshiruv. Rol/ruxsat modeli (RBAC) uchun odatda `spatie/laravel-permission` yoki o'z `abilities` jadvali; token ruxsatlari uchun Sanctum abilities."
       ],
       "priority": "core",
       "level": "Middle",
-      "practicalTask": "Barcha yozish endpoint'larida avtorizatsiya borligini tekshiradigan feature test to'plamini yozing.",
+      "practicalTask": "Oddiy RBAC dizayn qiling: `roles`, `permissions` jadvallari, `Gate::before` bilan superadmin, `can:` middleware, API tokenlarda abilities (`tokenCan`); IDOR'ni test bilan ushlang (A foydalanuvchi B resursiga kira olmasligi).",
       "acceptanceCriteria": [
-        "401 va 403 farqini biladi",
-        "Ro'yxat endpoint'larida ham ma'lumot filtrlashni unutmaydi"
+        "Authentication va Authorization farqini hamda 401 vs 403 ni biladi",
+        "Gate/Policy/middleware qaysi holatda ishlatilishini ajrata oladi",
+        "IDOR (Insecure Direct Object Reference) xavfini va unga qarshi chorani biladi",
+        "Rol-asosli va ruxsat-asosli modelni solishtira oladi"
       ],
       "prerequisites": [
         "2.15",
@@ -553,28 +549,16 @@ registerSkill({
       "id": "2.15",
       "title": "Policies va Gates",
       "description": [
-        "**Gate** — closure asosidagi umumiy qoidalar (`Gate::define('view-admin', ...)`). **Policy** — bitta model uchun qoidalar class'i (`viewAny`, `view`, `create`, `update`, `delete`), avtomatik topiladi (`App\\Policies\\PostPolicy`).",
-        "",
-        "`before()` metodi superadmin uchun hammasiga ruxsat beradi; `Response::deny('sabab')` va `denyAsNotFound()` (resurs mavjudligini yashirish) mavjud. Policy'lar sof va tez bo'lishi kerak — ularda og'ir so'rovlar N+1 ga olib keladi.",
-        "",
-        "```php",
-        "final class PostPolicy",
-        "{",
-        "    public function update(User $user, Post $post): Response",
-        "    {",
-        "        return $user->id === $post->user_id",
-        "            ? Response::allow()",
-        "            : Response::denyAsNotFound();",
-        "    }",
-        "}",
-        "```"
+        "Gate — closure ko'rinishidagi umumiy ruxsat qoidasi; Policy — bitta model uchun ruxsatlar klassi (`view`, `create`, `update`, `delete`, `restore`, `forceDelete`). Laravel 11+ da `Post` → `PostPolicy` **avtomatik topiladi** (ro'yxatga olish shart emas). Tekshirish joylari: `Gate::allows`, `$user->can`, `@can`, `->middleware('can:update,post')`, Form Request `authorize()`. Senior uchun: `before()`, `Response::deny()`, guest foydalanuvchi, va \"yashirin\" 404."
       ],
       "priority": "core",
       "level": "Middle",
-      "practicalTask": "Ko'p rolli (owner, editor, admin) model uchun policy yozing va har bir holat uchun unit test qo'shing.",
+      "practicalTask": "`PostPolicy` yozing (`update` faqat egasi yoki admin; `before()` da superadmin), `Response::denyAsNotFound()` bilan boshqa tenant resursini yashiring, route'da `can:` middleware, Blade'da `@can` ishlating va policy'ni unit test bilan qoplang.",
       "acceptanceCriteria": [
-        "Gate va Policy'ni qachon tanlashni biladi",
-        "`denyAsNotFound` ning xavfsizlik ma'nosini tushuntira oladi"
+        "Gate va Policy farqini hamda auto-discovery'ni biladi",
+        "`before/after`, `Response::allow/deny/denyAsNotFound` ni biladi",
+        "Guest uchun `?User $user` va 403 vs 404 qarorini asoslay oladi",
+        "Policy'ni controller, middleware, Blade va Form Request'dan ishlata oladi"
       ],
       "prerequisites": [
         "2.14"
@@ -584,24 +568,16 @@ registerSkill({
       "id": "2.16",
       "title": "Error Handling va Exception Reporting",
       "description": [
-        "Laravel'da exception'lar markaziy handler'da qayta ishlanadi (11+ da `bootstrap/app.php` → `withExceptions`). Ikki vazifa: **report** (log, Sentry'ga yuborish) va **render** (foydalanuvchiga javob). `dontReport`, `throttle`, `context()` va exception ichidagi `report()`/`render()` metodlari mavjud.",
-        "",
-        "Production'da `APP_DEBUG=false` — stack trace foydalanuvchiga ko'rinmasligi shart. API uchun barcha xatolar yagona JSON formatida qaytishi kerak.",
-        "",
-        "```php",
-        "->withExceptions(function (Exceptions $e) {",
-        "    $e->dontReport(InsufficientBalance::class);",
-        "    $e->render(fn (InsufficientBalance $ex, Request $r) =>",
-        "        response()->json(['message' => $ex->getMessage()], 422));",
-        "})",
-        "```"
+        "Laravel 11+ da xatolar `bootstrap/app.php` dagi `->withExceptions(function (Exceptions $exceptions) { ... })` da boshqariladi (eski `Handler.php` yo'q). Ikki vazifa: **report** (log/Sentry'ga yuborish) va **render** (foydalanuvchiga javob). Senior uchun: nimani report qilmaslik (`dontReport`), `throttle`, kontekst qo'shish, maxsus exception klasslari va API'da yagona xato formati."
       ],
       "priority": "core",
       "level": "Middle",
-      "practicalTask": "API uchun yagona xato formatini (message, code, errors) handler orqali joriy qiling.",
+      "practicalTask": "`DomainException` hosilalari uchun `report` (Sentry + kontekst) va `render` (JSON `{code, message}` + to'g'ri status) ni `withExceptions` da sozlang, `ModelNotFoundException` ni 404 JSON'ga o'giring, `dontReport` bilan shovqinni kamaytiring va testda tekshiring.",
       "acceptanceCriteria": [
-        "report va render bosqichlarini ajrata oladi",
-        "`APP_DEBUG` ning production'dagi xavfini biladi"
+        "`withExceptions`, `report()`, `render()`, `dontReport()`, `throttle()` ni biladi",
+        "Maxsus exception'ga `report`/`render` metodi qo'sha oladi",
+        "API xatolarini yagona formatga keltira oladi (`shouldRenderJsonWhen`)",
+        "Production'da xato tafsilotini oshkor qilmaslik qoidasini biladi"
       ],
       "prerequisites": [
         "1.15"
@@ -611,21 +587,16 @@ registerSkill({
       "id": "2.17",
       "title": "Laravel Logging",
       "description": [
-        "Logging Monolog asosida, `config/logging.php` da kanallar: `single`, `daily`, `stack`, `slack`, `stderr`, `syslog`. Darajalar PSR-3: `debug` → `emergency`.",
-        "",
-        "Yaxshi amaliyot: kontekst bilan strukturali log (`Log::info('Order paid', ['order_id' => $id])`), `Log::withContext()` bilan request ID qo'shish, maxfiy ma'lumotlarni log'ga yozmaslik, konteynerlarda `stderr` + JSON formatter va markaziy yig'ish (ELK, Loki).",
-        "",
-        "```php",
-        "Log::withContext(['request_id' => $request->header('X-Request-Id')]);",
-        "Log::channel('payments')->warning('Gateway timeout', ['order_id' => $order->id, 'ms' => $elapsed]);",
-        "```"
+        "Laravel logging Monolog ustida **kanallar** (`single`, `daily`, `stack`, `slack`, `stderr`, `syslog`, `papertrail`) tizimi. Production'da konteynerda `stderr` + JSON, `daily` + saqlash muddati, `stack` bilan bir nechta kanalga. Senior uchun: kontekst (`Log::withContext`), korrelyatsiya ID, sirlarni loglamaslik, log darajalari va `Log::build` bilan dinamik kanal."
       ],
       "priority": "important",
       "level": "Middle",
-      "practicalTask": "Har bir log yozuviga request ID qo'shadigan middleware va JSON formatlangan kanal sozlang.",
+      "practicalTask": "`stack` (daily + stderr JSON) sozlang, `Log::withContext(['request_id' => ...])` ni middleware'da qo'ying, xato logiga PII/parol tushmasligini tekshiring (`$dontFlash`, maskalash) va `Log::channel('billing')` alohida kanal yarating.",
       "acceptanceCriteria": [
-        "Log darajalarini to'g'ri tanlaydi",
-        "Parol, token kabi ma'lumotlar log'ga tushmasligini ta'minlaydi"
+        "Kanal, `stack`, `daily` (`days`) va `LOG_CHANNEL` ni biladi",
+        "Log darajalarini (debug…emergency) to'g'ri tanlaydi",
+        "`withContext`/`shareContext` bilan so'rov korrelyatsiyasini qo'sha oladi",
+        "Sirlar/PII loglanmasligi qoidasini biladi"
       ],
       "prerequisites": [
         "8.2",
@@ -656,29 +627,16 @@ registerSkill({
       "id": "2.20",
       "title": "Events va Listeners",
       "description": [
-        "Event — tizimda biror narsa sodir bo'lganini bildiradi (`OrderPaid`), listener esa unga reaksiya qiladi. Bu komponentlarni bir-biridan ajratadi. Listener `ShouldQueue` ni amalga oshirsa, navbatda asinxron bajariladi. Laravel 11+ da event discovery avtomatik.",
-        "",
-        "Muhim nozikliklar: tranzaksiya ichida dispatch qilingan event commit'dan oldin ishlashi mumkin — `ShouldDispatchAfterCommit` yoki `afterCommit` ishlating. Event'lar zanjiri haddan oshsa, oqimni kuzatish qiyinlashadi.",
-        "",
-        "```php",
-        "final class OrderPaid implements ShouldDispatchAfterCommit",
-        "{",
-        "    use Dispatchable, SerializesModels;",
-        "    public function __construct(public readonly Order $order) {}",
-        "}",
-        "",
-        "final class SendReceipt implements ShouldQueue",
-        "{",
-        "    public function handle(OrderPaid $event): void { /* ... */ }",
-        "}",
-        "```"
+        "Events/Listeners — \"nimadir sodir bo'ldi\" (`OrderPlaced`) hodisasi va unga javob beradigan tinglovchilar. Bog'liqlikni kamaytiradi: buyurtma kodi email, analitika, inventory'ni bilmaydi. Laravel 11+ da listener'lar `handle(Event $e)` type-hint bo'yicha **avtomatik topiladi**. Senior uchun: queued listener, `afterCommit`, `ShouldDispatchAfterCommit`, model events/Observer, `Event::fake` va \"event orqali mantiq yashirinishi\" xavfi."
       ],
       "priority": "important",
       "level": "Middle",
-      "practicalTask": "Buyurtma to'langanda chek yuborish va statistika yangilashni event + queued listener'lar bilan ajrating.",
+      "practicalTask": "`OrderPlaced` event va 2 ta listener (`SendReceipt` queued, `ReserveStock` sinxron) yozing; `ShouldDispatchAfterCommit` bilan tranzaksiya tugagach ishlating; `Event::fake([OrderPlaced::class])` bilan test qiling va listener xatosi buyurtmani buzmasligini (queue) isbotlang.",
       "acceptanceCriteria": [
-        "`afterCommit` muammosini real misol bilan tushuntira oladi",
-        "`Event::fake()` bilan testlay oladi"
+        "Event, Listener, Subscriber va Observer farqini biladi",
+        "Listener auto-discovery va `ShouldQueue`, `afterCommit` ni biladi",
+        "`Event::fake`, `assertDispatched`, `assertListening` bilan testlay oladi",
+        "Sinxron va queued listener xatti-harakatini (xato, transaction) farqlay oladi"
       ],
       "prerequisites": [
         "2.6",
@@ -731,21 +689,16 @@ registerSkill({
       "id": "2.22",
       "title": "Filesystem va Storage",
       "description": [
-        "Laravel Filesystem (Flysystem) lokal disk, S3, SFTP va boshqalar uchun yagona API beradi: `Storage::disk('s3')->put()`, `get()`, `url()`, `temporaryUrl()`, `readStream()`. `public` disk `php artisan storage:link` orqali web'ga ochiladi.",
-        "",
-        "Xavfsizlik: foydalanuvchi faylini doim server tomonida generatsiya qilingan nom bilan saqlang, MIME va hajmni validatsiya qiling, maxfiy fayllarni public diskka qo'ymang (temporary URL bering). Katta fayllar uchun stream va to'g'ridan-to'g'ri S3'ga yuklash (presigned URL).",
-        "",
-        "```php",
-        "$path = $request->file('avatar')->store(\"avatars/{$user->id}\", 's3');",
-        "$url  = Storage::disk('s3')->temporaryUrl($path, now()->addMinutes(10));",
-        "```"
+        "Storage — fayl tizimi abstraksiyasi (Flysystem): `local`, `public`, `s3` (va S3-mos), `sftp`, `ftp`. Bir xil API (`put`, `get`, `delete`, `url`, `temporaryUrl`, `download`) turli disklarda. Senior uchun: `public` va `local` disk farqi, `storage:link`, **imzolangan (temporary) URL**, katta fayl yuklash (stream, presigned upload), fayl turini tekshirish va xavfsizlik."
       ],
       "priority": "important",
       "level": "Middle",
-      "practicalTask": "Maxfiy hujjatlarni S3'da saqlab, faqat egasiga 5 daqiqalik temporary URL beradigan endpoint yozing.",
+      "practicalTask": "Foydalanuvchi hujjatlari uchun private `s3` diskdan foydalaning: `putFile` bilan yuklash (UUID nomi), `temporaryUrl` bilan 10 daqiqalik yuklab olish havolasi, `Storage::fake('s3')` bilan test va fayl turi/hajmi validatsiyasi.",
       "acceptanceCriteria": [
-        "Public va private disk farqini biladi",
-        "`Storage::fake()` bilan fayl yuklashni testlay oladi"
+        "`local`, `public`, `s3` disklarining farqini va `storage:link` ni biladi",
+        "`put/putFile/putFileAs`, `get`, `exists`, `delete`, `download`, `temporaryUrl` ni ishlata oladi",
+        "Yuklangan fayllarni xavfsiz saqlash (nom, tur, joy) qoidalarini biladi",
+        "`Storage::fake` bilan testlay oladi"
       ],
       "prerequisites": [
         "51.12"
