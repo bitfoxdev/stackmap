@@ -1,49 +1,77 @@
 /* Chuqur dars: 2.27. Maydonlar: lesson (markdown), examples [{title, lang, code, note}], pitfalls [] */
 registerLesson("2.27", {
   "lesson": [
-    "### Framework ichkarisi",
-    "Laravel'ni \"sehr\" emas, tushunarli mexanizm sifatida bilish: nosozlikni topish, kengaytirish va paket yozish uchun.",
+    "### Container `make()`",
+    "`Container::build()` — `ReflectionClass` bilan konstruktor parametrlarini o'qiydi: har bir type-hint uchun `resolve` (rekursiv), primitive uchun contextual binding yoki default; hal qilib bo'lmasa `BindingResolutionException`. Singleton/binding'lar massivda (`$bindings`, `$instances`). `Application` ham container (`Illuminate\\Foundation\\Application extends Container`).",
     "",
-    "### Asosiy qismlar",
-    "- `Illuminate\\Foundation\\Application` — Container'dan meros; provider'lar, muhit, yo'llar.",
-    "- **Bootstrap klasslari** (ketma-ket): `LoadEnvironmentVariables`, `LoadConfiguration`, `HandleExceptions`, `RegisterFacades`, `RegisterProviders`, `BootProviders`.",
-    "- **HTTP Kernel / pipeline:** so'rov `Illuminate\\Pipeline\\Pipeline` orqali middleware zanjirida o'tadi.",
-    "- **Router:** marshrutni topadi (`RouteCollection`), parametrlarni va model binding'ni hal qiladi, middleware'ni yig'adi.",
-    "- Container `resolve()`: abstrakt nomga bog'lama bormi → bo'lsa chaqiradi; yo'q bo'lsa `build()`: `ReflectionClass` bilan konstruktor tiplari → bog'liqliklarni rekursiv hal qilish → `newInstanceArgs`.",
-    "- **Facade:** `__callStatic` → `getFacadeRoot()` → container.",
-    "- **Eloquent:** `Model::__call/__callStatic` → `Builder`; `newQuery()`, global scope'lar.",
-    "- **Event dispatcher, Queue manager, Cache manager** — `Manager` pattern (drayver tanlash).",
+    "### Pipeline",
+    "`Illuminate\\Pipeline\\Pipeline`: `(new Pipeline(app()))->send($passable)->through([A::class, B::class])->then(fn ($p) => $p)`. Har bosqich `handle($passable, Closure $next)` — middleware bilan bir xil (HTTP middleware shu orqali ishlaydi, 2.4). O'z oqimlaringizda ham ishlatiladi (filtrlar zanjiri, narx hisoblash bosqichlari).",
     "",
-    "### Servis hal qilish tartibi",
-    "1. `make('X')`.",
-    "2. Alias → konkret.",
-    "3. Bog'lama (closure/klass) yoki avtomatik `build`.",
-    "4. `extend` callback'lar.",
-    "5. Singleton bo'lsa saqlanadi.",
-    "6. `resolving` callback'lar.",
+    "### Macroable",
+    "`Str`, `Arr`, `Collection`, `Request`, `Response`, `Builder` va boshqalar `Macroable` trait'ini ishlatadi: `Collection::macro('toUpper', fn () => $this->map(fn ($v) => strtoupper($v)));` (provider `boot()` da). Kamchilik: IDE/statik tahlil ko'rmaydi (`ide-helper`), nom to'qnashuvi. `mixin()` — klassdagi metodlarni makro qiladi.",
     "",
-    "### Nima uchun foydali",
-    "`vendor/laravel/framework/src/Illuminate/...` kodini o'qish; Xdebug bilan qadam-baqadam o'tish; `php artisan about`, `route:list`, `event:list`.",
+    "### Manager va driver",
+    "`Cache`, `Queue`, `Mail`, `Filesystem`, `Session`, `Hash`, `Auth` — `Manager` naqshi: `config` dagi driver nomi bo'yicha `createXDriver()` metodini chaqiradi. Maxsus driver: `Cache::extend('mydriver', fn ($app) => Cache::repository(new MyStore))`, `Auth::provider(...)`, `Storage::extend('custom', ...)`, `Queue::extend`. Kontrakt: har bir driver `Illuminate\\Contracts\\...\\Store` kabi interfeysni implement qiladi (shuning uchun ilova kodi driverni bilmaydi).",
     "",
-    "### Kengaytirish nuqtalari",
-    "`macro()` (`Macroable`), `extend`, `Manager::extend`, service provider, middleware, global scope, custom cast."
+    "### Kontraktlar",
+    "`Illuminate\\Contracts\\*` — framework servislarining interfeyslari. Ilovada konkret klass (`Illuminate\\Cache\\Repository`) o'rniga kontraktga bog'lanish (`Illuminate\\Contracts\\Cache\\Repository`) va paketlarda shartnoma sifatida.",
+    "",
+    "### Qayerga qarash",
+    "`vendor/laravel/framework/src/Illuminate/...`: `Container/Container.php`, `Routing/Router.php`, `Pipeline/Pipeline.php`, `Foundation/Application.php`. Xatoni tushunish uchun stack trace'dagi framework klasslarini o'qish — eng yaxshi o'quv.",
+    "",
+    "### Qoidalar",
+    "1. Framework ichiga (`vendor`) tegmang; kengaytma nuqtalaridan (makro, driver, provider, event) foydalaning.",
+    "2. Makro — kam; avval oddiy klass/helper.",
+    "3. Kontraktga bog'lanish — paketlarda; ilovada konkret (Facade/DI) ham qabul.",
+    "4. Ichki API (internal) versiyalar orasida o'zgaradi: `@internal` belgisiga ehtiyot."
   ],
   "examples": [
     {
-      "title": "Macro va Manager.extend",
+      "title": "Pipeline",
       "lang": "php",
+      "note": "Zanjirli bosqichlar",
       "code": [
-        "Collection::macro('toUpper', function () { return $this->map(fn ($v) => mb_strtoupper($v)); });",
-        "collect(['a', 'b'])->toUpper();",
+        "use Illuminate\\Pipeline\\Pipeline;",
         "",
-        "Cache::extend('custom', fn ($app) => Cache::repository(new CustomStore));"
+        "$price = app(Pipeline::class)",
+        "    ->send(new Cart($items))",
+        "    ->through([ApplyCoupon::class, ApplyTax::class, RoundTotal::class])",
+        "    ->thenReturn();",
+        "",
+        "class ApplyTax",
+        "{",
+        "    public function handle(Cart $cart, \\Closure $next)",
+        "    {",
+        "        $cart->total = (int) round($cart->total * 1.12);",
+        "        return $next($cart);",
+        "    }",
+        "}"
+      ]
+    },
+    {
+      "title": "Makro va maxsus driver",
+      "lang": "php",
+      "note": "boot() da",
+      "code": [
+        "use Illuminate\\Support\\{Collection, Str};",
+        "use Illuminate\\Support\\Facades\\Cache;",
+        "",
+        "public function boot(): void",
+        "{",
+        "    Str::macro('phone', fn (string $v) => preg_replace('/\\D+/', '', $v));",
+        "    Collection::macro('toCsv', fn () => $this->map(fn ($row) => implode(',', (array) $row))->implode(\"\\n\"));",
+        "",
+        "    Cache::extend('memory-lru', fn ($app) => Cache::repository(new LruStore(max: 1000)));",
+        "}"
       ]
     }
   ],
   "pitfalls": [
-    "Framework ichki API'siga (internal) tayanish versiya yangilanishida sinadi.",
-    "Macro nomi mavjud metod bilan to'qnashsa kutilmagan natija: nomlarni noyob tanlang.",
-    "`vendor/` ichidagi kodni o'zgartirmang: kengaytirish nuqtalaridan foydalaning.",
-    "Facade ildizini mock qilishda container'dagi obyekt almashadi: testdan keyin tozalash."
+    "Makroni IDE helper'siz yozish: avtocomplete va statik tahlil metodni \"topa olmaydi\"; `ide-helper` yoki PHPDoc.",
+    "Bir xil nomdagi makro (yoki framework'ning keyingi versiyasida paydo bo'lgan metod) bilan to'qnashuv: ilova buziladi.",
+    "`vendor` ichidagi kodni patch qilish: `composer install` da yo'qoladi; kengaytma nuqtasi.",
+    "Pipeline bosqichida `$next` ni chaqirmaslik: zanjir to'xtaydi va natija `null`.",
+    "Maxsus driverni kontraktga to'liq mos qilmaslik: ayrim metodlar kamida `Exception` tashlaydi, kutilmagan joyda yiqiladi.",
+    "Ichki (`@internal`) klass/metodlarga tayanish: minor versiyada ham o'zgarishi mumkin."
   ]
 });

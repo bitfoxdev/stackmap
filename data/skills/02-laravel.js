@@ -225,42 +225,16 @@ registerSkill({
       "id": "2.32",
       "title": "Laravel Session Management va Web Authentication",
       "description": [
-        "Laravel'da an'anaviy web-ilovalar holati (state) **Session** va **Web Guard** orqali boshqariladi.",
-        "",
-        "**Session Drayverlari va Konfiguratsiya (`config/session.php`)**:",
-        "- `file`: standart lokal drayver (ko'p serverli yuklamada mos emas).",
-        "- `database`: sessiyalarni jadvalda saqlash (foydalanuvchi faolligini kuzatish uchun qulay).",
-        "- `redis`: yuqori yuklamali production ilovalar uchun eng tez va tavsiya etiladigan drayver.",
-        "- `cookie`: sessiyani shifrlangan cookie ichida saqlash (hajm 4KB bilan cheklangan).",
-        "",
-        "**Session amallari va Flash Data**:",
-        "- `session()->put('key', $value)`, `session()->get('key', $default)`.",
-        "- **Flash ma'lumotlar**: faqat bitta keyingi HTTP so'rov uchun yashaydigan ma'lumotlar (`session()->flash('status', 'Saqlandi!')`, `reflash()`, `keep()`) — redirect'lardan keyin xabarlar ko'rsatish asosi.",
-        "",
-        "**Web Authentication va Guards (`config/auth.php`)**:",
-        "- `Auth::attempt($credentials, $remember)`: parolni bcrypt/Argon2 bilan tekshirib, sessiya ID'ni yangilaydi (`session()->regenerate()`).",
-        "- `Remember Me`: xavfsiz tasodifiy token (`remember_token`) orqali sessiya muddati tugasa ham foydalanuvchini avtomatik tizimga kiritish.",
-        "- **AuthenticateSession Middleware**: xavfsizlik uchun eng muhim vosita — `Auth::logoutOtherDevices($password)` chaqirilganda, foydalanuvchining boshqa barcha kompyuter va telefonlardagi sessiyalarini bekor qiladi.",
-        "",
-        "```php",
-        "// Login va xavfsiz sessiya boshqaruvi",
-        "if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {",
-        "    $request->session()->regenerate(); // session fixation oldini oladi",
-        "    return redirect()->intended('/dashboard');",
-        "}",
-        "",
-        "// Boshqa qurilmalardan chiqarish",
-        "Auth::logoutOtherDevices($request->input('password'));",
-        "```"
+        "Veb-autentifikatsiya: **session** (cookie, server tomonida holat) — brauzer ilovalari uchun; **token** (Sanctum/Passport) — API/mobil. Laravel `Auth` guard/provider, `Auth::attempt`, `remember me`, parol hash (`Hash`), email tasdiqlash, parol tiklash va rate limit. Starter kit'lar (Breeze, Jetstream, Livewire/Inertia) tayyor oqim beradi. Senior uchun: session fixation, `regenerate`, CSRF, `SESSION_DRIVER`, parol siyosati va 2FA."
       ],
       "priority": "core",
       "level": "Junior",
-      "practicalTask": "Redis drayverida ishlovchi, flash xabarlar bilan boyitilgan login/logout tizimi yozing; `logoutOtherDevices` orqali boshqa sessiyalarni o'chirishni testlang.",
+      "practicalTask": "`Auth::attempt` bilan login oqimini yozing: `RateLimiter` (5 urinish/daqiqa), `session()->regenerate()`, `remember`, logout'da `invalidate` + `regenerateToken`; `email_verified` middleware va parol tiklashni sozlang; xavfsizlik testlarini yozing.",
       "acceptanceCriteria": [
-        "Session drayverlari (file, database, redis) farqini va klaster serverlarda nima uchun redis kerakligini tushuntira oladi",
-        "Flash data va doimiy sessiya ma'lumotlari farqini biladi",
-        "`session()->regenerate()` ning Session Fixation hujumidan himoyadagi rolini tushunadi",
-        "`AuthenticateSession` middleware qanday ishlashini biladi"
+        "Session va token autentifikatsiyasi farqini va qachon qaysi biri ekanini biladi",
+        "`Auth::attempt/login/logout`, `remember`, guard va provider tushunchalarini biladi",
+        "Session fixation, CSRF va `regenerate`/`invalidate` ahamiyatini biladi",
+        "Login'ni rate limit bilan himoyalay oladi"
       ],
       "prerequisites": [
         "2.4",
@@ -313,23 +287,16 @@ registerSkill({
       "id": "2.24",
       "title": "Pagination",
       "description": [
-        "Uch xil paginator: `paginate()` (umumiy son bilan, `COUNT(*)` so'rovi), `simplePaginate()` (faqat oldingi/keyingi) va `cursorPaginate()` (cursor asosida, `OFFSET` siz — katta jadvallarda barqaror tez).",
-        "",
-        "Katta jadvallarda `OFFSET 100000` sekin, chunki DB shuncha qatorni o'qib tashlaydi. API'da cursor pagination, admin panellarda `paginate()` odatiy tanlov. `withQueryString()` filtr parametrlarini saqlaydi.",
-        "",
-        "```php",
-        "$orders = Order::query()",
-        "    ->where('status', 'paid')",
-        "    ->orderByDesc('id')",
-        "    ->cursorPaginate(50);",
-        "```"
+        "Pagination — katta ro'yxatni sahifalash. Uch usul: `paginate()` (jami son bilan, `COUNT` so'rovi), `simplePaginate()` (faqat oldingi/keyingi, COUNT'siz) va `cursorPaginate()` (cursor/keyset: eng tez va barqaror, katta jadvalda). Senior uchun: **chuqur OFFSET** sekinligi, `COUNT(*)` narxi, JSON javob formati, `withQueryString`, tartibning barqarorligi va unique tartib kaliti."
       ],
       "priority": "important",
       "level": "Junior",
-      "practicalTask": "1 mln qatorli jadvalda `paginate` va `cursorPaginate` ni EXPLAIN va vaqt bo'yicha solishtiring.",
+      "practicalTask": "10 mln qatorli jadvalda ro'yxatni `paginate` va `cursorPaginate` bilan taqqoslang (`EXPLAIN`), API'da `cursorPaginate` ni `PostResource::collection` bilan qaytaring, `withQueryString()` bilan filtrlarni saqlang va barqaror `orderBy` (`created_at`, `id`) qo'ying.",
       "acceptanceCriteria": [
-        "Offset pagination'ning katta sahifalardagi muammosini tushuntira oladi",
-        "Cursor pagination uchun unikal tartiblash ustuni kerakligini biladi"
+        "`paginate`, `simplePaginate`, `cursorPaginate` farqini va qaysi biri qachon ekanini biladi",
+        "Chuqur OFFSET va COUNT narxini tushuntira oladi",
+        "JSON javob tuzilmasini (`data`, `links`, `meta`) biladi",
+        "Tartib kaliti noyob bo'lishi shartini biladi"
       ],
       "prerequisites": [
         "16.11"
@@ -339,31 +306,16 @@ registerSkill({
       "id": "2.25",
       "title": "API Resources",
       "description": [
-        "API Resource — model va JSON javob o'rtasidagi transformatsiya qatlami. U ichki DB strukturasini tashqi shartnomadan ajratadi: ustun nomi o'zgarsa ham API o'zgarmaydi. `whenLoaded()` (N+1 siz relation), `when()` (shartli maydon), `mergeWhen()`, `additional()` va `ResourceCollection`.",
-        "",
-        "Resource ichida so'rov yubormang — relation'larni controller'da eager load qiling. Maxfiy maydonlar (parol hash, ichki flag'lar) hech qachon `toArray()` ga tushmasligi kerak.",
-        "",
-        "```php",
-        "final class OrderResource extends JsonResource",
-        "{",
-        "    public function toArray(Request $request): array",
-        "    {",
-        "        return [",
-        "            'id'     => $this->id,",
-        "            'total'  => $this->total_in_tiyin / 100,",
-        "            'status' => $this->status->value,",
-        "            'items'  => OrderItemResource::collection($this->whenLoaded('items')),",
-        "        ];",
-        "    }",
-        "}",
-        "```"
+        "API Resource — Eloquent modelni JSON'ga o'tkazuvchi **transformatsiya qatlami**: `JsonResource` (bitta) va `ResourceCollection`. Javob formatini model sxemasidan ajratadi (ustun nomi o'zgarsa API buzilmaydi), maydonlarni shartli qo'shadi (`when`, `whenLoaded`, `whenCounted`) va sahifalash `meta/links` ni avtomatik beradi. Laravel 13 docs: **JSON:API resource** qo'llab-quvvatlashi qo'shilgan. Senior uchun: N+1 (`whenLoaded`), versiyalash, `withoutWrapping`, va resurs ichida so'rov yo'q qoidasi."
       ],
       "priority": "core",
       "level": "Middle",
-      "practicalTask": "Mavjud endpoint'ni `$model->toArray()` dan API Resource'ga o'tkazing va javob shartnomasini test bilan qotiring.",
+      "practicalTask": "`PostResource` yozing: `whenLoaded('author')`, `whenCounted('comments')`, `when($request->user()?->isAdmin(), ...)`, `PostCollection` bilan `meta`, `paginate` natijasini qaytaring va test bilan struktura hamda N+1 yo'qligini (so'rovlar soni) tasdiqlang.",
       "acceptanceCriteria": [
-        "`whenLoaded` N+1 ni qanday oldini olishini biladi",
-        "Resource'ni API versiyalash bilan bog'lay oladi"
+        "`JsonResource` va `ResourceCollection`, `data` o'rash (`wrap`) ni biladi",
+        "`whenLoaded`, `whenCounted`, `when`, `mergeWhen` ni ishlata oladi",
+        "Resurs ichida DB so'rovi (N+1) xavfini va oldini olishni biladi",
+        "`additional()`, `with()`, `withoutWrapping()` va sahifalash bilan ishlashni biladi"
       ],
       "prerequisites": [
         "13.11",
@@ -652,22 +604,16 @@ registerSkill({
       "id": "2.23",
       "title": "Localization",
       "description": [
-        "Tarjimalar `lang/{locale}/*.php` (kalit asosida) yoki `lang/{locale}.json` (matn asosida) fayllarida. `__('messages.welcome', ['name' => $n])`, `trans_choice()` (ko'plik), `App::setLocale()`, validatsiya xabarlari tarjimasi.",
-        "",
-        "Locale'ni URL prefiks, foydalanuvchi sozlamasi yoki `Accept-Language` dan aniqlash odatda middleware'da bajariladi. Sana/raqam formatlash uchun Carbon locale va PHP `intl` (`NumberFormatter`). Model ma'lumotlarini tarjima qilish uchun `spatie/laravel-translatable`.",
-        "",
-        "```php",
-        "// lang/uz/orders.php",
-        "return ['created' => ':count ta buyurtma yaratildi'];",
-        "__('orders.created', ['count' => 3]);",
-        "```"
+        "Localization — ilovani ko'p tilda yuritish: `lang/` papkasi (Laravel 11+ da `php artisan lang:publish` bilan nashr qilinadi), `__('key')`/`trans()`, JSON tarjima (satrning o'zi kalit), parametrlar (`:name`), ko'plik (`trans_choice`) va til tanlash (middleware + `App::setLocale`). Senior uchun: foydalanuvchi tilini aniqlash, fallback, validatsiya xabarlari tarjimasi va sana/valyuta formatlash."
       ],
       "priority": "optional",
       "level": "Junior",
-      "practicalTask": "Ilovaga uz/ru/en tillarini qo'shing: middleware, tarjima fayllari va til almashtirgich.",
+      "practicalTask": "O'zbek/rus/ingliz tillarini qo'llang: `SetLocale` middleware (user sozlamasi → `Accept-Language` → default), `lang/uz.json`, `trans_choice` bilan ko'plik, tarjima yo'q kalitni topish va validatsiya xabarlarini `uz` ga o'tkazing.",
       "acceptanceCriteria": [
-        "Kalit va JSON tarjima farqini biladi",
-        "Queue job'larda locale saqlanishini (`HasLocalePreference`) tushunadi"
+        "`lang/*.json` va `lang/{loc}/*.php` farqini biladi",
+        "`__()`, `trans_choice()`, parametr va ko'plik qoidalarini ishlata oladi",
+        "`app()->setLocale`, `fallback_locale`, `Carbon::setLocale` ni biladi",
+        "Til tanlash middleware'ini yoza oladi"
       ],
       "prerequisites": [
         "2.4"
@@ -698,33 +644,16 @@ registerSkill({
       "id": "2.30",
       "title": "Laravel HTTP Client (Http Facade)",
       "description": [
-        "Laravel HTTP Client (`Illuminate\\Support\\Facades\\Http`) — Guzzle ustiga qurilgan, o'ta ifodali va testlash oson bo'lgan HTTP mijozi. Tashqi to'lov tizimlari (Payme, Click, Stripe) va uchinchi tomon API'lari bilan ishlashning asosiy vositasi.",
-        "",
-        "**Asosiy imkoniyatlar**:",
-        "- **Timeout va Retry**: `Http::timeout(5)->retry(3, 100, throw: false)` — tarmoqdagi qisqa uzilishlarda avtomatik qayta urinish.",
-        "- **Xatolarni tutish**: `Http::throw()` (4xx/5xx javobda avtomatik `RequestException` otadi).",
-        "- **Parallel so'rovlar (`Http::pool`)**: bir vaqtning o'zida bir nechta mustaqil tashqi API'ga asinxron so'rov yuborib, kutish vaqtini 2-3 barobarga qisqartiradi.",
-        "- **Testlash**: `Http::fake([...])` orqali tashqi tarmoqqa chiqmasdan aniq mock javoblarni qaytarish va so'rov yuborilganini `Http::assertSent()` bilan tasdiqlash.",
-        "",
-        "```php",
-        "// Parallel so'rovlar (Pool)",
-        "$responses = Http::pool(fn (Pool $pool) => [",
-        "    $pool->as('currency')->timeout(3)->get('https://cbu.uz/oz/arkhiv-kursov-valyut/json/'),",
-        "    $pool->as('weather')->timeout(3)->get('https://api.weather.com/v1/tashkent'),",
-        "]);",
-        "$rate = $responses['currency']->json()[0]['Rate'];",
-        "",
-        "// Testda mock qilish",
-        "Http::fake(['cbu.uz/*' => Http::response([['Rate' => '12800']], 200)]);",
-        "```"
+        "`Http` facade — Guzzle ustidagi qulay HTTP klient: `Http::get/post`, JSON, sarlavhalar, **timeout**, **retry**, `throw()`, `pool` (parallel), `Http::fake()` bilan test. Senior uchun: tashqi tizimlar bilan ishonchli ishlash (timeout/retry/circuit breaker), `Http::macro`/`baseUrl` bilan sozlangan klient, idempotentlik va maxfiy ma'lumotlarni loglamaslik."
       ],
       "priority": "core",
       "level": "Junior",
-      "practicalTask": "Tashqi to'lov API client'ini yozing: retry, timeout, custom header'lar bilan boyiting va uni `Http::fake()` yordamida to'liq Feature test bilan qoplang.",
+      "practicalTask": "Tashqi API uchun `Http::macro('billing', ...)` yozing (baseUrl, token, `timeout(5)`, `retry(3, 200)`), xatoni `throw()` bilan ushlang, `Http::pool` bilan 3 so'rovni parallel yuboring va `Http::fake()` + `Http::assertSent` bilan test qiling.",
       "acceptanceCriteria": [
-        "Nima uchun tashqi so'rovlarda `timeout()` va `retry()` shart ekanini biladi",
-        "`Http::pool()` orqali parallel asinxron so'rovlar yuborishni biladi",
-        "Feature testlarda `Http::fake()` bilan tashqi API'larni mock qila oladi"
+        "`get/post`, `asJson`, `withToken`, `withHeaders`, `baseUrl`, `timeout`, `retry`, `throw` ni biladi",
+        "`Response` metodlarini (`ok`, `failed`, `json`, `throw`) biladi",
+        "`Http::pool` va `Http::fake` ni ishlatadi",
+        "Timeout/retry/idempotentlik qoidalarini biladi"
       ],
       "prerequisites": [
         "2.9",
@@ -735,40 +664,16 @@ registerSkill({
       "id": "2.29",
       "title": "Broadcasting, WebSockets va Laravel Reverb",
       "description": [
-        "WebSockets an'anaviy HTTP polling o'rniga ikki tomonlama doimiy aloqa (full-duplex) yaratadi. Laravel'da hodisalarni real-time tarqatish uchun event'ga `ShouldBroadcast` yoki `ShouldBroadcastNow` interfeysi qo'shiladi.",
-        "",
-        "**Kanallar turlari**:",
-        "- `Channel`: hamma uchun ochiq ommaviy kanal (masalan, yangiliklar tasmasi).",
-        "- `PrivateChannel`: faqat avtorizatsiyadan o'tgan foydalanuvchilar (`routes/channels.php` da huquq tekshiriladi).",
-        "- `PresenceChannel`: xonada hozir kimlar borligini ko'rsatish va \"foydalanuvchi yozmoqda...\" kabi holatlarni uzatish.",
-        "",
-        "**Laravel Reverb**: Laravel 11 da chiqarilgan, PHP asosidagi juda tez, birinchi partiyaviy WebSocket server. Pusher yoki Soketi kabi tashqi xizmatlarsiz, millionlab ulanishlarni o'z serveringizda bepul boshqarish imkonini beradi. Frontendda esa `laravel-echo` va `pusher-js` orqali tinglanadi.",
-        "",
-        "```php",
-        "// Event e'loni",
-        "final class OrderStatusUpdated implements ShouldBroadcast",
-        "{",
-        "    use Dispatchable, InteractsWithSockets, SerializesModels;",
-        "    public function __construct(public Order $order) {}",
-        "    public function broadcastOn(): array",
-        "    {",
-        "        return [new PrivateChannel(\"orders.{$this->order->user_id}\")];",
-        "    }",
-        "}",
-        "",
-        "// routes/channels.php da avtorizatsiya",
-        "Broadcast::channel('orders.{userId}', function (User $user, int $userId): bool {",
-        "    return (int) $user->id === $userId;",
-        "});",
-        "```"
+        "Broadcasting — server hodisalarini WebSocket orqali brauzerga real vaqtda yuborish. Laravel'ning birinchi tomon serveri **Reverb** (WebSocket, Pusher protokoli bilan mos); muqobil: Pusher, Ably. Mexanika: event `ShouldBroadcast` → kanal (public/private/presence) → klient `Laravel Echo`. Laravel 11+ da `php artisan install:broadcasting`. Senior uchun: kanal avtorizatsiyasi, queue orqali yuborish, masshtablash (Redis) va xavfsizlik."
       ],
       "priority": "important",
       "level": "Middle",
-      "practicalTask": "Laravel Reverb orqali buyurtma holati o'zgarganda faqat buyurtma egasining brauzeriga real-time xabar yuboruvchi Private Channel yozing va testlang.",
+      "practicalTask": "`MessageSent` event yarating (`ShouldBroadcast`, private kanal `chat.{id}`), `routes/channels.php` da avtorizatsiya yozing, Reverb'ni `install:broadcasting` bilan o'rnating, Echo bilan klientda tinglang va `Event::fake` bilan test qiling; queue worker bilan ishlashini tekshiring.",
       "acceptanceCriteria": [
-        "Public, Private va Presence channel farqlarini hamda `routes/channels.php` dagi avtorizatsiyani tushuntira oladi",
-        "`ShouldBroadcast` (queue orqali) va `ShouldBroadcastNow` ning navbatga bog'liqligini biladi",
-        "Laravel Reverb serverini ishga tushirish va Echo bilan ulash amaliyotiga ega"
+        "Public, private va presence kanal farqini va avtorizatsiyasini biladi",
+        "`ShouldBroadcast` vs `ShouldBroadcastNow`, `broadcastOn`, `broadcastWith`, `broadcastAs` ni biladi",
+        "Reverb, Pusher, Ably variantlarini va queue ahamiyatini biladi",
+        "Echo klient sozlamasi va `routes/channels.php` avtorizatsiyasini biladi"
       ],
       "prerequisites": [
         "2.20",
@@ -779,33 +684,16 @@ registerSkill({
       "id": "2.31",
       "title": "Concurrency va Application Context (Laravel 11+)",
       "description": [
-        "Zamonaviy yuqori yuklamali ilovalarda bitta so'rov ichida parallel hisoblash va taqsimlangan log yuritish zarurati paydo bo'ladi.",
-        "",
-        "**Concurrency (`Illuminate\\Support\\Facades\\Concurrency`)**:",
-        "Laravel 11 da kiritilgan imkoniyat bo'lib, bitta HTTP so'rov yoki artisan buyruq ichida bir nechta vazifani parallel fonda bajaradi (`Concurrency::run([fn() => ..., fn() => ...])`). Fork (CLI) yoki Process drayverlari orqali bir necha mustaqil hisob-kitobni bir vaqtda bajarib, umumiy javob vaqtini minimallashtiradi.",
-        "",
-        "**Application Context (`Illuminate\\Support\\Facades\\Context`)**:",
-        "So'rov boshlanganda yozilgan metadata ma'lumotlarini (masalan, `trace_id`, `user_id`, `tenant_id`) butun so'rov hayotiy siklida saqlaydi va eng muhimi — ularni **navbatdagi Job'larga avtomatik o'tkazadi** hamda barcha loglarga biriktiradi. Bu tarqoq xatolarni (distributed tracing) qidirishda bebahodir.",
-        "",
-        "```php",
-        "// Context o'rnatish (masalan, middleware'da)",
-        "Context::add('trace_id', (string) Str::uuid());",
-        "Log::info('Buyurtma yaratilmoqda'); // log faylda trace_id avtomatik chiqadi",
-        "",
-        "// Concurrency — parallel hisoblash",
-        "[$ordersCount, $totalRevenue] = Concurrency::run([",
-        "    fn () => Order::where('status', 'paid')->count(),",
-        "    fn () => Order::where('status', 'paid')->sum('total'),",
-        "]);",
-        "```"
+        "Ikki vosita: **Concurrency** (`Concurrency::run([...])` — closure'larni parallel jarayonlarda bajaradi, natijani qaytaradi; `defer()` — javobdan keyin) va **Context** (`Context::add('key', v)` — so'rov davomida kontekst, loglarga va queue job'larga avtomatik uzatiladi). Senior uchun: qachon parallellik foyda beradi (IO-bound mustaqil ishlar), serializatsiya cheklovlari va korrelyatsiya ID'ni job'larga uzatish."
       ],
       "priority": "important",
       "level": "Senior",
-      "practicalTask": "Dashboard sahifasidagi 2 ta og'ir mustaqil statistikani `Concurrency::run()` bilan parallel hisoblang va kiruvchi `X-Trace-Id` ni `Context` orqali barcha loglarga ulab chiqing.",
+      "practicalTask": "Dashboard uchun 3 ta mustaqil og'ir so'rovni `Concurrency::run` bilan parallel bajaring (vaqtni solishtiring), javobdan keyin `Concurrency::defer` bilan metrika yozing va `Context::add('request_id')` ni middleware'da qo'yib, queue job logida paydo bo'lishini tekshiring.",
       "acceptanceCriteria": [
-        "Concurrency qachon Queue o'rnini bosa olmasligini (faqat bitta request doirasida ishlashini) tushuntira oladi",
-        "`Context` ma'lumotlari qanday qilib Queue joblariga avtomatik o'tishini biladi",
-        "Loglarda `trace_id` orqali tarqoq nosozliklarni tezkor qidirish mexanizmini tushunadi"
+        "`Concurrency::run`, `defer` va driverlarni (process, fork, sync) biladi",
+        "Parallellik qachon foydali, qachon zararli ekanini biladi",
+        "`Context::add/get/hidden` va uning log/job'ga uzatilishini biladi",
+        "Closure serializatsiyasi va holat izolyatsiyasi cheklovlarini biladi"
       ],
       "prerequisites": [
         "2.1",
@@ -839,22 +727,16 @@ registerSkill({
       "id": "2.26",
       "title": "Laravel Package Development",
       "description": [
-        "Paket — qayta ishlatiladigan funksionallik: o'z `composer.json`, PSR-4 autoload, service provider (`extra.laravel.providers` orqali auto-discovery), config (`mergeConfigFrom`, `publishes`), migratsiya, route, view va command'lar.",
-        "",
-        "Sifatli paket: semver, aniq Laravel/PHP versiya cheklovlari, Orchestra Testbench bilan testlar, CI matrix, CHANGELOG. `spatie/laravel-package-tools` boilerplate'ni qisqartiradi. Ichki (private) paketlar uchun Satis/Private Packagist yoki VCS repository.",
-        "",
-        "```json",
-        "\"extra\": {",
-        "    \"laravel\": { \"providers\": [\"Acme\\\\Payme\\\\PaymeServiceProvider\"] }",
-        "}",
-        "```"
+        "Laravel paketi — qayta ishlatiladigan funksiya (config, migration, route, view, buyruq) Composer paketi sifatida. Skelet `spatie/laravel-package-tools` yoki Orchestra Testbench bilan; ro'yxatga olish **auto-discovery** (`extra.laravel.providers`). Senior uchun: paket Service Provider'i, nashr qilinadigan resurslar (`publishes`), `mergeConfigFrom`, versiya mosligi (`illuminate/*` constraint) va testlash."
       ],
       "priority": "optional",
       "level": "Senior",
-      "practicalTask": "Kichik to'lov integratsiyasini alohida paketga ajrating, Testbench testlari va publish qilinadigan config bilan.",
+      "practicalTask": "Kichik paket yarating (`acme/audit-log`): Service Provider (config, migration, buyruq), `composer.json` da auto-discovery, `publishes` bilan config/migration nashri, Testbench bilan test va SemVer bo'yicha versiya.",
       "acceptanceCriteria": [
-        "Auto-discovery va publishable resurslar mexanizmini biladi",
-        "Paketni Testbench bilan izolyatsiyada testlay oladi"
+        "Paket Service Provider'ida `register`/`boot`, `mergeConfigFrom`, `publishes`, `loadMigrationsFrom` ni biladi",
+        "`extra.laravel.providers/aliases` (auto-discovery) ni biladi",
+        "Orchestra Testbench bilan paketni testlay oladi",
+        "`illuminate/*` versiya constraint va SemVer'ni to'g'ri qo'yadi"
       ],
       "prerequisites": [
         "2.7",
@@ -865,22 +747,16 @@ registerSkill({
       "id": "2.27",
       "title": "Framework Internals va Service Resolution",
       "description": [
-        "`make()` chaqirilganda container: alias'larni hal qiladi → kontekstual binding'ni tekshiradi → binding bo'lsa closure'ni chaqiradi, bo'lmasa Reflection bilan constructor parametrlarini rekursiv resolve qiladi → `resolving`/`afterResolving` callback'larini ishga tushiradi → singleton bo'lsa `instances` ga saqlaydi.",
-        "",
-        "Bu bilim aylanma bog'liqliklarni (circular dependency), \"Target is not instantiable\" xatolarini va Octane'dagi holat oqishini tushunish uchun kerak. Laravel manba kodini o'qish (`Illuminate\\Container\\Container`) — eng yaxshi o'qituvchi.",
-        "",
-        "```php",
-        "$this->app->afterResolving(Mailer::class, function (Mailer $m) {",
-        "    $m->alwaysReplyTo('support@example.uz');",
-        "});",
-        "```"
+        "Framework ichki qismlari: container `make()` qanday bog'liqliklarni hal qiladi (reflection), pipeline (`Illuminate\\Pipeline`) middleware'larni qanday zanjirlaydi, Facade proksi, Macroable va `Manager` (driver) naqshi (`Cache`, `Mail`, `Queue`). Bu bilim \"sehr\"ni yo'qotadi, debugging va o'z kengaytmalarini yozishda kerak. Senior uchun: `Macroable`, `Pipeline`, `Manager::extend` va kontrakt (`Illuminate\\Contracts`)."
       ],
       "priority": "optional",
       "level": "Senior",
-      "practicalTask": "`Container::make()` ning soddalashtirilgan nusxasini yozing: binding, singleton va autowiring bilan.",
+      "practicalTask": "`Pipeline` bilan so'rov-tozalash zanjirini yozing, `Str::macro` bilan yordamchi qo'shing, `Cache::extend('custom', ...)` bilan maxsus driver ro'yxatga oling va container `make()` ning rekursiv hal qilishini `ReflectionClass` bilan qo'lda takrorlab ko'ring.",
       "acceptanceCriteria": [
-        "\"Target [X] is not instantiable\" xatosining sababini aniqlay oladi",
-        "Resolving callback'lar qachon chaqirilishini biladi"
+        "Container avto-resolution mexanizmini (reflection, rekursiya) tushuntira oladi",
+        "Pipeline, Macroable va Manager (driver) naqshlarini biladi",
+        "Kontrakt (`Illuminate\\Contracts`) va konkret klass farqini biladi",
+        "Maxsus driver/makro qo'sha oladi"
       ],
       "prerequisites": [
         "2.6",
@@ -891,22 +767,16 @@ registerSkill({
       "id": "2.28",
       "title": "Laravel Version Upgrades",
       "description": [
-        "Laravel har yili major versiya chiqaradi; har birining bug-fix va security support muddati bor. Upgrade jarayoni: rasmiy upgrade guide → `composer.json` cheklovlarini yangilash → paketlar mosligini tekshirish (`composer why-not laravel/framework 12.0`) → Laravel Shift yoki Rector → test to'plami → staging.",
-        "",
-        "Yaxshi amaliyot: bir versiyadan sakramaslik, deprecation'larni oldindan tuzatish, upgrade'ni alohida PR'da funksional o'zgarishlarsiz qilish, kuchli test qamrovi. Eskirgan versiyada qolish — xavfsizlik va texnik qarz xavfi.",
-        "",
-        "```bash",
-        "composer why-not laravel/framework \"^12.0\"",
-        "composer require laravel/framework:^12.0 -W",
-        "php artisan test",
-        "```"
+        "Laravel yiliga bitta major chiqaradi va har versiyaga cheklangan qo'llab-quvvatlash beriladi. Laravel docs ma'lumoti: Laravel 13 (2026-03-17 chiqqan) PHP 8.3–8.5 ni talab qiladi, xato tuzatishlari 2027-Q3 gacha, xavfsizlik 2028-03-17 gacha; Laravel 12 PHP 8.2–8.5, xato tuzatishlari 2026-08-13 gacha, xavfsizlik 2027-02-24 gacha; Laravel 11 uchun xavfsizlik yangilanishlari 2026-03-12 da tugagan. Senior uchun: yangilash strategiyasi, upgrade guide, avtomatlashtirish (Rector, Shift), deprecation'lar va test bilan himoya."
       ],
       "priority": "important",
       "level": "Senior",
-      "practicalTask": "Loyihani keyingi Laravel versiyasiga upgrade qilish rejasini (risklar, paketlar, testlar) tuzing.",
+      "practicalTask": "Loyihani Laravel 11 → 12 → 13 ga ko'tarish rejasini tuzing: `composer why-not`, rasmiy upgrade guide, PHP versiyasi, paketlar mosligi, `rector` bilan avtomatik refaktor, test to'plami va kanareyka-deploy; bitta major'ni ko'tarib, regressiya ro'yxatini yozing.",
       "acceptanceCriteria": [
-        "Laravel support siyosatini biladi",
-        "Upgrade'ni funksional o'zgarishlardan ajratish zarurligini tushunadi"
+        "Laravel support policy'ni (bug fix va security muddatlari) biladi va qaysi versiyada qolish xavfini baholay oladi",
+        "Bir vaqtda faqat **bitta** major'ni ko'tarish tamoyilini biladi",
+        "`composer why-not`, upgrade guide, Rector/Shift, deprecation log'ni ishlata oladi",
+        "Test va CI matritsasi bilan yangilashni himoyalay oladi"
       ],
       "prerequisites": [
         "7.16",

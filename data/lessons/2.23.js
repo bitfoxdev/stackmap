@@ -1,53 +1,80 @@
 /* Chuqur dars: 2.23. Maydonlar: lesson (markdown), examples [{title, lang, code, note}], pitfalls [] */
 registerLesson("2.23", {
   "lesson": [
-    "### Lokalizatsiya",
-    "Matnlarni tillar bo'yicha boshqarish. Fayllar `lang/` papkasida (L11+ da `php artisan lang:publish` bilan chiqariladi).",
+    "### Fayllar",
+    "Laravel 11+ da `lang/` papkasi yo'q: `php artisan lang:publish`. Ikki usul:",
+    "- **PHP massivlar**: `lang/uz/messages.php` → `__('messages.welcome')` (kalit guruhli).",
+    "- **JSON**: `lang/uz.json` → `{\"Welcome\": \"Xush kelibsiz\"}` → `__('Welcome')` (satrning o'zi kalit). Ko'p matnli ilovada qulay.",
+    "Validatsiya: `lang/uz/validation.php` (`lang:publish` dan keyin).",
     "",
-    "### Ikki formati",
-    "- **PHP fayl:** `lang/uz/messages.php` → `__('messages.welcome')`.",
-    "- **JSON:** `lang/uz.json`: kalit — inglizcha matn: `__('Welcome')` (kichik loyihada qulay).",
+    "### Ishlatish",
+    "`__('messages.welcome')`, `trans('...')`, Blade: `{{ __('...') }}`, `@lang('...')`. Parametr: `__('Salom, :name', ['name' => $u->name])` (`:Name` bosh harf, `:NAME` katta). Ko'plik: `trans_choice('{0} Hech narsa|{1} :count ta|[2,*] :count ta', $n)` (`Lang::choice`); O'zbek/rus tillarida ko'plik shakllari ko'p, qoidani to'g'ri belgilang.",
+    "Topilmasa kalitning o'zi qaytadi: kalit yo'q ekanini sezish uchun testda tekshiring.",
     "",
-    "### Funksiyalar",
-    "`__('key')`, `trans('key')`, `@lang('key')` (Blade), `trans_choice('messages.apples', $n)` (ko'plik), `Lang::get()`.",
-    "Placeholder: `'welcome' => 'Salom, :name!'` → `__('messages.welcome', ['name' => $u->name])`.",
+    "### Til tanlash",
+    "`config/app.php`: `locale`, `fallback_locale` (topilmasa shu til), `faker_locale`. Runtime: `app()->setLocale('uz')` (shu so'rov), `App::currentLocale()`, `App::isLocale('uz')`. **Middleware**: foydalanuvchi sozlamasi (DB) → `session`/cookie → `Accept-Language` (`$request->getPreferredLanguage(['uz','ru','en'])`) → default. Faqat ruxsat etilgan tillar ro'yxatidan oling (kirish ishonchsiz). Queue job va Notification/Mail uchun til alohida: `->locale('uz')` yoki `HasLocalePreference`; job ichida request tili yo'q.",
     "",
-    "### Ko'plik",
-    "`'apples' => '{0} olma yo\\'q|{1} bitta olma|[2,*] :count ta olma'`.",
+    "### Sana, raqam, valyuta",
+    "`Carbon::setLocale('uz')` (`app()->setLocale` o'zi ham qiladi), `$date->translatedFormat('d F Y')`, `Number::currency(1000, 'UZS', 'uz')`, `Number::format(...)` (`Illuminate\\Support\\Number`, `intl` kengaytmasi kerak). Vaqt mintaqasi — alohida masala (UTC saqlash, ko'rsatishda foydalanuvchiniki).",
     "",
-    "### Tilni o'rnatish",
-    "`App::setLocale('uz')`, `config('app.locale')`, `fallback_locale`. Middleware: URL prefiksi (`/uz/...`), foydalanuvchi sozlamasi yoki `Accept-Language` bo'yicha tanlash.",
-    "",
-    "### Carbon va validatsiya",
-    "`Carbon::setLocale('uz')` (sana nomlari), validatsiya xabarlari `lang/uz/validation.php`. Laravel Lang paketi (`laravel-lang/lang`) tayyor tarjimalar beradi.",
+    "### API",
+    "Javob matnlarini (xato xabarlari) tarjima qiling, lekin mashina-o'qiladigan `code` ni o'zgartirmang (2.16).",
     "",
     "### Qoidalar",
-    "- Hardcoded matn o'rniga kalit.",
-    "- Ko'plik va jins qoidalariga e'tibor (o'zbek ko'pligi: sondan keyin birlik).",
-    "- `app.locale` ni so'rov oxirida tiklash (Octane: `scoped` locale).",
-    "- Sana/pul formatini `NumberFormatter`/Carbon bilan.",
-    "",
-    "### Test",
-    "Tilga bog'liq javoblarni `App::setLocale()` bilan tekshiring."
+    "1. Bitta usulni tanlang (JSON yoki guruhli) va izchil ishlating.",
+    "2. Matnni kodga yopishtirmang; hamma foydalanuvchi matni `__()` orqali.",
+    "3. Til ro'yxati qat'iy (whitelist).",
+    "4. Yangi kalit qo'shilganda barcha tillarga qo'shing (test yoki paket bilan tekshiring)."
   ],
   "examples": [
     {
-      "title": "Lokalizatsiya",
+      "title": "Til tanlash middleware",
       "lang": "php",
+      "note": "SetLocale",
       "code": [
-        "// lang/uz/messages.php",
-        "return ['welcome' => 'Salom, :name!', 'apples' => '{0} olma yo\\'q|{1} bitta olma|[2,*] :count ta olma'];",
+        "namespace App\\Http\\Middleware;",
         "",
-        "App::setLocale('uz');",
-        "echo __('messages.welcome', ['name' => 'Ali']);",
-        "echo trans_choice('messages.apples', 5);"
+        "use Closure;",
+        "use Illuminate\\Http\\Request;",
+        "use Illuminate\\Support\\Facades\\App;",
+        "",
+        "class SetLocale",
+        "{",
+        "    private const SUPPORTED = ['uz', 'ru', 'en'];",
+        "",
+        "    public function handle(Request $request, Closure $next)",
+        "    {",
+        "        $locale = $request->user()?->locale",
+        "            ?? $request->getPreferredLanguage(self::SUPPORTED)",
+        "            ?? config('app.locale');",
+        "",
+        "        App::setLocale(in_array($locale, self::SUPPORTED, true) ? $locale : config('app.fallback_locale'));",
+        "",
+        "        return $next($request);",
+        "    }",
+        "}"
+      ]
+    },
+    {
+      "title": "JSON va ko'plik",
+      "lang": "php",
+      "note": "lang/uz.json, trans_choice",
+      "code": [
+        "// lang/uz.json",
+        "// { \"Welcome, :name\": \"Xush kelibsiz, :name\", \":count items\": \"{0} Mahsulot yo'q|{1} 1 ta mahsulot|[2,*] :count ta mahsulot\" }",
+        "",
+        "echo __('Welcome, :name', ['name' => $user->name]);",
+        "echo trans_choice(':count items', $cart->count());",
+        "echo now()->translatedFormat('d F Y');"
       ]
     }
   ],
   "pitfalls": [
-    "Matnni kodga yozib qo'yish (hardcode) keyin tarjima qilishni qiyinlashtiradi.",
-    "`setLocale` Octane'da keyingi so'rovga o'tib ketishi mumkin: har so'rovda o'rnating.",
-    "Tarjima kaliti topilmasa kalitning o'zi ko'rinadi: `fallback_locale` va testlar.",
-    "Ko'plik qoidalari tilga qarab farq qiladi: `trans_choice` ni ishlating."
+    "Foydalanuvchi bergan `locale` ni tekshirmasdan `setLocale` ga berish: kutilmagan fayl yo'li/xato; whitelist.",
+    "Queue/Mail/Notification'da so'rov tilini kutish: job'da request yo'q, til `default`; `->locale()` yoki `HasLocalePreference`.",
+    "Tarjima kaliti yo'q bo'lsa kalitning o'zi chiqishi: UI'da `messages.welcome` ko'rinadi; testda tekshiring.",
+    "Ko'plik qoidasini (`trans_choice`) faqat 2 shakl bilan yozish: rus/o'zbek tilida noto'g'ri grammatika.",
+    "`Carbon::setLocale` ni chaqirmay sana formatlash: ingliz tilida chiqadi.",
+    "Matnni HTML/kod ichiga yopishtirib qo'yish: keyin tarjima qilib bo'lmaydi."
   ]
 });
