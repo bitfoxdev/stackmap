@@ -8,9 +8,6 @@ registerLesson("1.7", {
     "- **Pure enum**: faqat nomli case'lar, qiymatsiz (`enum Suit { case Hearts; case Spades; }`).",
     "- **Backed enum**: case'larga `int` yoki `string` qiymat beriladi (`enum Status: string { case Draft = 'draft'; }`). `->value` va `::from()` / `::tryFrom()` faqat backed enum'da mavjud.",
     "",
-    "### Imkoniyatlar",
-    "Enum interface'ni implement qiladi, metod, statik metod va konstanta saqlay oladi, lekin **property saqlay olmaydi** va extend qilinmaydi. `cases()` barcha case'larni qaytaradi. `match` bilan juda yaxshi ishlaydi. Case'lar singleton: `Status::Draft === Status::Draft` doim `true`.",
-    "",
     "### from va tryFrom",
     "`Status::from('x')` noto'g'ri qiymatda `ValueError` tashlaydi; `tryFrom` esa `null` qaytaradi. Tashqi kiritma (request, DB) uchun `tryFrom` va tekshiruv.",
     "",
@@ -26,7 +23,7 @@ registerLesson("1.7", {
     "",
     "**Case'lar**",
     "- Case nomi odatda PascalCase (`Status::Draft`); case'lar **obyekt singleton**: `===` ishlaydi, `new` ishlamaydi.",
-    "- `->name` har doim bor, `->value` faqat backed enum'da. Backed: `int` yoki `string`, qiymatlar unikal va literal (konstanta ifoda 8.2 dan).",
+    "- `->name` har doim bor, `->value` faqat backed enum'da. Backed: `int` yoki `string`, qiymatlar unikal va literal/konstanta ifoda.",
     "- `cases()` — case'lar massivi (e'lon tartibida). `from/tryFrom` faqat backed.",
     "- Konstantalar enum ichida va case'ni alias qilish: `const Default = self::Draft;`.",
     "",
@@ -46,10 +43,7 @@ registerLesson("1.7", {
     "`$casts` / `casts()`, `Rule::enum()`, `Request::enum('status', Status::class)`, route model binding'da enum (`Route::get('/s/{status}', ...)` — enum tipidagi parametr avtomatik `tryFrom`, topilmasa 404), `AsEnumCollection`, `AsEnumArrayObject`. Migratsiyada: `$table->string('status')` yoki `->enum()`; DB `ENUM` turi o'zgartirish qiyin, ko'pincha string+cast afzal.",
     "",
     "**Qiymat ro'yxatlari**",
-    "`array_column(Status::cases(), 'value')`, `array_column(Status::cases(), 'name', 'value')` (8.1+, enum obyektlarida ishlaydi), select/dropdown uchun `label()` bilan.",
-    "",
-    "**State machine**",
-    "Enum + `transitions()` metodi + `canTransitionTo()`; PHPStan to'liqligini tekshiradi."
+    "`array_column(Status::cases(), 'value')`, `array_column(Status::cases(), 'name', 'value')` (8.1+, enum obyektlarida ishlaydi), select/dropdown uchun `label()` bilan."
   ],
   "examples": [
     {
@@ -144,7 +138,6 @@ registerLesson("1.7", {
     "Enum property saqlay olmaydi; holat kerak bo'lsa konstanta yoki alohida obyekt ishlating.",
     "Bazada enum `value`ini o'zgartirsangiz, eski yozuvlar `ValueError` beradi; migratsiyada ma'lumotni yangilang.",
     "Enum'ni massiv kaliti qilib bo'lmaydi (`TypeError: Illegal offset type`): `->value` ishlating.",
-    "Pure enum `json_encode` qilinmaydi: backed qiling yoki `JsonSerializable`/resource orqali.",
-    "DB `ENUM` ustuniga yangi case qo'shish migratsiya talab qiladi; string+cast osonroq."
+    "Pure enum `json_encode` qilinmaydi: backed qiling yoki `JsonSerializable`/resource orqali."
   ]
 });

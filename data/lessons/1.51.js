@@ -16,17 +16,11 @@ registerLesson("1.51", {
     "- `feof($h)` oxiriga yetdimi",
     "- `fclose($h)` yopish (majburiy)",
     "",
-    "### Katta fayllar",
-    "`file_get_contents` butun faylni xotiraga yuklaydi: katta faylda `memory_limit` to'ladi. `fgets` bilan qator-qator o'qing yoki generator (`yield`) ishlating.",
-    "",
     "### CSV va strukturalangan fayllar",
     "`fgetcsv($h)` CSV qatorini massivga ajratadi; `SplFileObject` qulay OOP shakli.",
     "",
     "### Kodlash",
     "Fayl kodlashi (UTF-8, BOM) muhim: BOM bilan kelgan faylning birinchi belgisi ko'rinmas bo'ladi. `mb_convert_encoding` bilan keltiring.",
-    "",
-    "### Xatolar",
-    "Fayl yo'q bo'lsa `fopen` `false` qaytaradi va Warning beradi. `@fopen` bilan yashirmang: `file_exists` yoki natijani tekshiring.",
     "",
     "### O'qish funksiyalari taqqoslash",
     "| Funksiya | Qaytaradi | Katta faylga |",
@@ -50,9 +44,6 @@ registerLesson("1.51", {
     "",
     "### Binar fayllar",
     "`fopen($p, 'rb')` va `fread` bilan bo'lak-bo'lak (masalan 8192 bayt). `unpack()` bilan binar ma'lumotni ochish. Windows'da `b` bayrog'i muhim (`\\r\\n` o'zgarmasligi uchun).",
-    "",
-    "### SplFileObject",
-    "OOP variant: `foreach (new SplFileObject($p) as $n => $line)`. CSV uchun `setFlags(SplFileObject::READ_CSV)`.",
     "",
     "### Generator bilan",
     "Katta faylni xotira tejab qayta ishlash:",
@@ -117,7 +108,6 @@ registerLesson("1.51", {
   "pitfalls": [
     "`while (!feof($h))` oxirgi qatordan keyin bo'sh `false` o'qib qo'yadi: `while (($l = fgets($h)) !== false)` xavfsizroq.",
     "`fclose` qilinmasa resurs yopilmay qoladi (uzun skriptda leak).",
-    "Katta faylni `file_get_contents` bilan o'qish OOM beradi: stream.",
     "UTF-8 BOM birinchi belgini buzadi: faylni BOM'siz saqlang yoki uni kesib oling."
   ]
 });

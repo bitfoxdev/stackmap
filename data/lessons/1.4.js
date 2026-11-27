@@ -49,15 +49,6 @@ registerLesson("1.4", {
     "| `\"\"` | `null` | true |",
     "Qoida (8.0): son ↔ satr solishtirishda satr **son bo'lsa** songa o'giriladi, aks holda son satrga o'giriladi va satr sifatida solishtiriladi.",
     "",
-    "**Boolean va bo'sh**",
-    "`if`, `&&`, `!`, `?:` ichida falsy: `false`, `0`, `-0`, `0.0`, `\"\"`, `\"0\"`, `[]`, `null`, `SimpleXMLElement` (bo'sh). `\"0.0\"`, `\" \"`, `\"false\"`, `[0]` truthy. Obyekt doim truthy (poʻsh `SimpleXML` dan tashqari).",
-    "",
-    "**Switch va in_array**",
-    "`switch` loose: `switch (\"a\") { case 0: ... }` PHP 8 da mos kelmaydi, ammo `switch (\"1\") { case 1: }` mos keladi. `in_array`, `array_search`, `array_keys($a, $v)`, `array_unique`, `sort` default flag'lari ham loose.",
-    "",
-    "**Sort va juggling**",
-    "`sort(['10', '9', '2', 'a'])` aralash tipda tartib noaniq; `SORT_STRING`, `SORT_NUMERIC`, `SORT_NATURAL` ni aniq bering. Spaceship `<=>` ham juggling qoidalariga amal qiladi.",
-    "",
     "**Xavfsizlik kontekstida**",
     "- **Magic hash:** `\"0e...\"` satrlar sonli (nol) deb o'qiladi: `\"0e123\" == \"0e999\"`. Parol/token xeshini `==` bilan solishtirmang.",
     "- **Loose type bypass:** `if ($_GET['id'] == 0)` ga `\"abc\"` PHP 7 da o'tardi; JSON'dan `true` kelsa `\"x\" == true` → true.",
@@ -138,8 +129,6 @@ registerLesson("1.4", {
     "`in_array` va `array_search` strict parametrsiz loose ishlaydi: `in_array('abc', [0])` PHP 7 da `true` edi, `in_array('1e1', ['10'])` hozir ham `true`. Doim uchinchi argument `true`.",
     "Parol yoki tokenni `==` bilan solishtirish magic hash zaifligiga yo'l ochadi; `password_verify()` yoki `hash_equals()` ishlating.",
     "`switch` loose solishtiradi: `switch ('0e1') { case '0e2': ... }` mos keladi. Qiymat tipiga ishonmasangiz `match` ishlating.",
-    "`filter_var` bilan `FILTER_VALIDATE_INT` qaytargan `0` ni `if (!$id)` bilan tekshirmang: `0` falsy; `=== false` ishlating.",
-    "JSON `true`/`1`/`\"1\"` loose solishtirishda teng bo'lib, kutilmagan shartga o'tib ketadi.",
     "Aralash tipli massivni `sort` qilish kutilmagan natija beradi (loose solishtirish tranzitiv emas; PHP 8.0 dan sort barqaror, lekin bu muammoni hal qilmaydi): `SORT_STRING`/`SORT_NUMERIC` flag'ini aniq bering."
   ]
 });

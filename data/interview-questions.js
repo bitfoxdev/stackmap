@@ -14,9 +14,9 @@ window.INTERVIEW_QUESTIONS = [
     answer: [
       "`==` (loose comparison) tiplarni tenglashtirish (type coercion / juggling) orqali solishtiradi, `===` (strict comparison) esa ham tipni, ham qiymatni tekshiradi.",
       "",
-      "**PHP 7 va undan oldingi xavf:** PHP 7 da `'0e123' == '0e456'` (ikkalasi ham float 0 deb o'qilgan) yoki `'admin' == 0` ifodasi `true` qaytargan. Agar dasturchi parolni yoki tokenni hash bilan solishtirganda `==` ishlatsa, autentifikatsiyani aylanib o'tish (magic hash vulnerability) mumkin bo'lgan.",
+      "**Xavf:** `'0e123' == '0e456'` (ikkalasi ham sonli satr, float 0) **PHP 8 da ham `true`**; PHP 7 da esa qo'shimcha `'admin' == 0` ham `true` edi. Agar dasturchi parolni yoki tokenni hash bilan solishtirganda `==` ishlatsa, autentifikatsiyani aylanib o'tish (magic hash vulnerability) mumkin bo'lgan.",
       "",
-      "**PHP 8 dagi o'zgarish:** PHP 8 dan boshlab son va satr solishtirilganda satr songa emas, faqat qat'iy sonli satr bo'lsa songa o'giriladi, aks holda son satrga o'giriladi. Shunda `0 == 'admin'` endi `false` qaytaradi. Ammo ob'ektlar va massivlarda `==` kutilmagan xatolarga sabab bo'lishi mumkin. Doim `===` yoki `hash_equals()` ishlatish shart.",
+      "**PHP 8 dagi o'zgarish:** PHP 8 dan boshlab son va satr solishtirilganda satr songa emas, faqat qat'iy sonli satr bo'lsa songa o'giriladi, aks holda son satrga o'giriladi. Shunda `0 == 'admin'` endi `false` qaytaradi, lekin `'0e1' == '0e2'` kabi ikki sonli satr hamon `true` (magic hash). Doim `===` yoki `hash_equals()` ishlatish shart.",
       "",
       "```php",
       "// PHP 7 da true, PHP 8 da false:",
@@ -1087,7 +1087,7 @@ window.INTERVIEW_QUESTIONS = [
       "**opcache.preload nimani o'zgartiradi?**",
       "- Standart OPcache'da har bir worker so'rov kelganda fayllarning xotiradagi opcode'ini o'z jarayoniga bog'lashi (link/resolve classes) kerak bo'ladi.",
       "- `opcache.preload` orqali server ishga tushganda (PHP-FPM start) maxsus skript (masalan, Laravel'dagi vendor va core classlar) xotiraga yuklanadi va **barcha workerlar uchun doimiy bog'langan (pre-resolved)** holda saqlanadi.",
-      "- Natijada har bir so'rovda hatto classlarni izlash va registratsiya qilish vaqti ham yo'qoladi. Framework 15-30% tezroq javob beradi.",
+      "- Natijada har bir so'rovda hatto classlarni izlash va registratsiya qilish vaqti ham yo'qoladi. Framework javob vaqti qisqaradi (foyda ilovaga bog'liq: o'lchab ko'ring).",
       "",
       "**Kamchiligi:** Kod o'zgarsa, PHP-FPM ni qayta ishga tushirish (restart) shart."
     ],

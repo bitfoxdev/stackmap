@@ -6,7 +6,7 @@ registerLesson("1.15", {
     "- `Error` — dastur/til xatolari (`TypeError`, `ValueError`, `ArithmeticError`, `DivisionByZeroError`). PHP 7 dan ularni `catch` qilsa bo'ladi.",
     "- `Exception` — dastur mantiqi (`RuntimeException`, `InvalidArgumentException`, `DomainException`...).",
     "",
-    "Eskirgan Warning/Notice'lar `ErrorException` ga aylantirilishi mumkin (`set_error_handler`). Laravel buni o'zi qiladi.",
+    "",
     "",
     "### try / catch / finally",
     "- Bir nechta catch, `catch (A | B $e)` — bir nechta tip.",
@@ -15,15 +15,6 @@ registerLesson("1.15", {
     "",
     "### Maxsus istisnolar",
     "Domen xatolari uchun alohida klass: `InsufficientFundsException extends DomainException`. Shunda ushlovchi aniq biladi, xabar matniga qarab ajratish shart bo'lmaydi.",
-    "",
-    "### Qachon ushlash kerak",
-    "Faqat nima qilishni **bilgan** joyda: qayta urinish, fallback, foydalanuvchiga mazmunli javob. Qolganini yuqoriga uzating (global handler). Bo'sh `catch` va `catch (Throwable)` + jim yutish — eng yomon amaliyot.",
-    "",
-    "### Laravel",
-    "`app/Exceptions/Handler` yoki `bootstrap/app.php` `withExceptions`: `report()` (log) va `render()` (javob). `abort(404)`, `renderable` istisnolar, `shouldReport` va `dontReport`. HTTP istisnolari: `HttpException`.",
-    "",
-    "### Log",
-    "Xatoni logga yozing (kontekst bilan), foydalanuvchiga ichki tafsilot ko'rsatmang.",
     "",
     "### PHP 8 dagi xatolar tizimi",
     "",
@@ -156,8 +147,6 @@ registerLesson("1.15", {
     "`finally` ichida `return`/`throw` asl istisnoni yo'qotadi.",
     "Bo'sh `catch` xatoni jim yutadi: kamida log yozing yoki qayta tashlang. Qayta tashlaganda `previous` ni uzating.",
     "Foydalanuvchiga `$e->getMessage()` ni to'g'ridan-to'g'ri ko'rsatish SQL/yo'l kabi ichki ma'lumotni oshkor qiladi.",
-    "Exception'ni oqim boshqaruvi uchun ishlatish sekin va o'qilishni yomonlashtiradi.",
-    "Stack trace parollarni ochishi mumkin: production'da `zend.exception_ignore_args=On`.",
     "Retry'ni idempotent bo'lmagan amalda (to'lov) ishlatish dublikat yaratadi."
   ]
 });

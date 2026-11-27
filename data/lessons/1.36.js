@@ -1,9 +1,6 @@
 /* Chuqur dars: 1.36. Maydonlar: lesson (markdown), examples [{title, lang, code, note}], pitfalls [] */
 registerLesson("1.36", {
   "lesson": [
-    "### zval va refcount",
-    "Har bir PHP qiymati `zval` (16 bayt: tip belgisi + qiymat yoki ko'rsatkich) ko'rinishida saqlanadi. Satr, massiv va obyektlar esa alohida xotira bloki bo'lib, **refcount** (unga nechta o'zgaruvchi ishora qilayotgani) bilan boshqariladi. Refcount 0 ga tushganda xotira darhol bo'shatiladi.",
-    "",
     "### Copy-on-Write",
     "`$b = $a;` massivni nusxalamaydi: ikkala o'zgaruvchi bitta massivga ishora qiladi, refcount 2 bo'ladi. Nusxa **faqat biri o'zgartirilganda** olinadi (separation). Shu sabab:",
     "- Katta massivni funksiyaga qiymat bo'yicha uzatish arzon, agar funksiya uni o'zgartirmasa.",
@@ -13,14 +10,6 @@ registerLesson("1.36", {
     "",
     "### Obyektlar: handle semantikasi",
     "O'zgaruvchi obyektning o'zini emas, **handle** (identifikator) ni saqlaydi. `$b = $a` ikkala o'zgaruvchi bitta obyektni ko'rsatadi. Funksiyaga uzatilgan obyektni ichkarida o'zgartirsangiz, tashqarida ham o'zgaradi. Bu `&` reference emas: funksiya ichida `$o = new Other()` qilsangiz, tashqaridagi o'zgaruvchi o'zgarmaydi. Nusxa kerak bo'lsa `clone`.",
-    "",
-    "### Reference va CoW",
-    "`&` reference refcount va CoW bilan chalkash o'zaro ta'sir qiladi. Eng mashhur tuzoq: `foreach ($arr as &$v)` dan keyin `$v` massivning oxirgi elementiga reference bo'lib qoladi. Keyingi `foreach ($arr as $v)` oxirgi elementni buzadi. Har doim `unset($v)` qiling yoki reference ishlatmang.",
-    "",
-    "### Amaliy xulosa",
-    "- Katta massivlarni `&` bilan uzatish deyarli hech qachon tezlashtirmaydi.",
-    "- Generator va stream katta ma'lumot uchun xotira tejaydi.",
-    "- Uzoq yashovchi worker'da `memory_get_peak_usage()` va `gc_collect_cycles()` ni kuzating.",
     "",
     "### zval va xotira modeli chuqurroq",
     "- `zval` (16 bayt): `value` (8 bayt) + `u1.type_info` (4 bayt) + `u2` (4 bayt, yordamchi). Tiplar: `IS_UNDEF`, `IS_NULL`, `IS_FALSE`, `IS_TRUE`, `IS_LONG`, `IS_DOUBLE`, `IS_STRING`, `IS_ARRAY`, `IS_OBJECT`, `IS_RESOURCE`, `IS_REFERENCE`.",
@@ -124,12 +113,9 @@ registerLesson("1.36", {
     }
   ],
   "pitfalls": [
-    "Massivni funksiyaga `&` bilan uzatish tezlik uchun kerak emas: CoW buni allaqachon optimallashtirgan. Reference kod o'qilishini va optimizatsiyani yomonlashtiradi.",
     "`foreach` dan keyin reference qolsa (`$v`), keyingi tsikllar massivni jimgina buzadi; har doim `unset($v)`.",
     "Obyektni uzatish nusxa emas: ichkarida o'zgartirish tashqariga ta'sir qiladi. Nusxa kerak bo'lsa `clone`, chuqur nusxa uchun `__clone` yozing.",
     "`memory_get_usage()` natijasi allocator bloklari tufayli aniq emas; xotirani o'lchaganda qiymatlarni bir necha marta olib solishtiring.",
-    "Funksiya ichida massivni o'zgartirish katta massivda to'liq nusxa yaratadi.",
-    "Reference qolgan massiv elementi nusxalashda umumiy bo'lib qoladi.",
     "Million kichik obyekt xotirani to'ldiradi: massiv yoki `SplFixedArray`."
   ]
 });

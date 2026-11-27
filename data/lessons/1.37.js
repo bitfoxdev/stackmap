@@ -13,15 +13,6 @@ registerLesson("1.37", {
     "- **Atomik yozish**: vaqtinchalik faylga yozing, `rename()` bilan almashtiring (bir fayl tizimida rename atomik): o'quvchi hech qachon yarim fayl ko'rmaydi.",
     "- `file_put_contents($f, $d, LOCK_EX | FILE_APPEND)` log uchun.",
     "",
-    "### Xavfsizlik",
-    "- **Path traversal**: foydalanuvchi bergan nomda `../`. `basename()`, `realpath()` va asosiy papka ichida ekanini tekshirish; faylni `public/` dan tashqarida saqlash.",
-    "- Yuklanayotgan faylni MIME/kengaytma va mazmuniga ko'ra tekshiring, nomini o'zingiz yarating.",
-    "- `include $userInput` — LFI/RCE.",
-    "- Maxfiy ruxsatlar: `0640`, `umask`.",
-    "",
-    "### Laravel",
-    "`Storage` fasadi (Flysystem) local/S3 farqini yashiradi, `Storage::readStream/writeStream`, `response()->streamDownload()`, `LazyCollection::make(function() {...})` fayl satrlari uchun.",
-    "",
     "### Xato bilan ishlash",
     "`fopen` muvaffaqiyatsizlikda `false` va Warning beradi: natijani tekshiring; `try/finally` bilan `fclose`.",
     "",
@@ -34,9 +25,6 @@ registerLesson("1.37", {
     "",
     "### Stream konteksti va filtrlar",
     "`stream_context_create` (HTTP header, SSL, timeout), `stream_filter_append($h, 'string.toupper')`, `convert.base64-encode`, `zlib.deflate`; wrapper'lar: `file`, `http(s)`, `ftp`, `php`, `data`, `glob`, `phar`, `zip`, `compress.zlib`, `ssh2`; `stream_wrapper_register` o'zingiznikini qo'shish (Flysystem).",
-    "",
-    "### Qulflash va parallellik",
-    "`flock($h, LOCK_SH|LOCK_EX|LOCK_UN|LOCK_NB)` — advisory (kooperativ); NFS/ba'zi tizimlarda ishonchsiz; processlar orasida qulfni hammasi qo'llashi kerak. Muqobil: DB advisory lock, Redis qulfi (`Cache::lock`), Symfony Lock, atomik `rename`, `O_EXCL` (`fopen($f, 'x')`) bilan fayl yaratib qulf.",
     "",
     "### Katta fayl strategiyalari",
     "- Chunk o'qish: `while (!feof($h)) { $buf = fread($h, 8192); ... }`.",
@@ -114,8 +102,6 @@ registerLesson("1.37", {
     "`rename()` turli fayl tizimlari orasida atomik emas (nusxa+o'chirish): tmp faylni xuddi shu papkada yarating.",
     "Foydalanuvchi bergan nomni to'g'ridan-to'g'ri yo'lga qo'shish path traversal ga olib keladi.",
     "`filemtime`/`filesize` natijasi keshlanadi: o'zgartirgandan keyin `clearstatcache()`.",
-    "`flock` advisory: qulfni qo'llamaydigan jarayon baribir yozadi.",
-    "Yuklangan faylning kengaytmasi/MIME'iga ishonmang: `finfo` va nomni o'zingiz yarating.",
-    "`file()` va `file_get_contents` katta faylda OOM."
+    "Yuklangan faylning kengaytmasi/MIME'iga ishonmang: `finfo` va nomni o'zingiz yarating."
   ]
 });

@@ -24,9 +24,6 @@ registerLesson("1.12", {
     "### Laravel misollari",
     "`Illuminate\\Contracts` — interface'lar; `Model` — abstract-ga yaqin baza; `HasFactory`, `Notifiable`, `SoftDeletes` — trait'lar. Trait ichida yashirin bog'liqlik (`$this->id` mavjud deb faraz qilish) paydo bo'lishi mumkin: abstract metod orqali talab qiling.",
     "",
-    "### Interface constants va default",
-    "Interface'da konstanta bo'ladi, lekin metod tanasi bo'lmaydi. Default tana kerak bo'lsa abstract class yoki trait.",
-    "",
     "### Interface tafsiloti",
     "- Faqat `public` metodlar (konstantalar ham public); metod tanasi yo'q.",
     "- Bir klass bir nechta interface; interface interface'dan `extends` qiladi (ko'p meros mumkin).",
@@ -52,13 +49,6 @@ registerLesson("1.12", {
     "- `__CLASS__` trait ichida ishlatuvchi klassni qaytaradi, `self::class` ham; `static::` runtime.",
     "- Trait'ni testlash: trait ishlatuvchi test klass yoki anonim klass.",
     "- Laravel: `Illuminate\\Database\\Eloquent\\Concerns\\*` - ko'p trait; `HasFactory`, `Notifiable`, `SoftDeletes`, `Dispatchable`; boot metodlari (`bootSoftDeletes`, `initializeX`) avtomatik chaqiriladi.",
-    "",
-    "### Qaror qabul qilish",
-    "1. Faqat \"nima qila oladi\" kerak → interface.",
-    "2. Umumiy holat va qisman kod kerak → abstract class.",
-    "3. Bir xil kodni bog'liq bo'lmagan klasslarga → trait yoki kompozitsiya (afzal).",
-    "4. \"Has-a\" munosabati → kompozitsiya (maydonda servis).",
-    "Trait'lar ko'payganda \"gorizontal God object\" paydo bo'ladi; ko'pincha alohida servis klassi ishonchliroq.",
     "",
     "### Dependency Inversion",
     "Yuqori darajali kod (`CheckoutService`) pastki darajadagi konkret klassga (`StripeClient`) emas, interface'ga (`PaymentGateway`) bog'lanadi. Laravel'da `$this->app->bind(PaymentGateway::class, StripeGateway::class)`; test uchun fake implementatsiya."
@@ -140,7 +130,6 @@ registerLesson("1.12", {
     "Ikki trait bir xil metodga ega bo'lsa va `insteadof` yozilmasa, fatal xato.",
     "Trait `instanceof` bilan tekshirilmaydi; tip kerak bo'lsa interface ham qo'shing.",
     "Abstract class'ni `God base class`ga aylantirmang; ko'p mas'uliyat bo'lsa composition.",
-    "Interface'da konstruktor e'lon qilish mumkin, lekin shartnomaga aralashtirmaslik yaxshi.",
     "Trait ichidagi static property har ishlatuvchi klassda alohida: kutilgan 'umumiy' holat emas.",
     "Trait'ni testda alohida tekshirish qiyin: odatda uni ishlatuvchi klass orqali sinang."
   ]

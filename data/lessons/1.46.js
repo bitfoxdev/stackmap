@@ -22,22 +22,8 @@ registerLesson("1.46", {
     "- `TODO:` va `FIXME:` belgilari IDE tomonidan topiladi.",
     "- O'chirilgan kodni izohda qoldirmang: Git tarixi bor.",
     "",
-    "### Izoh bilan vaqtincha o'chirish",
-    "Muammoni topish uchun qatorni `//` bilan o'chirib ko'rish — qulay usul.",
-    "",
     "### Bir qator ichida",
     "`/* */` qator o'rtasida ham ishlaydi: `$x = /* standart */ 10;` (kamdan-kam kerak).",
-    "",
-    "### Izohning vazifalari",
-    "1. **Tushuntirish:** nima uchun shunday qilingan (biznes qoida, workaround).",
-    "2. **O'chirib turish:** muammoni topishda qatorni vaqtincha o'chirish.",
-    "3. **Belgilar:** `TODO`, `FIXME`, `HACK`, `NOTE` — IDE ro'yxat qilib ko'rsatadi.",
-    "4. **Hujjat:** docblock (keyingi mavzu).",
-    "",
-    "### Izoh turlarini tanlash",
-    "- `//` — eng keng qo'llaniladi, bir qator.",
-    "- `#` — shell uslubi; PHP 8 da `#[` bilan chalkashmasligi uchun kamroq ishlatiladi.",
-    "- `/* */` — blok.",
     "",
     "### Kod vs izoh",
     "Yomon:",
@@ -55,10 +41,7 @@ registerLesson("1.46", {
     "Muhim workaround'larda sabab va ticket raqami: `// Stripe API 429 qaytaradi, JIRA-123`. Bu kelajakda kodni xavfsiz o'zgartirishga yordam beradi.",
     "",
     "### Maxfiy ma'lumot",
-    "Izohga parol, token, shaxsiy ma'lumot yozmang: u Git tarixida abadiy qoladi.",
-    "",
-    "### Ommaviy izohlash",
-    "IDE: `Ctrl+/` tanlangan qatorlarni `//` bilan izohlaydi (VS Code, PhpStorm). Qaytarish uchun yana bosing."
+    "Izohga parol, token, shaxsiy ma'lumot yozmang: u Git tarixida abadiy qoladi."
   ],
   "examples": [
     {
@@ -103,7 +86,6 @@ registerLesson("1.46", {
   "pitfalls": [
     "`#[` PHP 8 da attribute boshlanishi: `#[Test]` izoh emas, kodga ta'sir qiladi.",
     "Bir qatorli `//` izohda `?>` bo'lsa PHP rejimi tugaydi.",
-    "Eskirgan izoh chalg'itadi: kod o'zgarsa izohni ham o'zgartiring.",
-    "Katta o'chirilgan kod bloklarini izohda qoldirish kodni o'qib bo'lmas qiladi: Git ishlating."
+    "Eskirgan izoh chalg'itadi: kod o'zgarsa izohni ham o'zgartiring."
   ]
 });

@@ -14,9 +14,6 @@ registerLesson("1.9", {
     "",
     "Arrow funksiya faqat o'qish uchun qulay: ichida tashqi o'zgaruvchini yozsangiz tashqi o'zgarmaydi. Ichma-ich `fn` ham tashqi qiymatlarni ushlab oladi.",
     "",
-    "### $this va static",
-    "Metod ichida yaratilgan closure `$this` ni avtomatik bog'laydi. `static fn` / `static function` bog'lamaydi: xotira sizishining oldini oladi (obyekt ushlanib qolmaydi).",
-    "",
     "### Closure manipulyatsiyasi",
     "- `Closure::bind($fn, $obj, Scope::class)` va `bindTo` — kontekstni o'zgartiradi (private'ga kirish mumkin; frameworkdagi \"sehr\" shundan).",
     "- `$fn->call($obj)` bir martalik bog'laydi.",
@@ -60,10 +57,7 @@ registerLesson("1.9", {
     "`array_map/filter/reduce/walk/usort`, `preg_replace_callback`, `register_shutdown_function`, `set_error_handler`, `spl_autoload_register`, event listener'lar, middleware zanjiri (Laravel pipeline: `array_reduce` + closure).",
     "",
     "**Performance**",
-    "Closure yaratish arzon, lekin tsiklda har safar yaratsangiz GC yuki oshadi: tsikldan tashqarida yarating. Arrow function sintaksis qulayligi uchun, tezlik farqi yo'q.",
-    "",
-    "**Debug**",
-    "`var_dump($closure)` `use` o'zgaruvchilari va parametrlarni ko'rsatadi. Closure `serialize` qilinmaydi."
+    "Closure yaratish arzon, lekin tsiklda har safar yaratsangiz GC yuki oshadi: tsikldan tashqarida yarating. Arrow function sintaksis qulayligi uchun, tezlik farqi yo'q."
   ],
   "examples": [
     {
@@ -143,7 +137,6 @@ registerLesson("1.9", {
     "Closure'ni `serialize`/cache'ga yozib bo'lmaydi (`Serialization of 'Closure' is not allowed`).",
     "`usort` comparator qaytishi: `bool` emas, `int` (`<=>`). `fn($a,$b) => $a > $b` PHP 8 da ogohlantirish beradi.",
     "`use ($x)` yaratilish paytidagi qiymatni oladi; loop ichida closure'lar yaratsangiz har biri o'z qiymatini ushlaydi (reference emas).",
-    "Statik closure'ni `bind` qilish Warning beradi va ishlamaydi.",
     "Callback ichida exception tashlansa u `array_map` chaqirgan joydan chiqadi: stack trace'da ichki chaqiruv ko'rinadi."
   ]
 });

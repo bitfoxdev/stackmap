@@ -4,11 +4,6 @@ registerLesson("1.30", {
     "### Muammo manbalari",
     "Timezone, DST (yozgi/qishki vaqt), o'zgaruvchan obyektlar va oy oxiri qoidalari. Ko'p production xatolari \"mahalliy vaqt\" va \"UTC\" aralashganidan.",
     "",
-    "### Asosiy klasslar",
-    "- `DateTimeImmutable` (afzal) va `DateTime` (mutable): `modify()`, `add(DateInterval)`, `setTimezone()`, `format()`.",
-    "- `DateTimeZone('Asia/Tashkent')`: IANA nomlari, offset (`+05:00`) emas, chunki offsetda DST yo'q.",
-    "- `DateInterval`, `DatePeriod` (oraliqni aylanish), `diff()` → `DateInterval` (`days`, `invert`).",
-    "",
     "### Qoidalar",
     "1. **Saqlash — UTC**. DB: `timestamp`/`datetime` UTC, ustun nomlari `*_at`. Laravel `config('app.timezone')='UTC'`.",
     "2. **Ko'rsatish — foydalanuvchi timezone'i**.",
@@ -47,9 +42,6 @@ registerLesson("1.30", {
     "",
     "### Strtotime / relative formatlar",
     "`modify('first day of next month')`, `'last monday'`, `'+2 weekdays'`, `'midnight'`, `'noon tomorrow'`. Ma'nosi aniq emas formatlar (`01-02-2025`) — tire bilan `d-m-Y`, slash bilan `m/d/Y` deb o'qiladi. Kiritma uchun `createFromFormat('!d.m.Y', ...)` va `!` bilan qolgan maydonlarni 0 qilish.",
-    "",
-    "### Test va CI",
-    "`Carbon::setTestNow('2025-03-30 00:00')`, PSR-20 `ClockInterface` DI orqali; `Date::` fake (Laravel `travelTo`, `freezeTime`). Vaqtga bog'liq kodni `now()` ni to'g'ridan-to'g'ri chaqirmasdan sinab bo'ladigan qiling.",
     "",
     "### DB bilan",
     "MySQL `TIMESTAMP` (UTC saqlaydi, session zonasiga o'giradi, 2038 chegarasi), `DATETIME` (zona yo'q, qanday kiritilsa shunday). Postgres `timestamptz` (UTC saqlaydi). Laravel `datetime` ustun + UTC kelishuvi, Carbon cast; ko'rsatishda `->timezone($user->tz)`."
@@ -115,10 +107,8 @@ registerLesson("1.30", {
   ],
   "pitfalls": [
     "`DateTime` mutable: funksiyaga uzatilgan obyekt ichkarida `modify()` qilinsa tashqarida ham o'zgaradi. `DateTimeImmutable` ishlating.",
-    "DST kunida `+24 hours` va `+1 day` farq qiladi; kalendar bo'yicha hisoblanadigan holatda `+1 day`.",
     "`createFromFormat` xatoda `false` qaytaradi va `31.02.2025` kabi sanani 'to'g'rilab' qo'yadi: `getLastErrors()` ni tekshiring.",
     "Lokal vaqtni DB'ga yozish: server timezone o'zgarsa ma'lumot buziladi; UTC saqlang.",
-    "`DATETIME` ustun timezone'ni saqlamaydi: sessiya zonasi o'zgarsa ma'noni yo'qotadi; UTC kelishuvi.",
     "Hafta kunlari va oy nomlari `format('D')` inglizcha; lokal uchun `IntlDateFormatter`/Carbon `isoFormat`.",
     "`DatePeriod` end sanasini kiritmaydi (default); `DatePeriod::INCLUDE_END_DATE` (8.2).",
     "`new DateTime()` hozirgi vaqt va default timezone: testlarda moslashuvchan emas."

@@ -14,9 +14,6 @@ registerLesson("1.42", {
     "- Ma'lumotlar bazalari (MySQL, PostgreSQL, SQLite) bilan qulay ishlaydi.",
     "- Katta jamoa, ko'p hujjat va ish o'rinlari.",
     "",
-    "### Qayerda ishlatiladi",
-    "Veb-saytlar va veb-ilovalar, REST API'lar, kontent boshqaruv tizimlari (WordPress), internet-do'konlar, ichki korporativ tizimlar, buyruq satri skriptlari (CLI) va navbat ishlovchilari.",
-    "",
     "### So'rov qanday yuradi",
     "1. Foydalanuvchi brauzerda `https://sayt.uz/index.php` ni ochadi.",
     "2. Veb-server (Nginx/Apache) `.php` faylni PHP'ga uzatadi.",
@@ -36,17 +33,11 @@ registerLesson("1.42", {
     "- **Backend:** serverda ishlaydi (PHP): ma'lumotlar bazasi, autentifikatsiya, biznes qoidalar.",
     "Brauzer \"View Source\" da faqat HTML ko'radi, PHP kodi serverdan chiqmaydi.",
     "",
-    "### PHP bilan nima qurilgan",
-    "WordPress, Drupal, Joomla, Wikipedia (MediaWiki), Facebook'ning dastlabki versiyasi, Laravel va Symfony asosidagi minglab ilovalar. Bu PHP'ni bilish ish bozori uchun foydali ekanini ko'rsatadi.",
-    "",
     "### PHP va boshqa tillar",
     "- **JavaScript (Node.js):** ham serverda ishlaydi, lekin PHP'da har so'rov alohida jarayon/holat bilan boshlanadi (shared-nothing).",
     "- **Python/Django, Ruby/Rails:** o'xshash vazifalar; PHP hostingda eng oson tarqatiladi.",
     "- **Java/C#:** kompilyatsiyali, qat'iyroq; PHP tez ishlab chiqish uchun qulay.",
-    "Til tanlash vazifa va jamoaga bog'liq: PHP veb-ilova uchun asosiy tanlovlardan biri.",
-    "",
-    "### Nima kerak boshlash uchun",
-    "Matn muharriri yoki IDE (VS Code, PhpStorm), PHP o'rnatilgan muhit (keyingi mavzu), brauzer. Hosting majburiy emas: kompyuteringizda `php -S` yetarli."
+    "Til tanlash vazifa va jamoaga bog'liq: PHP veb-ilova uchun asosiy tanlovlardan biri."
   ],
   "examples": [
     {

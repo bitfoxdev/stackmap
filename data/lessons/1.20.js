@@ -1,28 +1,6 @@
 /* Chuqur dars: 1.20. Maydonlar: lesson (markdown), examples [{title, lang, code, note}], pitfalls [] */
 registerLesson("1.20", {
   "lesson": [
-    "### Magic metodlar",
-    "Ikkita pastki chiziq bilan boshlanadigan maxsus hook'lar:",
-    "- `__construct` / `__destruct`",
-    "- `__get($n)`, `__set($n,$v)`, `__isset`, `__unset` — mavjud bo'lmagan property'ga murojaat.",
-    "- `__call($n,$args)`, `__callStatic` — mavjud bo'lmagan metod.",
-    "- `__toString()` — satrga o'girish (avtomatik `Stringable`).",
-    "- `__invoke()` — obyektni funksiya sifatida chaqirish.",
-    "- `__clone()` — `clone` dan keyin chaqiriladi.",
-    "- `__serialize/__unserialize`, `__sleep/__wakeup` (8.5 da deprecated), `__set_state`, `__debugInfo`.",
-    "",
-    "### Laravel va magic",
-    "Eloquent `__get` bilan atributlarni, `__call` bilan builder metodlarini, Facade `__callStatic` bilan servisni topadi. Bu qulay, lekin statik tahlil ko'rmaydi (PHPDoc `@property`/`@method` yoki Larastan kerak) va sekinroq.",
-    "",
-    "### Cloning",
-    "`clone` **sayoz** nusxa oladi: ichki obyektlar umumiy qoladi. Chuqur nusxa uchun `__clone()` ichida ichki obyektlarni qayta clone qiling. `readonly` property'ni 8.3 dan boshlab `__clone` ichida qayta yozish mumkin; 8.5 da esa `clone($o, [...])` bor.",
-    "",
-    "### Serialization",
-    "`serialize()` obyektni satrga aylantiradi; `unserialize()` esa **xavfli**: ishonchsiz ma'lumotda ixtiyoriy klass obyektlarini hosil qiladi (object injection). `allowed_classes` bering yoki JSON ishlating. Zamonaviy usul: `__serialize()` / `__unserialize()` (qaytarilgan massiv), `JsonSerializable` JSON uchun.",
-    "",
-    "### Qoida",
-    "Magic metodlar kam va ongli. Aniq metod va property har doim yaxshiroq: IDE, statik tahlil, tezlik.",
-    "",
     "### To'liq magic metodlar ro'yxati",
     "| Metod | Qachon chaqiriladi |",
     "|---|---|",
@@ -146,7 +124,6 @@ registerLesson("1.20", {
     "`unserialize()` ishonchsiz kiritmada RCE gadjetlariga yo'l ochadi (PHP object injection); JSON ishlating.",
     "`__get` ichida property mavjud emasligini jim `null` bilan yashirmang: xatolar topilmay qoladi.",
     "`__destruct` da exception tashlash yoki asosiy mantiq yozish ishonchsiz (chaqirilish vaqti aniq emas).",
-    "`__get` qaytargan massivni o'zgartirish ishlamaydi (nusxa): `$o->arr[] = 1` Notice.",
     "`__isset` yozilmasa `isset($o->x)` magic property uchun `false`."
   ]
 });

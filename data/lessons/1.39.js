@@ -10,9 +10,6 @@ registerLesson("1.39", {
     "### Solishtirish",
     "Maxfiy qiymatni (token, HMAC) `hash_equals($known, $user)` bilan solishtiring: vaqt hujumidan himoya (constant-time) va tip aralashmasligi. HMAC: `hash_hmac('sha256', $data, $key)`.",
     "",
-    "### Shifrlash",
-    "Parol va token ma'lumotini o'zingiz sinab bo'lmagan \"shifr\" bilan emas, tayyor kutubxona bilan: `sodium_crypto_secretbox` (libsodium) yoki `openssl_encrypt` AES-256-GCM (IV unikal). Laravel `Crypt`. Kalitni kodda emas, `.env`/secret manager'da saqlang.",
-    "",
     "### Kiritma va chiqish",
     "- SQL: faqat **prepared statements** (PDO/Eloquent bindings).",
     "- HTML: `htmlspecialchars` (Blade `{{ }}`).",
@@ -20,14 +17,8 @@ registerLesson("1.39", {
     "- `eval`, `include $user`, `extract($_POST)`, `unserialize($user)`: xavfli.",
     "- `filter_var`/validator bilan tekshirish.",
     "",
-    "### unserialize",
-    "Ishonchsiz ma'lumotni `unserialize` qilish **object injection**: `__wakeup/__destruct` zanjirlari (gadget) orqali RCE. JSON ishlating yoki `['allowed_classes' => false]`.",
-    "",
     "### Sezgir ma'lumot",
     "`#[\\SensitiveParameter]` (8.2) stack trace'da parolni yashiradi. `error_reporting`/`display_errors` productionda o'chiq. Sessiya: `cookie_httponly`, `cookie_secure`, `cookie_samesite`, `session_regenerate_id()` kirishdan keyin.",
-    "",
-    "### Boshqa",
-    "Cookie va CSRF himoyasi, rate limiting, CORS: framework darajasida (Laravel middleware).",
     "",
     "### OWASP asosiy zaifliklar va PHP echimi",
     "- **Injection (SQL, command, LDAP):** prepared statements; `escapeshellarg`/`Process` massiv bilan; `eval`/backtick yo'q.",
@@ -51,9 +42,6 @@ registerLesson("1.39", {
     "",
     "### Parol xeshlash tafsiloti",
     "`PASSWORD_ARGON2ID` (memory-hard, tavsiya), `PASSWORD_BCRYPT` (cost 10–12, 72 bayt cheklov), `PASSWORD_DEFAULT` (PHP versiyasiga qarab o'zgaradi). Opsiyalar: `['memory_cost' => 65536, 'time_cost' => 4, 'threads' => 1]`. Tuz avtomatik xeshda. `password_needs_rehash` algoritm/opsiya o'zgarsa. Pepper (qo'shimcha maxfiy kalit) ixtiyoriy.",
-    "",
-    "### Sessiya va cookie",
-    "`session.use_strict_mode=1`, `cookie_httponly=1`, `cookie_secure=1`, `cookie_samesite=Lax/Strict`, `session.use_only_cookies=1`, `gc_maxlifetime`. Kirishdan keyin `session_regenerate_id(true)`.",
     "",
     "### Header'lar",
     "`Content-Security-Policy`, `X-Content-Type-Options: nosniff`, `X-Frame-Options`/`frame-ancestors`, `Referrer-Policy`, `Strict-Transport-Security`, `Permissions-Policy`.",
@@ -127,7 +115,6 @@ registerLesson("1.39", {
     "`unserialize` ishonchsiz ma'lumotda RCE; cookie/queue/cache'dagi serialize qilingan ma'lumot ham foydalanuvchi nazoratida bo'lishi mumkin.",
     "IV/nonce ni qayta ishlatish GCM da shifrni butunlay buzadi: har safar `random_bytes`.",
     "Bcrypt 72 baytdan uzun parolni kesadi; Argon2id tavsiya.",
-    "Kalitni kod yoki repository'da saqlash: `.env` va secret manager.",
-    "`hash('sha256', $parol)` parol xeshi emas: tez va tuzsiz."
+    "Kalitni kod yoki repository'da saqlash: `.env` va secret manager."
   ]
 });

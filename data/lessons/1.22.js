@@ -4,15 +4,8 @@ registerLesson("1.22", {
     "### Xotira modeli",
     "PHP xotirani Zend Memory Manager orqali boshqaradi. Har bir so'rov uchun alohida xotira, tugagach hammasi bo'shaydi (shared-nothing). `memory_limit` bitta jarayon chegarasi (`-1` — cheksiz). Qiymatlar refcount (1.36) bilan, tsiklik bog'lanishlar esa GC bilan tozalanadi (1.23).",
     "",
-    "### O'lchash",
-    "- `memory_get_usage()` — hozirgi sarf, `memory_get_peak_usage()` — eng yuqori nuqta, `true` argumenti OSdan so'ralgan xotirani beradi.",
-    "- Profil: Xdebug, Blackfire, Tideways, `php-meminfo`.",
-    "",
     "### Streams",
     "Katta fayl bilan `file_get_contents`/`file()` butun faylni xotiraga yuklaydi. Stream (`fopen`, `fgets`, `fgetcsv`, `stream_copy_to_stream`, `php://temp`) esa bo'lak-bo'lak o'qiydi. `php://temp` ma'lum chegaragacha (default 2 MB) RAM'da, undan oshsa diskdagi vaqtinchalik faylda saqlaydi.",
-    "",
-    "### Weak references",
-    "`WeakReference::create($obj)` obyektni ushlab turmaydi: obyekt o'chsa `get()` `null` qaytaradi. `WeakMap` (8.0) kalit sifatida obyektni oladi va kalit o'chsa yozuv ham o'chadi: obyekt-bog'liq kesh/metadata uchun, xotira sizishisiz.",
     "",
     "### Uzoq yashovchi jarayonlar",
     "Queue worker, Octane, daemon: xotira so'rovlar orasida to'planadi. Sabablar: static kesh, event listener'lar yig'ilishi, Eloquent query log (`DB::disableQueryLog()`), katta `Collection`'lar, tsiklik obyektlar. Chora: `--max-jobs`, `--max-time`, `--memory`, `chunkById()`/`lazy()`/`cursor()`, tsikldan keyin `unset` va `gc_collect_cycles()`.",
@@ -49,10 +42,7 @@ registerLesson("1.22", {
     "`queue:work --memory=128 --max-jobs=1000 --max-time=3600 --sleep=3`; Horizon `memory` va `maxProcesses`; Octane `--max-requests`. Worker memory limitga yetsa chiroyli to'xtab Supervisor/Horizon qayta ishga tushiradi.",
     "",
     "### WeakReference va WeakMap",
-    "`WeakReference::create($o)->get()` obyekt tirik bo'lsa uni, o'lgan bo'lsa `null` qaytaradi. `WeakMap` kalit obyektga **kuchsiz** reference oladi, qiymat esa kuchli. Qo'llanishi: obyektga bog'liq kesh (memoization), identity map, metadata, ORM unit-of-work.",
-    "",
-    "### Stream va generator",
-    "Katta fayl/eksport: `fopen` + `fgets`; `php://output` ga to'g'ridan yozish (`response()->streamDownload`); DB: `cursor()`/`lazy()`; HTTP: `Http::sink($path)` yoki Guzzle stream."
+    "`WeakReference::create($o)->get()` obyekt tirik bo'lsa uni, o'lgan bo'lsa `null` qaytaradi. `WeakMap` kalit obyektga **kuchsiz** reference oladi, qiymat esa kuchli. Qo'llanishi: obyektga bog'liq kesh (memoization), identity map, metadata, ORM unit-of-work."
   ],
   "examples": [
     {
@@ -129,8 +119,6 @@ registerLesson("1.22", {
     "Eloquent query log worker'da to'planib xotira o'sadi: `DB::disableQueryLog()`.",
     "`WeakMap` kaliti faqat obyekt bo'lishi mumkin; qiymatlar ichida kalit obyektga strong reference bo'lsa yozuv o'chmaydi.",
     "`memory_get_usage()` jarayon RSS emas; real sarf uchun `true` argumenti va tizim monitoringi.",
-    "`memory_get_usage()` bir martalik o'lchov noto'g'ri: loop oldidan va keyin solishtiring.",
-    "`DB::enableQueryLog()` worker'da cheksiz o'sadi.",
     "`->get()` bilan millionlab model yuklash OOM beradi: `chunkById`/`lazy`."
   ]
 });

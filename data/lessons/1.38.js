@@ -1,9 +1,6 @@
 /* Chuqur dars: 1.38. Maydonlar: lesson (markdown), examples [{title, lang, code, note}], pitfalls [] */
 registerLesson("1.38", {
   "lesson": [
-    "### SAPI",
-    "Server API — PHP'ni tashqi dunyo bilan bog'laydigan qatlam: **CLI**, **PHP-FPM** (FastCGI), **Apache mod_php**, **embed**, shuningdek Swoole/RoadRunner/FrankenPHP (Laravel Octane). SAPI har birining o'z `php.ini` va xatti-harakati bor (`PHP_SAPI`, `php_sapi_name()`).",
-    "",
     "### Klassik so'rov hayoti (shared-nothing)",
     "1. Worker so'rovni oladi, **request startup**: superglobal'lar to'ldiriladi.",
     "2. Skript bajariladi (opcode OPcache'dan).",
@@ -17,15 +14,6 @@ registerLesson("1.38", {
     "- Xotira to'planadi.",
     "- DB/Redis ulanishlari uzilishi mumkin.",
     "- Kod o'zgarsa qayta ishga tushirish kerak (`queue:restart`, `octane:reload`).",
-    "",
-    "### Qoida",
-    "Servislarni stateless qiling, so'rovga xos holatni request/scoped bog'lamaga bering (`scoped()` binding), static kesh va listener'larni tozalang, Octane `flush`/`tick` hodisalari va `--max-requests`dan foydalaning.",
-    "",
-    "### Javob va shutdown",
-    "`fastcgi_finish_request()` (FPM) javobni yuborib, qolgan ishni fonda bajaradi; Laravel'da `dispatch()->afterResponse()`. Og'ir ish uchun queue.",
-    "",
-    "### CLI xususiyatlari",
-    "`max_execution_time=0`, alohida php.ini, `STDIN/STDOUT`, `$argv`, signal'lar (`pcntl`).",
     "",
     "### SAPI turlari tafsiloti",
     "- **CLI:** terminal; `$argv/$argc`, `STDIN/STDOUT/STDERR`, `php://stdin`; alohida ini; `max_execution_time=0`.",
@@ -127,8 +115,6 @@ registerLesson("1.38", {
     "Singleton ichiga `Request` yoki `Auth` ni konstruktor orqali olish eski so'rovni ushlab qoladi.",
     "Worker kodni bir marta yuklaydi: deploydan keyin `queue:restart` / `octane:reload` qilmasangiz eski kod ishlayveradi.",
     "Persistent ulanishlar uzilishi mumkin: uzoq jarayonda qayta ulanish mantig'i kerak.",
-    "Octane'da `static` va singleton'da request ma'lumoti saqlash — foydalanuvchilar o'rtasida sizish.",
-    "Worker xotirasi to'planadi: `--max-requests` va monitoring.",
     "`exit/die` Octane worker'ni to'xtatadi."
   ]
 });

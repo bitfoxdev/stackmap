@@ -18,9 +18,6 @@ registerLesson("1.6", {
     "### null va PHP 8 dagi qoida",
     "Skalyar tipli parametrga `null` uzatish ichki funksiyada 8.1 dan deprecated (`strlen(null)`). Kiritmani avval `?? ''` bilan to'ldiring.",
     "",
-    "### Statik tahlil",
-    "PHPStan/Psalm nullable'ni kuzatadi: `if ($x !== null)` dan keyin tipni toraytiradi. Bu \"narrowing\" deyiladi va guard clause uslubi bilan juda mos.",
-    "",
     "### Nullable tafsiloti",
     "- `?T` ≡ `T|null`. Default qiymat `null` bo'lishi shart emas: `?int $x` majburiy parametr, faqat `null` qabul qiladi.",
     "- **Nullsafe** `?->` va `??`, `??=`; `$x?->y` faqat `$x` `null` bo'lsa to'xtaydi (`false` uchun emas).",
@@ -46,10 +43,7 @@ registerLesson("1.6", {
     "    if (is_int($v)) { /* int */ } else { /* string */ }",
     "}",
     "```",
-    "PHPStan `is_*`, `instanceof`, `===`, `isset` va `assert()` orqali tipni toraytiradi. `assert($x instanceof Foo)` runtime'da yoqilgan bo'lsagina ishlaydi (productionda `zend.assertions=-1`), shuning uchun statik maqsadda ishlating.",
-    "",
-    "### Dizayn",
-    "Union tiplar ko'paysa — dizayn muammosi: umumiy interface yoki alohida metodlar (`findById(int)`, `findBySlug(string)`) aniqroq. Return tipida `int|false` o'rniga exception yoki `null` yaxshiroq (xato holatini aniq)."
+    "PHPStan `is_*`, `instanceof`, `===`, `isset` va `assert()` orqali tipni toraytiradi. `assert($x instanceof Foo)` runtime'da yoqilgan bo'lsagina ishlaydi (productionda `zend.assertions=-1`), shuning uchun statik maqsadda ishlating."
   ],
   "examples": [
     {
@@ -123,8 +117,6 @@ registerLesson("1.6", {
     "Intersection faqat klass/interface bilan ishlaydi; skalyar bilan aralashtirib bo'lmaydi.",
     "Union tarkibi 4–5 tadan oshsa, odatda yaxshi abstraksiya yo'q degani: umumiy interface kiriting.",
     "`?T $x` majburiy parametr (default'siz); `null` qabul qilishi uni ixtiyoriy qilmaydi.",
-    "`assert()` productionda o'chiq bo'ladi: tekshiruv sifatida emas, faqat statik tahlil uchun.",
-    "`bool|false` kabi ortiqcha tiplar compile xatosi.",
-    "Natijani `int|false` qaytarish o'rniga `?int` yoki exception; chaqiruvchi `false` ni `0` bilan adashtiradi."
+    "`assert()` productionda o'chiq bo'ladi: tekshiruv sifatida emas, faqat statik tahlil uchun."
   ]
 });

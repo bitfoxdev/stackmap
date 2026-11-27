@@ -16,7 +16,7 @@ registerLesson("1.5", {
     "2. Statik analizatorlar (PHPStan, Psalm) va IDE bilan bir xil mantiqda ishlaydi.",
     "3. `\"abc\"` ni `0` ga o'girish kabi jim xatolar yo'qoladi.",
     "",
-    "Laravel skeleti va ko'p zamonaviy paketlar hamma faylda `strict_types=1` yozadi. Yangi kodda bu standart bo'lishi kerak.",
+    "Ko'p zamonaviy kutubxonalar hamma faylda `strict_types=1` yozadi (Laravel skeletining o'zida u yo'q). Yangi kodda bu standart bo'lishi kerak.",
     "",
     "### Eski loyihada yoqish",
     "Bir vaqtda hammasini yoqmang. Avval testlar va PHPStan darajasini oshiring, keyin yangi fayllarda, so'ng modul bo'yicha yoqing. Rector bilan `declare(strict_types=1)` ni avtomatik qo'shish mumkin. Ko'p xato aniqlanadigan joylar: request/DB'dan keladigan satr qiymatlari (`\"42\"`), `float` natija kutilgan joyga `int` qaytishi.",
@@ -27,9 +27,6 @@ registerLesson("1.5", {
     "2. **Return:** funksiya e'lon qilingan fayl strict bo'lsa, qaytarilgan qiymat qat'iy tekshiriladi.",
     "Property tipi uchun ham yozilayotgan (assign qilayotgan) fayl rejimi qo'llanadi.",
     "",
-    "**Qaysi o'girishlar ruxsat**",
-    "Strict rejimda faqat `int` → `float` ruxsat. Qolgan hammasi (`\"5\"` → int, `5.0` → int, `1` → string, `1` → bool) `TypeError`. `null` skalyarga o'tmaydi.",
-    "",
     "**Ichki funksiyalar**",
     "`strlen(123)`, `str_repeat('a', '3')`, `round('1.5')`, `in_array(1, '1')` strict rejimda TypeError. Ya'ni `strlen($intId)` kodi koddan o'tib ketmaydi. Ko'p xatolar shu yerda topiladi.",
     "",
@@ -37,12 +34,6 @@ registerLesson("1.5", {
     "- `$_GET/$_POST/$request->input()` — satr; sonli kerak bo'lsa `(int)` yoki validator + `->integer()`.",
     "- DB'dan PDO: driver va sozlamaga qarab (`PDO::ATTR_STRINGIFY_FETCHES`, eski PHP versiyalarida emulate prepares) son satr bo'lib kelishi mumkin; DECIMAL har doim satr. Eloquent `$casts` tiplarni aniqlaydi.",
     "- JSON: `json_decode` tiplarni saqlaydi (int/float/bool/string).",
-    "",
-    "**Qachon yoqmaslik**",
-    "Eski kodda to'satdan hammasini yoqmang. Tavsiya: yangi fayllarga shablon (stub) bilan, eski kodni Rector (`DeclareStrictTypesRector`) + test bilan bosqichma-bosqich.",
-    "",
-    "**Strict va statik tahlil**",
-    "PHPStan baribir tiplarni tekshiradi, strict_types esa runtime'dagi xavfsizlik to'rini beradi. Ikkalasi birga ishlatiladi.",
     "",
     "**Laravel**",
     "`artisan make:*` stub'lari `declare(strict_types=1)` qo'shmaydi (default), Laravel skeletidagi fayllar ham unda yo'q; o'z `stub:publish` shabloningizga qo'shish mumkin. Framework ichki chaqiruvlari o'z fayllari rejimiga amal qiladi, sizning strict'ingiz Laravel metodlarini chaqirishda faqat sizning argumentlaringizga ta'sir qiladi."
@@ -115,8 +106,6 @@ registerLesson("1.5", {
     "`declare(strict_types=1)` fayldagi birinchi ifoda bo'lmasa, fatal xato: `strict_types declaration must be the very first statement`.",
     "Strict rejim `==` solishtirishni o'zgartirmaydi; u faqat tip tekshiruvi (argument, return, property) uchun.",
     "PHP ichki funksiyasi (`array_map`, `usort`) sizning callback'ingizni chaqirganda argumentlar har doim yumshoq rejimda o'giriladi, chunki chaqiruvchi ichki kod. Callback ichida o'z tipingizni alohida tekshiring.",
-    "Strict rejim return uchun funksiya e'lon qilingan faylga bog'liq: argument va return qoidalari turli fayllardan bo'lishi mumkin.",
-    "Eloquent atributlari va PDO natijalari qiymatni satr qilib berishi mumkin: strict kodda `TypeError`. `$casts` ishlating.",
-    "`<?php` dan oldin hech narsa (hatto bo'sh qator ham) bo'lmasin: u HTML sifatida chiqadi va `declare` birinchi ifoda bo'lmay qoladi (fatal xato)."
+    "Eloquent atributlari va PDO natijalari qiymatni satr qilib berishi mumkin: strict kodda `TypeError`. `$casts` ishlating."
   ]
 });

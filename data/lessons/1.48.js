@@ -9,12 +9,6 @@ registerLesson("1.48", {
     "- `checkdate(m, d, Y)` — sana mavjudligini tekshiradi.",
     "- `date_default_timezone_set('Asia/Tashkent')`, `date_default_timezone_get()`.",
     "",
-    "### Format harflari",
-    "`Y` (yil, 2025), `y` (25), `m` (oy, 01–12), `n` (1–12), `d` (kun, 01–31), `j` (1–31), `H` (24 soat), `h` (12 soat), `i` (daqiqa), `s` (soniya), `a`/`A` (am/pm), `D` (Mon), `l` (Monday), `N` (hafta kuni 1–7), `U` (timestamp), `c` (ISO 8601), `T` (zona qisqartmasi). Oy `m` va daqiqa `i` ni adashtirmang.",
-    "",
-    "### DateTime sinflari",
-    "Zamonaviy kodda `DateTimeImmutable`, `DateTimeZone`, `DateInterval`, `DatePeriod` ishlatiladi (chuqur mavzu: \"Date va Time\"). Quyidagi funksiyalar oddiy va tez skriptlar uchun.",
-    "",
     "### Timezone",
     "Server vaqti sizning vaqtingiz bo'lmasligi mumkin: `date.timezone` ni sozlang. Bazada UTC saqlab, ko'rsatishda lokal zonaga o'giring.",
     "",
@@ -43,12 +37,6 @@ registerLesson("1.48", {
     "",
     "### mktime va checkdate",
     "`mktime(14, 30, 0, 12, 25, 2025)` — 25-dekabr 14:30 timestamp'i (soat, daqiqa, soniya, oy, kun, yil). `checkdate(2, 29, 2024)` kabisa yilda `true`.",
-    "",
-    "### strtotime misollari",
-    "`strtotime('now')`, `'tomorrow'`, `'+1 week'`, `'next monday'`, `'last day of february'`, `'2025-03-15 10:00'`. Natija — timestamp; formatlash uchun `date()` bilan.",
-    "",
-    "### Vaqt zonalari",
-    "`date_default_timezone_set('Asia/Tashkent')` (UTC+5). Zonalar ro'yxati: `DateTimeZone::listIdentifiers()`. `date('T')` zona qisqartmasini beradi.",
     "",
     "### Mikrovaqt va o'lchash",
     "`microtime(true)` — soniya kasr bilan (kod tezligini o'lchash), `hrtime(true)` — yuqori aniqlikdagi nanosoniyalar. Vaqtni o'lchashda `time()` yetarli emas.",
@@ -97,7 +85,6 @@ registerLesson("1.48", {
   ],
   "pitfalls": [
     "`date('m')` oy, `date('i')` daqiqa: `Y-m-d H:i:s` formatini yodlab oling, `m` bilan `i` ni almashtirmang.",
-    "Server timezone sizniki emas bo'lishi mumkin: `date_default_timezone_set` yoki `date.timezone`.",
     "`strtotime()` noto'g'ri matnda `false` qaytaradi va `date()` `1970-01-01` chiqaradi: tekshiring.",
     "Oyga `+1 month` qo'shish oy oxirida kutilmagan natija beradi (31-yanvar + 1 oy = mart)."
   ]

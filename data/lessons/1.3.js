@@ -10,23 +10,14 @@ registerLesson("1.3", {
     "- Property: `private ?User $user = null;` (7.4+), tipli property majburiy initsializatsiyadan oldin o'qilsa `Error`",
     "- Klass konstantasi: `const string X = 'a'` (8.3)",
     "",
-    "### Tiplar to'plami",
-    "Skalyar (`int`, `float`, `string`, `bool`), `array`, `iterable`, `callable`, `object`, `mixed`, klass/interface nomlari, `self`, `static`, `parent`, `void`, `never` (8.1: funksiya hech qachon qaytmaydi: `throw` yoki `exit`), `null`, `false`, `true` (8.2).",
-    "",
     "### Muhim tafovutlar",
     "- `mixed` — \"hammasi\", `null` ham kiradi. U `?T` dan farqli ravishda tip-xavfsizlik bermaydi.",
     "- `static` return — \"chaqirilgan klass\" (fluent API uchun), `self` — \"e'lon qilingan klass\".",
     "- `void` funksiya `return;` qila oladi, lekin qiymat qaytara olmaydi; natijasini o'zgaruvchiga yozish ma'nosiz.",
     "- `never` — `void` emas: `void` qaytadi, `never` qaytmaydi.",
     "",
-    "### Variance (Liskov)",
-    "Override qilganda parametr tipi **kengayishi mumkin** (contravariance), return tipi **torayishi mumkin** (covariance). Property tipi esa o'zgarmas (invariant) — child'da boshqa tip yozish xato.",
-    "",
     "### Strict va coercive",
     "Tip e'loni o'zi yetarli emas: `strict_types` bo'lmasa `\"5\"` ham `int`ga o'giriladi (1.5).",
-    "",
-    "### Amaliy qoida",
-    "Yangi kodda hamma joyga tip yozing. `mixed` ni oxirgi chora sifatida qoldiring; massiv uchun docblock'da element tipini aniqlang (`@param list<User> $users`), chunki `array` ichini PHP tekshirmaydi.",
     "",
     "### Tip tekshiruvi qanday ishlaydi",
     "Tip e'loni PHP'da **runtime'da** tekshiriladi: funksiyaga kirishda argument, chiqishda return qiymati. Mos kelmasa `TypeError`. Coercive rejimda (default) skalyar qiymat mumkin bo'lsa e'lon qilingan tipga o'giriladi, strict rejimda (1.5) o'girilmaydi.",
@@ -146,13 +137,10 @@ registerLesson("1.3", {
     }
   ],
   "pitfalls": [
-    "`mixed` va tipsiz parametr bir xil emas: tipsiz bo'lsa to'ldirib bo'lmaydi, `mixed` esa ochiq niyat. Lekin ikkalasi ham tekshiruv bermaydi.",
     "Tipli property e'lon qilib boshlang'ich qiymat bermasangiz, o'qiganda `must not be accessed before initialization` Error. Konstruktorda qiymat bering yoki `?T = null`.",
     "`array` tipi ichidagi elementlarni tekshirmaydi: `array $ids` ga satrlar ham kiradi. Docblock yoki `Collection`/typed obyekt ishlating.",
     "`?int` va `int|null` bir xil, lekin `int $x = null` (implicit nullable) PHP 8.4 da deprecated: aniq `?int $x = null` yozing.",
     "`never` funksiyadan keyin kod ishlamaydi; lekin agar funksiya aslida qaytsa `TypeError` beradi: `exit`/`throw` ishlatilishiga ishonch hosil qiling.",
-    "Tipli property'ga default qiymat bermay konstruktorda ham to'ldirmasangiz, u initsializatsiyalanmagan qoladi: `serialize`/`json_encode` uni tushirib qoldiradi, keyin o'qilsa Error chiqadi.",
-    "`callable` tipi property bo'la olmaydi: `Closure` yoki interface (`__invoke`) ishlating.",
-    "Statik tahlil bo'lmasa `array` tipi hamma narsani o'tkazadi: PHPDoc generics yoki obyekt."
+    "Tipli property'ga default qiymat bermay konstruktorda ham to'ldirmasangiz, u initsializatsiyalanmagan qoladi: `serialize`/`json_encode` uni tushirib qoldiradi, keyin o'qilsa Error chiqadi."
   ]
 });

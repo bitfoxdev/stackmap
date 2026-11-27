@@ -17,12 +17,6 @@ registerLesson("1.14", {
     "- `static::` — metod **chaqirilgan** klass (runtime).",
     "`new static()` voris klassni yaratadi, `new self()` doim ota klassni. Fluent API va `Model::create()` shu sababli `static` qaytaradi.",
     "",
-    "### parent va forwarding",
-    "`parent::`, `self::` va `static::` chaqiruvlari LSB ma'lumotini oldinga uzatadi (forwarding), `Foo::method()` esa uzatmaydi.",
-    "",
-    "### Static va testlash",
-    "Statik chaqiruvni mock qilib bo'lmaydi (kutubxonasiz). Shuning uchun biznes mantiqni instance servislarga chiqarib, DI orqali bering.",
-    "",
     "### Static tafsiloti",
     "",
     "**Qayerda uchraydi**",
@@ -40,16 +34,7 @@ registerLesson("1.14", {
     "- `static` return tipi: fluent builder va `Model::query()` kabilar uchun.",
     "",
     "**Singleton va Service Locator**",
-    "`static $instance` bilan singleton: global holat, test qiyin, Octane'da xavfli. O'rniga DI container'da `singleton` binding. Service Locator (`app(Foo::class)` hamma joyda) bog'liqlikni yashiradi.",
-    "",
-    "**Laravel Facade**",
-    "`Cache::get()` aslida `Facade::__callStatic` → container'dan servis → metodni chaqirish. Shuning uchun `Cache::shouldReceive()` (Mockery) bilan mock qilinadi. Real-time facade: `Facades\\App\\Services\\X`.",
-    "",
-    "**Statik analiz va test**",
-    "Statik metodlar PHPStan'da oson tahlil qilinadi, ammo mock qilish qiyin; mantiq statik emas, instance'da bo'lsin.",
-    "",
-    "**Qachon static yaxshi**",
-    "Pure yordamchi funksiyalar (`Arr::get`), named constructor, enum, factory; doimiy konstantalar."
+    "`static $instance` bilan singleton: global holat, test qiyin, Octane'da xavfli. O'rniga DI container'da `singleton` binding. Service Locator (`app(Foo::class)` hamma joyda) bog'liqlikni yashiradi."
   ],
   "examples": [
     {
@@ -127,7 +112,6 @@ registerLesson("1.14", {
     "Static metodni `$obj->method()` bilan chaqirish ishlaydi, lekin chalkashtiradi; doim `Class::method()`.",
     "`self::who()` va `A::who()` LSB uchun farq qiladi (forwarding): framework metodlarini chaqirganda natija kutilmagan bo'lishi mumkin.",
     "Voris statik property'ni qayta e'lon qilmasa, ota bilan umumiy qoladi.",
-    "Singleton + Octane = foydalanuvchilar o'rtasida ma'lumot sizishi.",
     "Facade statik ko'rinsa ham test uchun `fake()`/`shouldReceive()` kerak."
   ]
 });

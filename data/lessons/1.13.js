@@ -23,13 +23,6 @@ registerLesson("1.13", {
     "### Late static binding",
     "`static::` runtime'dagi klassga ishora qiladi (1.14).",
     "",
-    "### Ierarxiya va super-chaqiruvlar",
-    "- **Method resolution:** PHP metodni obyektning klassidan boshlab ota klasslarga qarab qidiradi; trait'lar ota'dan oldin keladi.",
-    "- `parent::__construct()`, `parent::method()` — ota implementatsiyani chaqirish.",
-    "- **Abstract/final** (1.11, 1.12).",
-    "- Voris `public` ni `protected` ga torayta olmaydi; kengaytirishi mumkin.",
-    "- `self::`, `static::`, `parent::` (1.14).",
-    "",
     "### Polimorfizm turlari",
     "- **Subtype (OOP):** interface/ota klass orqali turli implementatsiya.",
     "- **Parametrik:** generics (PHP'da yo'q; PHPDoc `@template T`).",
@@ -50,10 +43,7 @@ registerLesson("1.13", {
     "Voris: oldingi shartni (precondition) kuchaytirmaydi, keyingi shartni (postcondition) susaytirmaydi, invariantni saqlaydi, yangi exception turi tashlamaydi. Test: ota klassning barcha testlari voris'da ham o'tishi kerak (contract testing).",
     "",
     "### final va ochiq kengaytirish",
-    "Kutubxona klasslari `final` bo'lsa, foydalanuvchi meros qila olmaydi: bu API barqarorligini beradi. Laravel/Doctrine ichida ko'p klasslar kengaytirishga ochiq (Model), shuning uchun overrideda ehtiyot bo'ling. `@internal`, `@api` PHPDoc teglari.",
-    "",
-    "### Instanceof va type switch",
-    "`instanceof` zanjirlari yomon belgi; polimorfizm yoki `match(true)` bilan. Visitor pattern PHP'da ko'pincha enum + `match` bilan almashtiriladi."
+    "Kutubxona klasslari `final` bo'lsa, foydalanuvchi meros qila olmaydi: bu API barqarorligini beradi. Laravel/Doctrine ichida ko'p klasslar kengaytirishga ochiq (Model), shuning uchun overrideda ehtiyot bo'ling. `@internal`, `@api` PHPDoc teglari."
   ],
   "examples": [
     {

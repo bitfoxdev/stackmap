@@ -13,9 +13,6 @@ registerLesson("1.49", {
     "| `require_once` | Fatal xato | bir marta |",
     "Muhim bog'liqliklar (konfiguratsiya, klass) uchun `require`, ixtiyoriy shablon bo'laklari uchun `include`.",
     "",
-    "### Yo'l masalasi",
-    "Nisbiy yo'l joriy ishchi papkaga bog'liq. Ishonchli usul: `__DIR__ . '/header.php'`. Yo'l `include_path` bo'yicha ham qidiriladi.",
-    "",
     "### Qaytarish qiymati",
     "Fayl `return` qilsa, `include` shu qiymatni beradi: konfiguratsiya fayllari shunday ishlaydi (`return ['db' => ...];`).",
     "",
@@ -49,13 +46,7 @@ registerLesson("1.49", {
     "<h1><?= htmlspecialchars($title) ?></h1>",
     "<?php include __DIR__ . '/partials/footer.php'; ?>",
     "```",
-    "Zamonaviy loyihada shablon dvigateli (Blade, Twig) bu vazifani yaxshiroq bajaradi.",
-    "",
-    "### Autoload bilan farq",
-    "Klasslar uchun `require` o'rniga Composer autoload (PSR-4) ishlating; `include` shablon va konfiguratsiya uchun.",
-    "",
-    "### Xavfsizlik xulosasi",
-    "Foydalanuvchi kiritmasi yo'lga to'g'ridan-to'g'ri tushmasin; `allow_url_include` o'chiq bo'lsin; ulangan fayl veb-ildizdan tashqarida bo'lishi ma'qul."
+    "Zamonaviy loyihada shablon dvigateli (Blade, Twig) bu vazifani yaxshiroq bajaradi."
   ],
   "examples": [
     {

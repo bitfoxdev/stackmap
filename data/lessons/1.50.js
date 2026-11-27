@@ -1,9 +1,6 @@
 /* Chuqur dars: 1.50. Maydonlar: lesson (markdown), examples [{title, lang, code, note}], pitfalls [] */
 registerLesson("1.50", {
   "lesson": [
-    "### Fayl bilan ishlash tushunchasi",
-    "PHP serverda fayllarni o'qish, yaratish, yangilash va o'chirish imkonini beradi: loglar, konfiguratsiya, yuklangan hujjatlar, eksport fayllari.",
-    "",
     "### Asosiy funksiyalar",
     "- `file_exists($p)`, `is_file`, `is_dir`, `is_readable`, `is_writable`",
     "- `filesize`, `filemtime`, `pathinfo`, `basename`, `dirname`, `realpath`",
@@ -19,12 +16,6 @@ registerLesson("1.50", {
     "",
     "### Ruxsatlar",
     "Veb-server foydalanuvchisi (www-data) fayl yoki papkaga yozishi uchun ruxsat bo'lishi kerak. Yozish papkasini veb-ildizdan tashqarida saqlang. Odatiy ruxsatlar: fayl `0644`, papka `0755`.",
-    "",
-    "### Xavfsizlik",
-    "Foydalanuvchi bergan fayl nomi `../../etc/passwd` bo'lishi mumkin (path traversal): `basename()` va `realpath()` bilan tekshiring. Yuklangan fayllarni PHP sifatida bajarilmaydigan joyda saqlang.",
-    "",
-    "### Xatolarni boshqarish",
-    "`fopen` muvaffaqiyatsiz bo'lsa `false` qaytaradi va Warning chiqaradi: natijani tekshiring.",
     "",
     "### Papka (katalog) bilan ishlash",
     "- `scandir($d)` fayllar ro'yxati (`.` va `..` ham keladi), `glob('*.txt')` andoza bo'yicha.",

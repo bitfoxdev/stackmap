@@ -4,23 +4,8 @@ registerLesson("1.40", {
     "### Fiber nima",
     "PHP 8.1 `Fiber` — to'xtatib (`Fiber::suspend()`) va qayta davom ettirish (`$fiber->resume()`) mumkin bo'lgan **stackful** korutin. Generator esa **stackless**: faqat o'z funksiyasida `yield` qiladi; Fiber istalgan chuqurlikdagi chaqiruvdan to'xtay oladi, shuning uchun oddiy funksiyalar ichida ham kutish mumkin (\"funksiya ranglari\" muammosi yo'q).",
     "",
-    "### API",
-    "`new Fiber(callable)`, `start(...$args)`, `resume($v)`, `throw($e)`, `getReturn()`, `isStarted/isSuspended/isRunning/isTerminated`, `Fiber::getCurrent()`. `suspend($v)` qiymati `start/resume` natijasi bo'ladi, `resume($x)` esa `suspend()` ning qaytishi.",
-    "",
     "### Muhim: parallelizm emas",
     "Fiber bitta oqimda **kooperativ** almashinuv beradi, ya'ni ikkita Fiber bir vaqtda ishlamaydi. Foyda faqat I/O kutayotgan paytda boshqasiga o'tishdan (non-blocking I/O). Buning uchun **event loop** kerak: **Revolt**, Amp v3, ReactPHP 3.",
-    "",
-    "### Haqiqiy parallellik",
-    "- Bir nechta jarayon: queue worker'lar, `pcntl_fork`, Symfony Process, `Concurrency::run` (Laravel).",
-    "- Swoole/OpenSwoole coroutine'lari (o'z runtime).",
-    "- `ext-parallel` (ZTS PHP kerak).",
-    "- `Http::pool()`: Guzzle async orqali parallel HTTP.",
-    "",
-    "### Qayerda ishlatiladi",
-    "Kutubxona/framework darajasida (Amp, Revolt, Octane ichki). Oddiy web ilovada Fiber'ni to'g'ridan-to'g'ri yozish kamdan-kam kerak: queue va `Http::pool` yetarli.",
-    "",
-    "### Cheklovlar",
-    "Fiber ichidagi chuqur stack xotira oladi; exception Fiber chegarasidan o'tadi (`resume` dan chiqadi); `Fiber` ichida `exit` butun jarayonni to'xtatadi; generator bilan aralashtirmang.",
     "",
     "### Fiber API tafsiloti",
     "- `new Fiber(callable $fn)`; `start(mixed ...$args): mixed` birinchi `suspend` qiymatini (yoki tugasa `null`) qaytaradi.",
@@ -133,8 +118,6 @@ registerLesson("1.40", {
     "Fiber ichida blocking funksiya (`file_get_contents`, `PDO`) butun loop'ni to'xtatadi.",
     "Generator va Fiber aralashmasi xato qilish oson: bitta model tanlang.",
     "Uzoq yashovchi Fiber xotirani ushlab turadi (stack); tugallanmagan Fiber'larni tozalang.",
-    "`resume()` tugagan Fiber'ga `FiberError` beradi.",
-    "Static/global holat fiber'lar orasida umumiy: mantiqiy race.",
-    "Haqiqiy parallelizm kerak bo'lsa jarayonlar/queue."
+    "`resume()` tugagan Fiber'ga `FiberError` beradi."
   ]
 });

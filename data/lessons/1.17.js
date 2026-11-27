@@ -1,18 +1,8 @@
 /* Chuqur dars: 1.17. Maydonlar: lesson (markdown), examples [{title, lang, code, note}], pitfalls [] */
 registerLesson("1.17", {
   "lesson": [
-    "### Iterator va Iterable",
-    "`foreach` ishlashi uchun obyekt `Traversable` (`Iterator` yoki `IteratorAggregate`) bo'lishi kerak. `iterable` tipi massiv va Traversable'ni qamraydi.",
-    "",
     "### Generator",
     "`yield` ishlatadigan funksiya generator qaytaradi: qiymatlarni **kerak bo'lganda** hosil qiladi va holatini saqlab to'xtaydi. Natijada massiv xotirada yig'ilmaydi: 1M qator ham O(1) xotirada o'tadi.",
-    "",
-    "### Imkoniyatlar",
-    "- `yield $k => $v` kalit bilan.",
-    "- `$x = yield $v;` — `send()` orqali ichkariga qiymat jo'natish (ikki tomonlama).",
-    "- `yield from` boshqa generator/massivga delegatsiya. Kalitlar to'qnashishiga e'tibor bering (`iterator_to_array(..., false)`).",
-    "- `return` qiymati `getReturn()` bilan olinadi.",
-    "- Generator **bir marta** yuradi: qayta aylanib bo'lmaydi (`Cannot traverse an already closed generator`).",
     "",
     "### Qachon ishlatiladi",
     "Katta fayl/CSV o'qish, DB cursor (`cursor()`, `lazy()`), pipeline (filter → map → batch), cheksiz ketma-ketlik. Laravel `LazyCollection` generatorga qurilgan.",
@@ -22,9 +12,6 @@ registerLesson("1.17", {
     "",
     "### Custom Iterator",
     "`Iterator` (5 metod) yoki `IteratorAggregate::getIterator(): Generator` — eng qisqa yo'l.",
-    "",
-    "### Xotira va tezlik",
-    "Generator xotirani tejaydi, lekin har `yield` kichik narx. Kichik massivda oddiy `array` tezroq.",
     "",
     "### Iterator protokoli",
     "`foreach` obyektni uchta usulda aylanadi:",
@@ -39,7 +26,7 @@ registerLesson("1.17", {
     "- Birinchi `current()` yoki `foreach` kodni birinchi `yield` gacha ishga tushiradi (lazy: obyekt yaratilganda kod bajarilmaydi).",
     "- `yield` kalit: auto-key 0,1,2...; `yield $k => $v`; `yield from` ichki generatorning kalitlarini saqlaydi.",
     "- `throw()` generator ichiga exception tashlaydi; `finally` generator buzilsa ham bajariladi.",
-    "- Generator `return` bilan tugaydi; `yield` bo'lmagan funksiya generator emas, hatto `if (false) yield;` bo'lsa ham generator!",
+    "- Generator `return` bilan tugaydi; funksiya tanasida `yield` qayerda bo'lmasin (hatto `if (false) yield;` ichida ham) u generator hisoblanadi.",
     "",
     "### Samaradorlik",
     "- Xotira O(1) (bitta element), vaqt `yield` chaqiruvi bilan biroz ko'proq.",
@@ -55,10 +42,7 @@ registerLesson("1.17", {
     "- Serialize qilinmaydi, clone qilinmaydi.",
     "- Generator ichida `return` bilan qiymat qaytarish faqat `getReturn()`.",
     "- Iterator'lar `count()` ni qo'llamaydi (`Countable` implement qilish kerak).",
-    "- `yield` ifodani qavs ichiga olish kerak: `$x = (yield $a) + 1;`",
-    "",
-    "### Laravel LazyCollection",
-    "`LazyCollection::make(function () { yield ...; })`, `->filter()->map()->chunk(100)->each(...)` — barchasi lazy, bitta element xotirada. Katta CSV import, log tahlil uchun."
+    "- `yield` ifodani qavs ichiga olish kerak: `$x = (yield $a) + 1;`"
   ],
   "examples": [
     {
@@ -148,7 +132,6 @@ registerLesson("1.17", {
     "Generator ichidagi exception `foreach` joyida ko'tariladi, shuning uchun `try/catch` ni iste'mol qiluvchi tomonga ham qo'ying.",
     "Generator yaratilganda kod bajarilmaydi, birinchi so'rovda boshlanadi: side-effect kutilmagan vaqtda.",
     "`iterator_to_array(naturals())` cheksiz generatorda xotirani to'ldiradi.",
-    "`yield from` kalitlari to'qnashadi: `iterator_to_array($g, false)` yoki kalit qayta yoziladi.",
     "`cursor()` ba'zi drayverlarda baribir hamma natijani xotiraga oladi: `lazy()`/`chunkById()` xavfsizroq."
   ]
 });

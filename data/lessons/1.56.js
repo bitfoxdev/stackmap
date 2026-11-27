@@ -9,9 +9,6 @@ registerLesson("1.56", {
     "- `filter_input(INPUT_POST, 'nom', $filter)` — superglobaldan to'g'ridan-to'g'ri oladi (`INPUT_GET`, `INPUT_POST`, `INPUT_COOKIE`, `INPUT_SERVER`).",
     "Muvaffaqiyatsizlikda `false` qaytaradi (yoki `null`, `FILTER_NULL_ON_FAILURE` bayrog'i bilan).",
     "",
-    "### Validatsiya filtrlari",
-    "`FILTER_VALIDATE_INT`, `FILTER_VALIDATE_FLOAT`, `FILTER_VALIDATE_BOOLEAN`, `FILTER_VALIDATE_EMAIL`, `FILTER_VALIDATE_URL`, `FILTER_VALIDATE_IP`, `FILTER_VALIDATE_REGEXP`, `FILTER_VALIDATE_DOMAIN`. Ular qiymatni tekshiradi va o'zgartirmaydi (sonlarni tipga keltiradi).",
-    "",
     "### Sanitizatsiya filtrlari",
     "`FILTER_SANITIZE_NUMBER_INT`, `FILTER_SANITIZE_EMAIL`, `FILTER_SANITIZE_URL`, `FILTER_SANITIZE_SPECIAL_CHARS`, `FILTER_SANITIZE_FULL_SPECIAL_CHARS`. Eslatma: `FILTER_SANITIZE_STRING` PHP 8.1 dan **deprecated**: HTML chiqarish uchun `htmlspecialchars()` ishlating.",
     "",
@@ -19,9 +16,6 @@ registerLesson("1.56", {
     "- **Validatsiya:** to'g'ri/noto'g'ri deb hal qiladi (rad etish).",
     "- **Sanitizatsiya:** keraksiz belgilarni olib tashlaydi (tuzatish).",
     "Ko'pincha avval validatsiya qilib, noto'g'ri bo'lsa rad etish to'g'ri.",
-    "",
-    "### Muhim",
-    "`0` ham to'g'ri qiymat: `if (!$id)` bilan tekshirmang, `=== false` ishlating.",
     "",
     "### Filter turlari jadvali",
     "| Filter | Tekshiradi | Natija |",
@@ -89,7 +83,6 @@ registerLesson("1.56", {
   "pitfalls": [
     "`FILTER_VALIDATE_INT` `0` ni to'g'ri qaytaradi: `if (!$v)` emas, `$v === false` bilan tekshiring.",
     "`FILTER_SANITIZE_STRING` 8.1 da deprecated: HTML chiqarishda `htmlspecialchars`.",
-    "Sanitizatsiya validatsiya o'rnini bosmaydi: noto'g'ri kiritmani tuzatib emas, rad eting.",
-    "`filter_var` email tekshiruvi sintaksisni tekshiradi, manzil mavjudligini emas."
+    "Sanitizatsiya validatsiya o'rnini bosmaydi: noto'g'ri kiritmani tuzatib emas, rad eting."
   ]
 });

@@ -1,24 +1,8 @@
 /* Chuqur dars: 1.26. Maydonlar: lesson (markdown), examples [{title, lang, code, note}], pitfalls [] */
 registerLesson("1.26", {
   "lesson": [
-    "### PHP 8.0 (2020)",
-    "- **Named arguments**: `f(name: 'x')`.",
-    "- **Constructor promotion**, **union types**, `mixed`, `static` return.",
-    "- `match`, nullsafe `?->`, `throw` ifoda sifatida.",
-    "- **Attributes** (1.16), `str_contains/starts_with/ends_with`, `WeakMap`.",
-    "- **JIT** (OPcache ichida). Ko'p ichki funksiyalar `TypeError` / `ValueError` tashlaydigan bo'ldi, ya'ni PHP \"qat'iyroq\" bo'ldi.",
-    "",
-    "### PHP 8.1 (2021)",
-    "**Enums**, **readonly** property, **first-class callable** `f(...)`, `never`, pure **intersection types**, **Fibers**, `new` initializer'larda, `array_is_list()`, string-kalitli spread, `final const`.",
-    "",
-    "### PHP 8.2 (2022)",
-    "**readonly class**, **DNF types**, `null/false/true` standalone, `#[\\SensitiveParameter]`, trait'da konstanta, dinamik property **deprecated** (`#[\\AllowDynamicProperties]` bilan ruxsat), `${var}` interpolatsiya deprecated, `Random` kengaytmasi.",
-    "",
-    "### PHP 8.3 (2023)",
-    "**Typed class constants**, `#[\\Override]`, `json_validate()`, dynamic class constant fetch `Foo::{$name}`, `readonly` property'ni `__clone` ichida qayta yozish, `Randomizer::getBytesFromString`, `mb_str_pad`.",
-    "",
     "### Qo'llab-quvvatlash va upgrade",
-    "Faqat faol versiyalar xavfsizlik tuzatishini oladi: 8.1 EOL, 8.2 xavfsizlik 2026-12-31 gacha, 8.3 2027-12-31, 8.4 2028-12-31, 8.5 2029-12-31 gacha (aniq sanalar: php.net/supported-versions). Yangi loyiha uchun eng so'nggi barqaror (8.4+) tanlanadi.",
+    "Faqat faol versiyalar xavfsizlik tuzatishini oladi: 8.1 EOL, 8.2 xavfsizlik 2026-12-31 gacha, 8.3 2027-12-31, 8.4 2028-12-31, 8.5 2029-12-31 gacha (aniq sanalar: php.net/supported-versions). Yangi loyiha uchun eng so'nggi barqaror versiya (8.4 yoki 8.5) tanlanadi.",
     "",
     "Upgrade tartibi:",
     "1. `composer.json` da `php` talabini va kutubxona mosligini tekshiring (`composer why-not php 8.4`).",
@@ -46,7 +30,7 @@ registerLesson("1.26", {
     "**PHP 8.2**",
     "- readonly class, DNF types, `null/false/true` standalone, constants in traits, `Random` kengaytmasi, `#[SensitiveParameter]`, `AllowDynamicProperties`.",
     "- `mysqli::execute_query`, `ini_parse_quantity`, `memory_reset_peak_usage`.",
-    "- **Deprecated:** dinamik property, `${var}` interpolatsiya, `utf8_encode/decode`, `strtolower` lokali.",
+    "- **Deprecated:** dinamik property, `${var}` interpolatsiya, `utf8_encode/decode`.",
     "",
     "**PHP 8.3**",
     "- Typed class constants, dynamic class const fetch `Foo::{$n}`, `#[Override]`, `json_validate`, `Randomizer::getBytesFromString/getFloat`, `readonly` amend in `__clone`, anonymous readonly classes, negativ array indekslar uchun kalit qoidasi.",
@@ -54,17 +38,7 @@ registerLesson("1.26", {
     "- **Deprecated:** `get_class()` argumentsiz, `assert_options`.",
     "",
     "### Backward compatibility (BC) break'lar",
-    "Minor versiyalarda ham BC break bo'ladi (deprecation → ertaroq olib tashlanadi). Manba: php.net/migration84 (har versiya uchun \"Backward Incompatible Changes\", \"Deprecated features\" bo'limlari). Muhim naqsh: bugungi deprecation — ertangi xato (dinamik property 9.0 da).",
-    "",
-    "### Qo'llab-quvvatlash modeli",
-    "Har versiya: 2 yil faol (bug+security), keyin 2 yil faqat security. Release yilda bir marta (noyabr). Tavsiya: faol qo'llab-quvvatlanayotgan versiyada qolish; EOL versiyada xavfsizlik tuzatishlari chiqmaydi. Linux distributivlari (Debian/Ubuntu) o'z patch'lari bilan uzoqroq qo'llab-quvvatlashi mumkin, lekin upstream emas.",
-    "",
-    "### Upgrade jarayoni",
-    "1. Hozirgi versiya va CI: `composer check-platform-reqs`.",
-    "2. Avval deprecation'larni logda yig'ing (`error_reporting=E_ALL`, staging).",
-    "3. `rector` (`withPhpSets`), `phpstan` darajasini oshirish, `phpcompatibility` (PHP_CodeSniffer).",
-    "4. Kengaytmalar (redis, imagick, xdebug) yangi versiya uchun mavjudligini tekshiring.",
-    "5. Canary/blue-green deploy, xotira va latency kuzatuvi."
+    "Minor versiyalarda ham BC break bo'ladi (deprecation → ertaroq olib tashlanadi). Manba: php.net/migration84 (har versiya uchun \"Backward Incompatible Changes\", \"Deprecated features\" bo'limlari). Muhim naqsh: bugungi deprecation — ertangi xato (dinamik property 9.0 da)."
   ],
   "examples": [
     {
@@ -135,9 +109,6 @@ registerLesson("1.26", {
     "Dinamik property (8.2 dan deprecated, 9.0 da xato) eski kodni sindiradi: klassda e'lon qiling yoki `#[\\AllowDynamicProperties]`.",
     "EOL versiyada qolish xavfsizlik tuzatishlarisiz ishlash degani; upgrade rejasini oldindan tuzing.",
     "Rector avtomatik o'zgartirishlarni diff bilan ko'rib chiqing: semantik farqlar bo'lishi mumkin (masalan `match` strict).",
-    "Kutubxona `php` talabi sizning versiyangizdan past bo'lsa `composer update` bloklaydi; `composer why-not`.",
-    "Minor versiyada ham BC break bo'ladi: upgrade'ni test va staging'siz qilmang.",
-    "Debian/Ubuntu paketi upstream EOL bo'lgan versiyani o'zi qo'llab-quvvatlashi mumkin, lekin bu keng ekosistemada qo'llab-quvvatlanishni kafolatlamaydi.",
-    "`composer.json` da `php` talabi va `platform` konfiguratsiyasi bo'yicha noto'g'ri versiya kutubxonalarni tanlatib qo'yadi."
+    "Kutubxona `php` talabi sizning versiyangizdan past bo'lsa `composer update` bloklaydi; `composer why-not`."
   ]
 });

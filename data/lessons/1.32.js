@@ -1,30 +1,13 @@
 /* Chuqur dars: 1.32. Maydonlar: lesson (markdown), examples [{title, lang, code, note}], pitfalls [] */
 registerLesson("1.32", {
   "lesson": [
-    "### match",
-    "Ifoda (qiymat qaytaradi), strict (`===`) solishtiradi, fallthrough yo'q, birlashtirilgan shartlar vergul bilan, mos kelmasa `UnhandledMatchError`. `switch` dan farqi: loose, `break` kerak, qiymat qaytarmaydi. `match (true) { $x > 5 => ... }` shartli tanlov.",
-    "",
-    "### Named arguments",
-    "`createUser(email: 'a@b.uz', active: true)`: tartib ahamiyatsiz, default parametrlarni o'tkazib yuborasiz, o'qilish yaxshi. **Diqqat**: parametr nomi endi ommaviy API: kutubxonada nomni o'zgartirish BC break. Positional bilan aralashganda positional avval. `...$array` string kalitlar bilan named argument sifatida yoyiladi.",
-    "",
     "### Nullsafe",
     "`$a?->b?->c()`: zanjirdagi `null` uchrasa butun ifoda `null` (qisqa tutashuv; keyingi argumentlar hisoblanmaydi). Faqat o'qish: `$a?->b = 1` mumkin emas.",
-    "",
-    "### Spread va boshqa",
-    "- `...` argumentlarni yoyadi / yig'adi, massivda 8.1 dan string kalitlar bilan.",
-    "- `throw` ifoda: `$x ?? throw new E()`.",
-    "- `??`, `??=` (null-coalescing assign), `?:` Elvis.",
-    "- First-class callable `f(...)`.",
-    "- `new` initializer'da, `new Foo()->bar()` qavssiz (8.4).",
-    "- Raqam ajratgich `1_000`, `0o17` (8.1).",
     "",
     "### Qachon qaysi",
     "- Qiymat tanlash → `match`.",
     "- Bir necha qator mantiq / fallthrough kerak → `switch` yoki `if`.",
     "- Ixtiyoriy zanjir → `?->`; lekin `null` ni yashirish xatolarni yutib yubormasin.",
-    "",
-    "### Statik tahlil",
-    "PHPStan `match` to'liqligini (enum bilan) tekshiradi: enum'ga yangi case qo'shsangiz, `match` xato beradi. Bu `default` yozmaslikning foydasi.",
     "",
     "### Qo'shimcha sintaksis imkoniyatlari",
     "- **Null coalescing:** `$a ?? $b`, `$a ??= $b` (faqat `null`/mavjud emas bo'lsa); Elvis `$a ?: $b` (falsy uchun) — farqli!",
@@ -50,14 +33,7 @@ registerLesson("1.32", {
     "- Bir parametrga ikki marta qiymat berish — `Error`.",
     "",
     "### Operatorlar",
-    "`**`, `**=`, `<=>`, `??`, `??=`, `?->`, `instanceof`, `clone`, `new`, `print`, `@`, backtick (shell: xavfli, 8.5 da deprecated), `xor`. Ustuvorlik jadvali php.net \"Operator Precedence\": `clone`/`new` > `**` > unary va cast (`++ -- ~ (int) @`) > `instanceof` > `!` > `* / %` > ... > `??` > `?:` > `=` > `and` > `xor` > `or`.",
-    "",
-    "### Xavfsiz sintaksis qoidalari",
-    "1. `==` o'rniga `===`.",
-    "2. Ichma-ich ternary o'rniga `match`.",
-    "3. `?->` xatoni yashirmasin: majburiy qiymat uchun tekshiruv.",
-    "4. Katta `match` o'rniga polimorfizm yoki lookup massiv.",
-    "5. `list` / destructuring bilan ma'lumotni ochishda kalitlar mavjudligini tekshiring."
+    "`**`, `**=`, `<=>`, `??`, `??=`, `?->`, `instanceof`, `clone`, `new`, `print`, `@`, backtick (shell: xavfli, 8.5 da deprecated), `xor`. Ustuvorlik jadvali php.net \"Operator Precedence\": `clone`/`new` > `**` > unary va cast (`++ -- ~ (int) @`) > `instanceof` > `!` > `* / %` > ... > `??` > `?:` > `=` > `and` > `xor` > `or`."
   ],
   "examples": [
     {
@@ -130,7 +106,6 @@ registerLesson("1.32", {
     "`match` arm'larida side-effect va uzun mantiq o'qilishni buzadi; metodga chiqaring.",
     "`$a ?: $b` va `$a ?? $b` farqli: `0`, `''`, `'0'` uchun Elvis boshqa qiymatni tanlaydi.",
     "Ichma-ich qavssiz ternary PHP 8 da fatal xato.",
-    "Nomli argument ichki funksiyada noto'g'ri nom bersangiz `Unknown named parameter`.",
-    "`match` bitta ifodani qabul qiladi: ko'p qatorli mantiq uchun alohida metod."
+    "Nomli argument ichki funksiyada noto'g'ri nom bersangiz `Unknown named parameter`."
   ]
 });

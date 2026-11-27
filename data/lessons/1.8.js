@@ -43,19 +43,6 @@ registerLesson("1.8", {
     "- Klass metodlarida `$this`.",
     "- Rekursiv funksiyalar uchun PHP'da stack chegarasi yo'q (xotira tugaguncha); chuqur rekursiya (10 000+) `memory_limit` yoki segfault beradi. `xdebug.max_nesting_level` Xdebug yoqilganda.",
     "",
-    "**Callable turlari**",
-    "1. Satr: `'strtoupper'`, `'Foo::bar'`",
-    "2. Massiv: `[$obj, 'method']`, `['Foo', 'staticMethod']`",
-    "3. `Closure`: `fn`, `function`, `strlen(...)`",
-    "4. `__invoke` bor obyekt",
-    "Tekshirish: `is_callable`, chaqirish: `$f()`, `call_user_func($f, ...$args)`, `call_user_func_array`.",
-    "",
-    "**Ichki yordamchilar**",
-    "`func_get_args()`, `func_num_args()` (eski; variadic afzal), `function_exists`, `array_map` bilan callable, `usleep`, `register_shutdown_function`.",
-    "",
-    "**Qaytarish va generator**",
-    "Funksiya `yield` ishlatsa, u har doim `Generator` qaytaradi, `return` esa `getReturn()` ga tushadi (1.17).",
-    "",
     "**Pure function**",
     "Bir xil kirishga bir xil natija, side-effect yo'q: test qilish va keshlash oson. Laravel helperlari (`now()`, `auth()`) pure emas.",
     "",
@@ -71,8 +58,8 @@ registerLesson("1.8", {
         "echo sum(1, 2, 3);              // 6",
         "echo sum(...[4, 5]);            // 9",
         "",
-        "function mail(string $to, string $subject = '(mavzusiz)', bool $html = false) {}",
-        "mail('a@b.uz', html: true);     // subject default qoladi"
+        "function sendMail(string $to, string $subject = '(mavzusiz)', bool $html = false) {}",
+        "sendMail('a@b.uz', html: true);     // subject default qoladi"
       ]
     },
     {

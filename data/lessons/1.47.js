@@ -27,15 +27,6 @@ registerLesson("1.47", {
     "```",
     "`@param`, `@return`, `@throws`, `@var`, `@deprecated`, `@see`. Zamonaviy PHP'da tiplar kodning o'zida yoziladi, docblock esa **generics** (`@param list<User> $users`) va izoh uchun qoladi.",
     "",
-    "### Fayl sarlavhasi",
-    "Ba'zan fayl boshida litsenziya yoki tavsif izohi qo'yiladi.",
-    "",
-    "### Qachon ko'p qatorli izoh",
-    "Murakkab algoritm tushuntirishi, biznes qoidasi, kutubxona hujjati. Oddiy narsa uchun bir qatorli yetarli.",
-    "",
-    "### Hujjat generatorlari",
-    "phpDocumentor va IDE docblock'dan API hujjat yaratadi. Docblock sifati kodni o'qish va avtomatik to'ldirishni yaxshilaydi.",
-    "",
     "### Izoh turlari bir joyda",
     "| Belgi | Tur | Eslatma |",
     "|---|---|---|",
@@ -62,16 +53,8 @@ registerLesson("1.47", {
     "final class PriceCalculator {}",
     "```",
     "",
-    "### IDE va avtomatik to'ldirish",
-    "IDE docblock'dan tip va tavsifni oladi, ustiga sichqoncha olib borganda ko'rsatadi. Aniq tip e'loni bo'lsa docblock'da tipni takrorlamang, tavsif va generics yozing.",
-    "",
     "### Statik tahlil bilan",
-    "PHPStan docblock tiplarini tekshiradi: `@return list<User>` yozib, `array` qaytarsangiz va elementlar `User` bo'lmasa xato beradi. Bu kodning \"hujjati\" tekshiriladigan bo'ladi.",
-    "",
-    "### Qoidalar",
-    "- Hamma narsaga docblock yozmang: tip yetarli bo'lgan joyda ortiqcha.",
-    "- Public API (kutubxona) uchun to'liq yozing.",
-    "- Tavsifni \"nima qiladi\" emas, \"kutilgan xatti-harakat va cheklov\" sifatida yozing."
+    "PHPStan docblock tiplarini tekshiradi: `@return list<User>` yozib, `array` qaytarsangiz va elementlar `User` bo'lmasa xato beradi. Bu kodning \"hujjati\" tekshiriladigan bo'ladi."
   ],
   "examples": [
     {
@@ -126,7 +109,6 @@ registerLesson("1.47", {
   "pitfalls": [
     "`/* */` ichida ikkinchi `/* */` bo'lsa, birinchi `*/` izohni uzadi va parse error chiqadi.",
     "DocBlock tiplari kodning haqiqiy tiplaridan farq qilsa PHPStan xato beradi: sinxron saqlang.",
-    "Hamma funksiyaga majburiy docblock yozish shovqin: tip e'loni yetarli joyda yozmang.",
-    "Katta izohlarda `*/` belgisini tasodifan yozib qo'yish izohni erta tugatadi."
+    "Hamma funksiyaga majburiy docblock yozish shovqin: tip e'loni yetarli joyda yozmang."
   ]
 });

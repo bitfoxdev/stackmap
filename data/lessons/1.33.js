@@ -16,14 +16,8 @@ registerLesson("1.33", {
     "- Konstruktorda validatsiya qiladi: yaroqsiz obyekt yaratilmaydi.",
     "Misol: `Money`, `Email`, `DateRange`, `Coordinates`.",
     "",
-    "### DTO bilan farq",
-    "DTO — ma'lumot tashuvchi (validatsiya shart emas); Value Object — domen qiymati va qoidalari bor.",
-    "",
     "### clone-with",
     "8.5 da `clone($obj, ['prop' => $v])` readonly obyektdan o'zgartirilgan nusxa yaratishni sodda qiladi. Undan oldin `new static(...)` yoki `clone` + reflection hiylalari kerak edi (readonly bo'lsa `__clone` ichida qayta yozish 8.3 dan ruxsat).",
-    "",
-    "### Laravel",
-    "Request/DTO, event payload, queue job parametrlari uchun readonly foydali. Eloquent modellar mutable bo'lib qoladi.",
     "",
     "### Readonly chuqurroq",
     "- Property tipli bo'lishi shart (`mixed` ham); tipsiz yoki default qiymatli bo'lmaydi.",
@@ -48,13 +42,7 @@ registerLesson("1.33", {
     "- **Aggregate:** entity+VO guruhi, bitta ildiz orqali o'zgaradi (DDD).",
     "",
     "### Eloquent va VO",
-    "Custom cast: `class Money implements CastsAttributes { get(...) { return new Money(...); } set(...) }` — modelda VO sifatida ishlatish. Model o'zi mutable; VO — property qiymatlari uchun. Spatie Laravel Data, DTO paketlari.",
-    "",
-    "### Immutability afzalliklari",
-    "Thread-safety (Octane/Swoole), side-effect yo'q, kesh va tenglik oson, bug izlash oson. Xarajat: har o'zgarishda yangi obyekt (kichik obyektlar uchun ahamiyatsiz).",
-    "",
-    "### PHP 8.5 clone with",
-    "`clone($point, ['x' => 5])`: readonly property'larni o'zgartirilgan nusxa yaratadi (property `__clone` kerak emas); property ko'rinishi shu doiraga mos bo'lishi kerak."
+    "Custom cast: `class Money implements CastsAttributes { get(...) { return new Money(...); } set(...) }` — modelda VO sifatida ishlatish. Model o'zi mutable; VO — property qiymatlari uchun. Spatie Laravel Data, DTO paketlari."
   ],
   "examples": [
     {
@@ -143,7 +131,6 @@ registerLesson("1.33", {
     "Readonly property default qiymat olmaydi va klass tashqarisidan initsializatsiya qilinmaydi (`Cannot initialize readonly property from global scope`).",
     "Readonly class ota klassi ham readonly bo'lishi kerak; oddiy klassdan readonly klass yaratib bo'lmaydi.",
     "Hook (8.4) va `readonly` birga ishlamaydi: cheklov kerak bo'lsa `private(set)`.",
-    "`with*` metodlarida validatsiyani qayta chaqiring, aks holda yaroqsiz obyekt yaratish mumkin.",
-    "Eloquent model readonly bo'lmaydi; VO ni cast orqali ishlating."
+    "`with*` metodlarida validatsiyani qayta chaqiring, aks holda yaroqsiz obyekt yaratish mumkin."
   ]
 });
